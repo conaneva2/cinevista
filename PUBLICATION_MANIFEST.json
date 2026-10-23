@@ -87,8 +87,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 27324,
-      "sha256": "1149022f6f86007f5fa4804689413703287d1058aa7faf60f5959870cdcf6f4a"
+      "bytes": 27668,
+      "sha256": "0c96a3870fdb3b891a6fd330f33104e9995ec31c7884acfd1e76250bade98a15"
     },
     {
       "path": "CLAUDE.md",
@@ -127,8 +127,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 39738,
-      "sha256": "b0d4932ca188b9522d37bbcb38d96c84c0cdaa2c93c1d7d54fe66ebdecf9a374"
+      "bytes": 39813,
+      "sha256": "944cd7b6e4c994179bfa9f34b06699bac846741e6884baafd3b3f6cc2c6da1ee"
     },
     {
       "path": "README.md",
