@@ -964,7 +964,7 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
       ],
-      "note": "R24已验证MA入口和调试上下文；限定首提交窗口零命中、RAM读回吻合。IRQ76仍0，GPU完成/BOSS与高层窗口依赖未闭合，Android/APK未通过。"
+      "note": "R25排除三处BOSS数据误命中，另两个弱候选未知；GPU生产规则与匹配BOSS仍缺。完整目标审计未通过，无活跃实验，需新匹配证据推进执行。"
     },
     {
       "id": "G09",
@@ -1065,7 +1065,7 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
       ],
-      "note": "R24已验证MA入口和调试上下文；限定首提交窗口零命中、RAM读回吻合。IRQ76仍0，GPU完成/BOSS与高层窗口依赖未闭合，Android/APK未通过。"
+      "note": "R25排除三处BOSS数据误命中，另两个弱候选未知；GPU生产规则与匹配BOSS仍缺。完整目标审计未通过，无活跃实验，需新匹配证据推进执行。"
     },
     {
       "id": "G12",

@@ -32,6 +32,7 @@
 | R22 | `20261023T135110Z-native-window-server` | `server-links.json`、`server-evidence.json`、`window-01/window-observation.json`、`validation.json` | 原生管理区注册/线程/命令1–2；39 项核查与一次首提交顺序观察 |
 | R23 | `20261023T140711Z-native-submit-cache` | `cache-01/cache-observation.json`、`cache-01/result.json`、`record-review.json`、`validation.json` | 首包提交到等待的已记录顺序；MA cache入口读取E14、观察器失败，不支持“没有缓存调用”结论 |
 | R24 | `20261023T142814Z-ma-cache-location` | `context-evidence.json`、`locations-01/result.json`、`context-01/context-observation.json`、`validation.json` | 原MA入口位置、用户/内核调试上下文对照与限定窗口零命中；两轮客体、50项核查，非GPU完成证明 |
+| R25 | `20261023T144549Z-boss-candidate-provenance` | `candidate-provenance.json`、`candidate-evidence.json`、`goal-audit.json`、`validation.json` | 两个WBI候选匹配ARSC数组、ODEX命中为字符串索引；26项核查，剩余弱候选未认证，完整目标仍受阻 |
 
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 

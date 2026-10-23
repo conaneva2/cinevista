@@ -160,6 +160,12 @@ BOSS 是原存储链依赖的协处理侧。R15/R16 已确认主 CPU 侧：
 
 loader 链（R18–R20）：更新器依据 `loader_sum/loader.sum` 选择动作；4.01 原 `loader_writer.sh` 有启用的 MD5 校验，依赖 `loader_mpt.tar`、normal/safe 两个 pformat 配置及备份输入。`safe_list.txt` 由 normal 阶段生成，用于传递块信息，不是缺失程序。外机 A7S III 的归档报告只能指引搜索，不能替本机构造配置。
 
+### BOSS候选的来源核查
+
+R25 对早期未分类命中作字节来源核对。两个暖启动片段的完整512字节上下文，与原 `framework-res.apk` 中 `resources.arsc` 的条目偏移数组分别匹配20处和2处；其中 `0x3f40` 是资源偏移。另一个 `framework.odex` 命中位于内嵌DEX的 `proto_id`，其 `shortyIdx=0x3f40` 指向 `ILZFL`。这些命中提供了数据格式解释，不能当作BOSS邮箱访问指令。[AOSP资源结构](https://raw.githubusercontent.com/aosp-mirror/platform_frameworks_base/android-4.1.2_r1/include/androidfw/ResourceTypes.h)、[AOSP DEX结构](https://raw.githubusercontent.com/aosp-mirror/platform_dalvik/android-4.1.2_r1/libdex/DexFile.h)。
+
+另一暖启动片段和SA容器内部命中仍未分类，没有已验证的程序入口或加载关系。它们不支持执行实验，也不能据此证明BOSS绝不存在于固件中。26项来源/结构/保护核查通过；没有取得匹配BOSS程序或改变现有模型。
+
 ## 6. 录像前反挤压：结构存在，连续桥接尚缺
 
 R03 从原配置表确认的对象链：
