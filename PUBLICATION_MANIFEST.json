@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 31314,
-      "sha256": "a603b7e65727c034c062a819c191887392ac9d4d868a372fd9a571ce1aa549cc"
+      "bytes": 31686,
+      "sha256": "145d92782be10c20eb5248dabee536f6352dcf56b8e2481ecc0ff3c80f11a14b"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 46476,
-      "sha256": "4dc23ee325d8bc867a0ea730978140c03bbdf272ff0c2c9ec7f56dbfd90bda2f"
+      "bytes": 47248,
+      "sha256": "2fb1cd0e4df18f7f4aa262604a4909e4722c1bbf4a898a5d595660db1886883c"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7661,
-      "sha256": "2ba426599f59fa07b78f63bc17602e9c0f1a672ae88bb48e93d0cc5b1d75b981"
+      "bytes": 7657,
+      "sha256": "ec3871b8a7fadaa25b4d000f714f0f9db9648df13a75779ce83513f910c891cb"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 38483,
-      "sha256": "8815120c32d4468c3638e74c5ab1c428ff397659ba2addbafdd6412105784697"
+      "bytes": 39323,
+      "sha256": "16ddc402534b694eb666c8c516f28b3856954a5b6ad3fc882cfcc87c765fd972"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 9185,
-      "sha256": "82ccc82e9cd000ac02d6caa4ec674d790e86fc3d928b185a37ebba955afdd2fa"
+      "bytes": 10057,
+      "sha256": "998bdde6e299e4b189530a6f806f59084a0863fb95acd094245ed2a11c588faf"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 13635,
-      "sha256": "139b2f7919898472e570eb75cedc7193d711635741d87ddf2af6e9414a42ccf4"
+      "bytes": 14861,
+      "sha256": "1bea9388f2ccdafd13f4445127fb5a8bb2b866f165b7053a769e270f248baa1d"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 11291,
-      "sha256": "362744e3197fa8cb3fb20b3b34126f3327186f04aad1764d2b6782d9d9e386e1"
+      "bytes": 11765,
+      "sha256": "9f9fe1e9ca032cab57b42b6c209b00633392e1cf86dff0db6c5bafbbd4115c58"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 18508,
-      "sha256": "d006a5264cb52280b22460cfb1c4ccdaa5f1e2fcca19485288746dbb2981ae93"
+      "bytes": 20260,
+      "sha256": "dc09c4bdb75ec0e7c514e597230081efd805fcff679b68fc484123a4786e28f3"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -592,8 +592,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 48946,
-      "sha256": "111f45abfcf97f38c3089a05a63ce62ec69de9bec11277f165af9c514962a4f2"
+      "bytes": 49174,
+      "sha256": "f70aa6e0e6d26fddc57c19c81775519d62c07ce616b68b124ded437125272f3f"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -1056,10 +1056,9 @@
     "verified_source_files": 207
   },
   "latest_research": {
-    "evidence_id": "R25",
-    "scope": "Two saved-memory literal candidates identified as ARSC offset arrays and one ODEX literal as a string index; residual candidates unverified; execution still blocked by GPU producer contract and matching BOSS payload",
-    "evidence_checks_passed": 26,
-    "goal_requirements_checked": 11,
+    "evidence_id": "R26",
+    "scope": "A6000 original BOSS/NAND driver comparison with A7R II 4.01; shared CPU-side protocol and distinct PBM version check; SA candidate envelope validated; complete BOSS protocol emulation remains an unproven research option; GPU completion contract still missing",
+    "evidence_checks_passed": 43,
     "guest_runs": 0,
     "completion_proven": false,
     "public_raw_evidence": false

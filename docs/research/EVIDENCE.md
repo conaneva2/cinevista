@@ -33,10 +33,12 @@
 | R23 | `20261023T140711Z-native-submit-cache` | `cache-01/cache-observation.json`、`cache-01/result.json`、`record-review.json`、`validation.json` | 首包提交到等待的已记录顺序；MA cache入口读取E14、观察器失败，不支持“没有缓存调用”结论 |
 | R24 | `20261023T142814Z-ma-cache-location` | `context-evidence.json`、`locations-01/result.json`、`context-01/context-observation.json`、`validation.json` | 原MA入口位置、用户/内核调试上下文对照与限定窗口零命中；两轮客体、50项核查，非GPU完成证明 |
 | R25 | `20261023T144549Z-boss-candidate-provenance` | `candidate-provenance.json`、`candidate-evidence.json`、`goal-audit.json`、`validation.json` | 两个WBI候选匹配ARSC数组、ODEX命中为字符串索引；26项核查，剩余弱候选未认证，完整目标仍受阻 |
+| R26 | `20261023T150817Z-a6000-new-leads` | `new-evidence.json`、`boss-driver-comparison.json`、`driver-origin.json` / `driver-offline.json` | A6000原BOSS协议/4.01 PBM差异、SA外壳、43项静态与保护核查；协议模型仍候选 |
 
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 
 早期入口 `20261023T130029Z-memory-window-contract` 仅有符号清单；后续行为核查和运行观察在 R21，不能混用两轮结果。文档整理与同步记录在 `20261023T130744Z-research-handbook-publication`。
+
 
 ## 原文件身份：只发布摘要，不发布载荷
 
@@ -54,6 +56,9 @@
 | A6000 `libEGL_dmp.so` | `f1b26d4f11f862f0cbcff43ea2421750df56f0fa3eb47f1a24fd5881b6ed2ac2` |
 | A6000 `libGLESv2_dmp.so` | `633f8b3041c4b51ad744dec807a42ef9f14fdd5cf958d70d1666426622c627ce` |
 | A7R II 4.01 `lld.ko` | `4f6768b6d58be7d08bae896a2400edbaf9739a1f147ad6bd8f34aebc64302cff` |
+| A6000 3.21 `lld.ko` | `113c1b1f97ef2339b804c88d8924bc5ac7acc81f775fe4ccf27da73625e6840e` |
+| A7R II 4.01 `nand.ko` | `679e3dddafc4fa5808565bb627c22942b443ab7c732badf7a9287b5026cb239b` |
+| A6000 3.21 `nand.ko` | `2169b84deee1a424539255affbdff499c4094e0913eeefe49339f3d47cbe6faa` |
 
 A6000 六库与固定公开清单匹配。RX100 V 三库与已有 4.01 原文件做了整文件比较。外机输入用官方更新包的小范围读取，保留范围长度、ETag、分块解密和 FDAT 头检查，并进行禁网离线重读；没有验证外机完整更新 EXE 签名/整个包 CRC，不能用这些范围缓存刷机。
 
@@ -100,3 +105,5 @@ A6000 六库与固定公开清单匹配。RX100 V 三库与已有 4.01 原文件
 5. 分享技术事实和自有工具前检查来源许可；不得把带 hash 的专有文件误认为可以公开分发。
 
 R21 补充来源：本地既有 Sony 官方 GPL 内核包（SHA-256 `f502295d086c9e523758b86dc27134d78004a487f8ffe052cfa7d78aa3051cfa`），只取页保护、DMA、内存映射和打开标志相关文件；AOSP `android-4.1.2_r1` 的 gralloc.h 与 graphics.h，Apache-2.0 告知保留于私有来源缓存。两份文本共 13,816 字节；URL 与文件摘要在 R21 的 public-inputs.json。仅引用接口事实，未引入其实现。
+
+R26新增固定资料：[nicolvus A6000启动缺口](https://github.com/nicolvus/a6000-fw-decomp/blob/f4dc706262de807f6a9502cd5abc37af469747e0/docs/boot-and-recovery.md)、[NEX-3N项目的DSP代际对照](https://github.com/pylypenko-pavlo/nex3-filmgrain-project/blob/4b5f95b0a5a8481825e85a8034bbadff863e7751/notes/sony-dsp-generations.md)、[unixtract FDAT解析](https://github.com/theubusu/unixtract/blob/51e50742e6bcbc8381de2fad8f4d4d1f2074d9f6/src/formats/fdat/mod.rs)。A6000原厂输入仍取Sony官方3.21更新包，整包签名/CRC未验，仅固定范围与原文件hash比对；输入哈希与全部限制保存在私有R26记录。未复制上述项目代码或发布原厂数据。

@@ -1,3 +1,9 @@
+# 2026-10-23：A6000 BOSS驱动与新增来源取舍
+
+继续复用fwtool.py@cdba742b固定解码、既有范围缓存、Python标准库和Apple LLVM；无需安装。Sony官方A6000 3.21仅新增约2.09MiB范围正文，两原驱动匹配既有公开hash并离线复读。原厂字节及派生材料只私有取证，不并入MIT代码。首次索引分区错误和追加预算已保留。
+
+nicolvus@f4dc7062只审阅4个增量提交与未读启动说明，不采用代码；新nex3-filmgrain-project@4b5f95b0（MIT作者材料）仅提供SA格式线索并与原4.01验证；unixtract@51e50742元数据GPL-3.0，仅读两解析器，未安装/复制。外机启动/恢复不直接适用。BOSS协议模型仍是研究候选，完整语义/验收与GPU规则均未闭合，适配工期未知。来源见[证据R26](research/EVIDENCE.md)。
+
 # 2026-10-23 BOSS候选来源核查
 
 复用已有fwtool.py固定解码器、Python标准库ZIP/ELF相关工具及原4.01输入，只追R16未分类候选。新增AOSP android-4.1.2_r1 ResourceTypes.h和DexFile.h文本查阅（Apache-2.0），用作资源数组/DEX字段定义，无代码复制或新依赖；来源见[证据索引](research/EVIDENCE.md)。原Gitiles页面读取失败，AOSP GitHub镜像读取成功；未下载固件、仓库或大文件。相同字节只能按结构核对，不能把字符串索引、资源偏移或未分类SA数据误当BOSS程序。GPU/BOSS缺口仍阻止执行适配，工期未知。

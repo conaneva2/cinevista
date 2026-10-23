@@ -962,9 +962,12 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/FINDINGS.md",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/driver-audit.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
-        "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md",
+        "docs/research/TECHNICAL.md",
+        "docs/research/EVIDENCE.md",
+        "docs/research/CONTINUATION.md"
       ],
-      "note": "R25排除三处BOSS数据误命中，另两个弱候选未知；GPU生产规则与匹配BOSS仍缺。完整目标审计未通过，无活跃实验，需新匹配证据推进执行。"
+      "note": "R26：A6000原BOSS驱动对照43项核查通过；完整协议模型为待验证候选，4.01 PBM有额外版本检查。GPU完成规则、原生存储、Android/APK验收仍缺。"
     },
     {
       "id": "G09",
@@ -1063,9 +1066,12 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/FINDINGS.md",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/driver-audit.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
-        "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md",
+        "docs/research/TECHNICAL.md",
+        "docs/research/EVIDENCE.md",
+        "docs/research/CONTINUATION.md"
       ],
-      "note": "R25排除三处BOSS数据误命中，另两个弱候选未知；GPU生产规则与匹配BOSS仍缺。完整目标审计未通过，无活跃实验，需新匹配证据推进执行。"
+      "note": "R26：A6000原BOSS驱动对照43项核查通过；完整协议模型为待验证候选，4.01 PBM有额外版本检查。GPU完成规则、原生存储、Android/APK验收仍缺。"
     },
     {
       "id": "G12",
