@@ -964,7 +964,7 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
       ],
-      "note": "R22原生缓冲锁服务端已静态核实；当前启动先遇GPU首提交，IRQ76仍0。GPU完成/BOSS及高层窗口依赖未闭合。"
+      "note": "R23已记录首包提交到等待；cache入口E14导致观察器失败，须先核实运行地址和调试上下文。GPU完成/BOSS依赖保持，完整Android/APK未通过。"
     },
     {
       "id": "G09",
@@ -1065,7 +1065,7 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
       ],
-      "note": "R22原生缓冲锁服务端已静态核实；当前启动先遇GPU首提交，IRQ76仍0。GPU完成/BOSS及高层窗口依赖未闭合。"
+      "note": "R23已记录首包提交到等待；cache入口E14导致观察器失败，须先核实运行地址和调试上下文。GPU完成/BOSS依赖保持，完整Android/APK未通过。"
     },
     {
       "id": "G12",

@@ -28,10 +28,9 @@
 | R18 | `20261023T114711Z-loader-source-delta` | `delta-evidence.json` | pformat 输入、safe_list 生成、写入依赖 |
 | R19 | `20261023T121316Z-config-driver-origin` | `actual-driver-comparison.json`、`a6000-driver-origin.json` / `rx100v-driver-origin.json` | 三机原驱动比较、更新包命名载荷清单 |
 | R20 | `20261023T123445Z-dmp-library-comparison` | `library-comparison.json`、`evidence-audit.json`、`adjacent-evidence.json`、`validation.json` | 三机原库、62+56 项静态核查、离线重读及保护哈希 |
-
 | R21 | `20261023T132539Z-ma-window-contract` | `contract-evidence.json`、`functions.json`、`mapping-01/operand-buffer.json`、`validation.json` | MA/stream 缓存属性、原生实际映射、窗口管理区及私有格式；45 项核查与一次只读客体观察 |
-
 | R22 | `20261023T135110Z-native-window-server` | `server-links.json`、`server-evidence.json`、`window-01/window-observation.json`、`validation.json` | 原生管理区注册/线程/命令1–2；39 项核查与一次首提交顺序观察 |
+| R23 | `20261023T140711Z-native-submit-cache` | `cache-01/cache-observation.json`、`cache-01/result.json`、`record-review.json`、`validation.json` | 首包提交到等待的已记录顺序；MA cache入口读取E14、观察器失败，不支持“没有缓存调用”结论 |
 
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 
