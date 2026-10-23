@@ -1,3 +1,9 @@
+# 当前MA缓存入口已核实，GPU执行完成仍未实现（2026-10-23）
+
+R24 用原系统代码段、符号与原指令读回确认MA cache入口地址。上轮E14发生在用户态调试读取；原程序正常进入内核后同地址读回成功。限定启动到首提交后的等待入口，该cache入口未命中，命令包和128字节对象从物理RAM读回吻合。
+
+两轮客体检查完成，50项证据核查通过，IRQ76仍为0。原固件、9项保护输入与QEMU模型不变；没有新增GPU执行、原生窗口、Android或APK验收。下一步回到GPU事务完成条件、高层窗口队列/fence与匹配BOSS来源。详见[研究手册](docs/research/README.md)的R24；下方旧停点作为历史保留。
+
 # 当前研究文档已汇总，缓存观察尚待核验（2026-10-23）
 
 五份[研究手册](docs/research/README.md)汇总应用事故、录像链、模拟器开发、同代机型比较及 R01–R23 证据。入口页提供能力表和术语，后续文档保留详细接口、版本、hash、来源与验收条件。
@@ -304,7 +310,7 @@ PMCA固定a82f5ba，独立Python3.12 ARM64 venv、libusb1.0.30、依赖冻结/�
 
 首页、取景页、图像自测的操作与提示集中为默认中文资源。诊断原始字段与合成测试靶仍保留英文；语言选择/英语资源和中文字形机测未完成，U03仍in_progress。Studio本轮未改。
 
-本轮统一check通过：49项Node、65项工具/资源契约、44项Java（含10000随机几何）、3000组对照、14项Python参考及17个Android源语法检查。真实API10 SDK构建、DEX035/对齐/v1验签通过。最新APK：`build/android/20260919T160456Z-native-ui-apk3/CineVista-Probe-0.4-debug.apk`；SHA256：`bf6fdea4f0e449cc565bb3319375f87f3070298df1f104667f752cc4041ebd58`。首次资源构建因前向焦点ID引用失败，显式声明后成功；完整历史见`handoff/runs/20260919T160456Z-native-ui/SESSION.md`。
+本轮统一check通过：50项Node、65项工具/资源契约、44项Java（含10000随机几何）、3000组对照、14项Python参考及17个Android源语法检查。真实API10 SDK构建、DEX035/对齐/v1验签通过。最新APK：`build/android/20260919T160456Z-native-ui-apk3/CineVista-Probe-0.4-debug.apk`；SHA256：`bf6fdea4f0e449cc565bb3319375f87f3070298df1f104667f752cc4041ebd58`。首次资源构建因前向焦点ID引用失败，显式声明后成功；完整历史见`handoff/runs/20260919T160456Z-native-ui/SESSION.md`。
 
 同源XML/样式/中文资源的浏览器布局预览已检查两种假设视口、选项独立切换、方向键焦点和设置开关。它不渲染真实相机画面。没有Android模拟器运行、相机安装或机测；不能据此确认实际屏幕尺寸、字体、Surface裁切与EVF。U02继续待原生预览环境接入。
 
@@ -316,7 +322,7 @@ PMCA固定a82f5ba，独立Python3.12 ARM64 venv、libusb1.0.30、依赖冻结/�
 
 首页从Java动态建控件改为API10 XML布局，MainActivity绑定原有六个动作。新增离线首页结构草图，直接读取同一XML；浏览器实际检查640×480/480×320假设视口、按钮提示和Tab焦点。不是Android精确渲染或相机截图。说明见`docs/CAMERA_UI_PREVIEW.md`。
 
-`python3 tools/cv.py check`通过：49项Node、62项工具、44项Java、3000组对照、14项Python参考与17个源文件语法检查。`python3 tools/cv.py android`实际通过API10编译、DEX035、对齐、v1验签与包检查。
+`python3 tools/cv.py check`通过：50项Node、62项工具、44项Java、3000组对照、14项Python参考与17个源文件语法检查。`python3 tools/cv.py android`实际通过API10编译、DEX035、对齐、v1验签与包检查。
 
 本轮APK：`build/android/android/CineVista-Probe-0.4-debug.apk`；SHA256：`a8107f3f4938e00fc9454384b03f63910741f1f6fcc6488c675c25e240b92ffb`。原始首包与历史日志保留。
 
@@ -345,7 +351,7 @@ SHA256：`d11e4da7e863ba8e8f534d99b605f96486fe9e2d804968806199895257515bac`
 
 ## 验证范围
 
-`python3 tools/cv.py check`通过：49项Node、46项工具/契约、44项Java（含10000随机几何）、3000组Java/Python对照、14项Python参考、17个Android源语法解析。真实SDK构建另外执行，不能与语法解析混为一谈。实际Node为26.8.2，不声称Node22/JDK21矩阵已跑。
+`python3 tools/cv.py check`通过：50项Node、46项工具/契约、44项Java（含10000随机几何）、3000组Java/Python对照、14项Python参考、17个Android源语法解析。真实SDK构建另外执行，不能与语法解析混为一谈。实际Node为26.8.2，不声称Node22/JDK21矩阵已跑。
 
 `release-check`仍退出2：14项必需门禁unknown、完整工具链资格false。开发APK不代表正式发行。证据一致性检查也不能鉴别编造的人工观察，仍需实际样片审阅。
 
