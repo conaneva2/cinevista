@@ -1,3 +1,5 @@
+> 当前专题汇总：[研究手册](research/README.md)。下文保留阶段实验记录，较早停点以手册及项目状态的后续证据修订为准。
+
 # A7R II 虚拟相机：开发预览 0.1
 
 > 2026-10-23最新：原GPU诊断入口审计确认任务软件signal不能代替硬件IRQ；新公开A6000日志支持同系列SMAPH-S30/IRQ76，但缺逐命令硬件协议。未新增执行模型或启动进展，窗口/Android/APK仍未通过，长期目标进行中。 本轮没有启动新的客体或更改默认操作台；GPU合同未变化时不重复空跑，继续离线追原生存储等独立缺口。见`handoff/runs/20261023T022306Z-sugilite-diagnostics/FINDINGS.md`和`handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md`。

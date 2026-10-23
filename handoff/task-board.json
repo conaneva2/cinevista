@@ -479,7 +479,8 @@
         "handoff/runs/20261022T034123Z-movie-peer-scale-backend/SESSION.md",
         "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/FINDINGS.md",
         "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/SESSION.md"
-      ]
+      ],
+      "note": "特定录像拓扑与SDF后端有静态依据，逐帧桥接、所有权、时序和性能未验证。"
     },
     {
       "id": "T12",
@@ -747,7 +748,7 @@
         "handoff/runs/20260920T041708Z-launcher-gate/FINDINGS.md",
         "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/original-apk-gate.json"
       ],
-      "note": "G03新增最终包启动图标/组件契约：复用aapt30.0.3解析编译清单、全部图标配置并解码PNG；拒绝XML/别名/系统图标、NinePatch、额外组件及显式process/persistent。11项测试通过；事故原APK拒绝exit2，当前源码构建在资源预检按预期停止exit1。未替换生产图标、无新可安装APK、无机身操作。 生产资源替换、修正版完整构建与安装恢复门禁仍未完成。 2026-10-22原事故APK主机重检仍拒绝exit2；不是运行或整机循环复现。"
+      "note": "图标兼容缺陷与安装会话异常保留；尚无事故机崩溃日志，不宣称唯一根因。"
     },
     {
       "id": "G04",
@@ -896,7 +897,7 @@
         "G07"
       ],
       "device_required": false,
-      "status": "in_progress",
+      "status": "blocked",
       "modules": [
         "handoff",
         "docs"
@@ -963,7 +964,7 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
       ],
-      "note": "原GPU诊断入口审计确认任务软件signal不能代替硬件IRQ；新公开A6000日志支持同系列SMAPH-S30/IRQ76，但缺逐命令硬件协议。未新增执行模型或启动进展，窗口/Android/APK仍未通过，长期目标进行中。"
+      "note": "原生存储与Sony服务依赖未闭合；控制器持久性不等于持久/data。见docs/research/CONTINUATION.md。"
     },
     {
       "id": "G09",
@@ -1010,7 +1011,7 @@
         "G09"
       ],
       "device_required": false,
-      "status": "in_progress",
+      "status": "blocked",
       "modules": [
         "tools",
         "config",
@@ -1064,8 +1065,45 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
       ],
-      "note": "原GPU诊断入口审计确认任务软件signal不能代替硬件IRQ；新公开A6000日志支持同系列SMAPH-S30/IRQ76，但缺逐命令硬件协议。未新增执行模型或启动进展，窗口/Android/APK仍未通过，长期目标进行中。"
+      "note": "缺GPU执行完成与BOSS加载依据；窗口、桌面、APK和冷启动未通过。见docs/research/CONTINUATION.md。"
+    },
+    {
+      "id": "G12",
+      "title": "研究过程、技术成果与接续手册及公开同步",
+      "priority": "P1",
+      "depends_on": [],
+      "modules": [
+        "docs/research",
+        "docs",
+        "handoff"
+      ],
+      "device_required": false,
+      "scope": "整理五份可检索研究文档，核对证据、公开范围与匿名身份，增量同步既有GitHub仓库。",
+      "outputs": [
+        "研究总览",
+        "探索时间线",
+        "技术链路与断点",
+        "证据资料索引",
+        "接续与验收指南",
+        "公开副本核查与远端读回"
+      ],
+      "acceptance": [
+        "明确已运行、静态依据和未知范围",
+        "公开副本通过检查且不包含私有输入",
+        "远端HEAD及文件树与审核结果相符"
+      ],
+      "negatives": [
+        "不操作相机或改变固件模型",
+        "不上传原厂载荷、私有环境或旧历史"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "docs/research/README.md",
+        "docs/research/EVIDENCE.md",
+        "docs/research/CONTINUATION.md"
+      ],
+      "note": "文档已整理，检查和远端同步核验进行中；不改变G08/G10。"
     }
   ],
-  "latest_session": "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
+  "latest_session": "docs/research/CONTINUATION.md"
 }

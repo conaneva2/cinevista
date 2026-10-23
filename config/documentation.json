@@ -130,6 +130,36 @@
       "path": "emulator/qemu/README.md",
       "owner_role": "emulator maintainer",
       "update_when": "QEMU source patches, licensing or validation boundaries change"
+    },
+    {
+      "path": "docs/research/CONTINUATION.md",
+      "role": "研究手册",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "新研究证据、结论修订、接续断点或公开范围变化"
+    },
+    {
+      "path": "docs/research/EVIDENCE.md",
+      "role": "研究手册",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "新研究证据、结论修订、接续断点或公开范围变化"
+    },
+    {
+      "path": "docs/research/HISTORY.md",
+      "role": "研究手册",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "新研究证据、结论修订、接续断点或公开范围变化"
+    },
+    {
+      "path": "docs/research/README.md",
+      "role": "研究手册",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "新研究证据、结论修订、接续断点或公开范围变化"
+    },
+    {
+      "path": "docs/research/TECHNICAL.md",
+      "role": "研究手册",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "新研究证据、结论修订、接续断点或公开范围变化"
     }
   ]
 }

@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 28095,
-      "sha256": "86565177fc781746811e68b030be8534f5e8d9e7af6a2ac3575af5c14d618576"
+      "bytes": 28496,
+      "sha256": "23c646af203cab60b9a83b1f4de44c91d46ef34420331596f77447b52fb90a28"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,13 +97,13 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 40213,
-      "sha256": "cde0d8665059f770b7b3af98216a447e39a464b66283534caa78f50abef4d72b"
+      "bytes": 41554,
+      "sha256": "19819950721b5314366b2b15ecfa23d91f6f824209835e91bd45f77d9d2adb13"
     },
     {
       "path": "README.md",
-      "bytes": 3469,
-      "sha256": "212512a0d4cd3d6810b1a881e69dddfa58a34c962f231653bdd672bfb1ed0085"
+      "bytes": 3681,
+      "sha256": "78590e250d169f47c4935a93747692324c99d49f2587b2a0cf2d411eda650754"
     },
     {
       "path": "SECURITY.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 8028,
-      "sha256": "3cbe04003d81f19a206844b03977454be9add7e65becbab43635bb9349cb7d7a"
+      "bytes": 7628,
+      "sha256": "d015fa4459b39d75e8743228dbe28fa15dcfbc9f213354f00c8d71522a9b600e"
     },
     {
       "path": "VERSION",
@@ -217,8 +217,8 @@
     },
     {
       "path": "config/documentation.json",
-      "bytes": 4087,
-      "sha256": "9c90645d24cf94db82c3736cbb95a48e576f37708819de2cc16c60680f32d49f"
+      "bytes": 5229,
+      "sha256": "195d57477d2b7ca60fafbb4f427b578c6d260bdbda88e13260d55fef4eb55dbf"
     },
     {
       "path": "config/install-boot-lab.lock.json",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 34666,
-      "sha256": "67cbc9cc57b05deb64b47f4571dc3d25cd8cf8c0bde8c69506eb93a17a6df1a3"
+      "bytes": 35208,
+      "sha256": "0a775a1090fd2239489024fa4e2cc0be0100fb7ccd32d68341cb2ab0bacf986c"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -397,18 +397,18 @@
     },
     {
       "path": "docs/INSTALL_BOOT_LAB.md",
-      "bytes": 13513,
-      "sha256": "fe452b3476514e53cdacdbcfcb682bac87f92a56f6670d27556e12ad7820ca54"
+      "bytes": 13674,
+      "sha256": "1c54f67b281a4622eafec901c38eb028aa935fe24c2900766315d3846163c86e"
     },
     {
       "path": "docs/PUBLICATION.md",
-      "bytes": 4317,
-      "sha256": "84e7e51a22d2b0b37d2e8e6e6f2107f9154bc18063b49de4ea45f963ba301c68"
+      "bytes": 4643,
+      "sha256": "79af81cf3a3aa79608e56e9fb35c7871000e19f8d0cf58b773da9a65f77db295"
     },
     {
       "path": "docs/README.md",
-      "bytes": 2002,
-      "sha256": "47e0eac6a8f1d792fa6863be16e6d201c1f0f42389f693eadf953cfb3ea2e669"
+      "bytes": 2134,
+      "sha256": "45d1b313d4c2a82afc9d94c416c105d2f3e5ab3b479fdf39779617f53b8d06bb"
     },
     {
       "path": "docs/USER_GUIDE.md",
@@ -417,8 +417,8 @@
     },
     {
       "path": "docs/VIRTUAL_CAMERA.md",
-      "bytes": 7001,
-      "sha256": "c75461245489d2c08df82cd3f60be0c8a6dd665e1d8ec46adc0bd6df048ae0d7"
+      "bytes": 7162,
+      "sha256": "9b2dc88af91f3a8e84e4af9d70e5178eb82d27ca203e96be824973310605ae97"
     },
     {
       "path": "docs/adr/0001-modular-monolith.md",
@@ -501,6 +501,31 @@
       "sha256": "bcd007d02d7206aeaed8ea8e24ba9787c5fa8b8b097c7a4ab30421237384cfa3"
     },
     {
+      "path": "docs/research/CONTINUATION.md",
+      "bytes": 7916,
+      "sha256": "573d32be841ea730ac6c213355fd1132f523b9f0d214e01f10d3643072d6f935"
+    },
+    {
+      "path": "docs/research/EVIDENCE.md",
+      "bytes": 11774,
+      "sha256": "740a0db0f106bc5a53bac2c2465750bf3456c703e52b22a32f197485c35937cb"
+    },
+    {
+      "path": "docs/research/HISTORY.md",
+      "bytes": 8314,
+      "sha256": "c700421ec42225b54d072692a4d1f382e312a488e0939cbbfb3ae1655a65a987"
+    },
+    {
+      "path": "docs/research/README.md",
+      "bytes": 4945,
+      "sha256": "2914dd092dff0c9fcac00db7280c575b496c0c9a49db6a4a5742c2beecb9a435"
+    },
+    {
+      "path": "docs/research/TECHNICAL.md",
+      "bytes": 10559,
+      "sha256": "1fbb7c9090bc7ed520c2bc9594b809ba15c6456a357ba94b4c7fdcc969aab821"
+    },
+    {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
       "bytes": 462,
       "sha256": "9245948ce2e4dadc004ca2602f65a48d1755d23e5b380d5ed71c44a3e0d01e2d"
@@ -567,8 +592,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 48051,
-      "sha256": "e30733757f6bd98c32998f21a3d1b3b8660542454419943bdcf42bb08545a95a"
+      "bytes": 48667,
+      "sha256": "be7ff19e3592819a6ca3897d674977afb17e0724400cfda1450868ef607d39bb"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -1020,5 +1045,12 @@
       "bytes": 7015,
       "sha256": "a507c4f38baa937c0586e1379a108b99f968ffd44ddf73d0f4a686b17c4ae016"
     }
-  ]
+  ],
+  "research_handbook": {
+    "date": "2026-10-23",
+    "documents": 5,
+    "evidence_run_ids_checked": 23,
+    "original_file_hashes_checked": 10,
+    "scope": "Documentation and evidence summaries; no new firmware execution or device acceptance."
+  }
 }
