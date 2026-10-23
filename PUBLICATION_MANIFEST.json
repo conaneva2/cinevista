@@ -81,44 +81,14 @@
       "sha256": "29ab9055272d5ca396563f3f8b4b4cec27c960654fce18d0f3d6121b09744594"
     },
     {
-      "path": "AGENTS.md",
-      "bytes": 7783,
-      "sha256": "5344ff055c65f39609eb0b5e830d1486b8337b87305aac6dc3d8f493458d815c"
-    },
-    {
       "path": "CHANGELOG.md",
-      "bytes": 27668,
-      "sha256": "0c96a3870fdb3b891a6fd330f33104e9995ec31c7884acfd1e76250bade98a15"
-    },
-    {
-      "path": "CLAUDE.md",
-      "bytes": 188,
-      "sha256": "d42bb6f8cbba67ac582f5d49fbdde26f0f5f680ffeb68f3da8f6c372f3619630"
-    },
-    {
-      "path": "CODEX_HANDOFF.md",
-      "bytes": 47541,
-      "sha256": "c44cd293c9ba925c17763da80866db76d735e0ec1228a127612c0d8ad9cc80c1"
-    },
-    {
-      "path": "CODEX_START_PROMPT.md",
-      "bytes": 2776,
-      "sha256": "9311e608601de36b24265bdf486198659a13ff5d35a2e4541878057ace5e3623"
+      "bytes": 28095,
+      "sha256": "86565177fc781746811e68b030be8534f5e8d9e7af6a2ac3575af5c14d618576"
     },
     {
       "path": "CONTRIBUTING.md",
       "bytes": 1774,
       "sha256": "c22f51ade05e58ef6aba35b337b3c537172b24bac2994d36273d648f42294028"
-    },
-    {
-      "path": "GEMINI.md",
-      "bytes": 172,
-      "sha256": "9c13e85fd949a9af732e5036dd551837a403c63da3c341c3a0f4c0fa2cef82a1"
-    },
-    {
-      "path": "HANDOFF_README.md",
-      "bytes": 1093,
-      "sha256": "5bec72ff92965b864ad29eda4f456ec48153a7a010f908a2c5f28570ebe0d1c5"
     },
     {
       "path": "LICENSE",
@@ -127,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 39813,
-      "sha256": "944cd7b6e4c994179bfa9f34b06699bac846741e6884baafd3b3f6cc2c6da1ee"
+      "bytes": 40213,
+      "sha256": "cde0d8665059f770b7b3af98216a447e39a464b66283534caa78f50abef4d72b"
     },
     {
       "path": "README.md",
@@ -142,8 +112,8 @@
     },
     {
       "path": "START_HERE.md",
-      "bytes": 1060,
-      "sha256": "6d3f737e69ffb475b9b94c4fe60a3df5ad93f35ad36ebbcc695869fd984aabbc"
+      "bytes": 1066,
+      "sha256": "345a575d71654bcf55abd5a866f873defb00919f16cf0f31ed377c48f31cdbca"
     },
     {
       "path": "TODO.md",
@@ -281,11 +251,6 @@
       "sha256": "6a2b4eff09fd0037c612e24e88e84219379a723ea620838749e1b4fa23af9be4"
     },
     {
-      "path": "core/AGENTS.md",
-      "bytes": 225,
-      "sha256": "6c99e8fc84d95bcd9aa7e43f3d9fe8b2f9ca7766c0ad5b755e6c4969afc3871f"
-    },
-    {
       "path": "core/src/org/cinevista/core/CaptureSession.java",
       "bytes": 2755,
       "sha256": "c3897345d47871e517951902058f5de1b20dc5cd46cee64b7567127475496c19"
@@ -322,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 34658,
-      "sha256": "070968345fc989023311e5f0ddce36412aee6f50e588ab679ea27ede4b3c5f73"
+      "bytes": 34666,
+      "sha256": "67cbc9cc57b05deb64b47f4571dc3d25cd8cf8c0bde8c69506eb93a17a6df1a3"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -337,8 +302,8 @@
     },
     {
       "path": "docs/04_WORKFLOW.md",
-      "bytes": 4108,
-      "sha256": "0372be2245b1b0d8d7a1815d5de7b2ed67578b2b128c24da95a462c31db28039"
+      "bytes": 4093,
+      "sha256": "e6781d38cdd5935f9ae4d30373feaaee0205af17d353de0d1ea0fed2af09fda8"
     },
     {
       "path": "docs/05_TESTING.md",
@@ -352,8 +317,8 @@
     },
     {
       "path": "docs/07_OPEN_SOURCE.md",
-      "bytes": 2190,
-      "sha256": "0c17080058f467de556f3907dd417e5cc6a975aa630e3ec50c724756262621b5"
+      "bytes": 2181,
+      "sha256": "b0e79aa421bdff4727b328c2b6291806cc322828ab2e1eed0d522b06e23a0b6b"
     },
     {
       "path": "docs/08_SOURCE_LEDGER.md",
@@ -382,8 +347,8 @@
     },
     {
       "path": "docs/13_NEXT_TASKS_MAC_STUDIO.md",
-      "bytes": 1466,
-      "sha256": "19997e266e19cac516c63d8c50202a5a50c443692a7025db3d99a9d1da386903"
+      "bytes": 1475,
+      "sha256": "8c498fb198afa3416c783d6bf2f3bf574f1db3bd6cc00519b9e867b9cb3a6b2c"
     },
     {
       "path": "docs/13_REALTIME_GRADING.md",
@@ -432,8 +397,8 @@
     },
     {
       "path": "docs/INSTALL_BOOT_LAB.md",
-      "bytes": 13506,
-      "sha256": "3213ddbea70a17ae322ba0a29bdfda53a556865456dc758af8b05c874480bad0"
+      "bytes": 13513,
+      "sha256": "fe452b3476514e53cdacdbcfcb682bac87f92a56f6670d27556e12ad7820ca54"
     },
     {
       "path": "docs/PUBLICATION.md",
@@ -442,8 +407,8 @@
     },
     {
       "path": "docs/README.md",
-      "bytes": 2005,
-      "sha256": "d31c596ec614814fd2585b97467f9ead2961c9a0fa1400a44c3dd3273101ee89"
+      "bytes": 2002,
+      "sha256": "47e0eac6a8f1d792fa6863be16e6d201c1f0f42389f693eadf953cfb3ea2e669"
     },
     {
       "path": "docs/USER_GUIDE.md",
@@ -582,8 +547,8 @@
     },
     {
       "path": "handoff/BASELINE_AUDIT.md",
-      "bytes": 5291,
-      "sha256": "720cc25af19ef2e95721956afdfe76677f5b11f0e0f0fc3c3c21a88bbce42054"
+      "bytes": 5292,
+      "sha256": "37617e0610b8f5431fdc74fd70c0a72e1d62872eed709bf25899f948ba584c47"
     },
     {
       "path": "handoff/DEVICE_TEST_CARD.md",
@@ -592,13 +557,13 @@
     },
     {
       "path": "handoff/EXECUTION_BACKLOG.md",
-      "bytes": 13847,
-      "sha256": "18fc32598b53447733e5d3714430d2f6be726c6d1a28d5be6c2fdeb5a9cbe4e1"
+      "bytes": 13870,
+      "sha256": "797dc1c67c1f816e9f26a2bf97f0ec9f5f2d041ac7b68e0c6d8bd2911650e08a"
     },
     {
       "path": "handoff/SESSION_TEMPLATE.md",
-      "bytes": 1533,
-      "sha256": "db779a2cd3a86cfb627ba948d5aad654a4fa72a0b7bcfcfcf3bdb265c342869a"
+      "bytes": 1523,
+      "sha256": "afb25578f8d606330b471b988512a4c24f2fba13678a584e8f6c386b6b76d73e"
     },
     {
       "path": "handoff/task-board.json",
@@ -646,11 +611,6 @@
       "sha256": "4a0465ef2f897685a15dd4e7d1001f6a5936690ef24e7d6efb22d51a60c1686e"
     },
     {
-      "path": "sony/AGENTS.md",
-      "bytes": 730,
-      "sha256": "c7db267741fba2674d5002ef0e67222aa79c6e3176a247e096ec058f53181d93"
-    },
-    {
       "path": "sony/src/org/cinevista/sony/DeviceProbe.java",
       "bytes": 3859,
       "sha256": "451b248c6b7d2931f07ecfdecabda9419e424ea4a751acdf1739ac79459d14b2"
@@ -664,11 +624,6 @@
       "path": "sony/src/org/cinevista/sony/SonyCameraAdapter.java",
       "bytes": 3758,
       "sha256": "3e67cdbefe48ae81ac79428e5c4f98d79b3494819047cbd20e32be4429b64b99"
-    },
-    {
-      "path": "studio/AGENTS.md",
-      "bytes": 1762,
-      "sha256": "8d89c482e2079df5f13fc0e79f7d003ffe049ea278085344114211b36f513c89"
     },
     {
       "path": "studio/CineVista_Studio_0.1.html",
@@ -861,11 +816,6 @@
       "sha256": "effe683a452c71d001c8351a426f56c05e88f1973b695b9f3cec0779d69b654a"
     },
     {
-      "path": "third_party/AGENTS.md",
-      "bytes": 297,
-      "sha256": "8635badf66c3ba9e74e855f17a0d1e6bfad9658b5f6ba908c5c0cba9ba85da8b"
-    },
-    {
       "path": "third_party/JPEG-CAM-root-MIT.txt",
       "bytes": 1072,
       "sha256": "a485f27d0b22eb7fd9b9419795695d0a1750ea32c961d11c1dd8ddade564dedf"
@@ -1027,8 +977,8 @@
     },
     {
       "path": "tools/policy_check.py",
-      "bytes": 2795,
-      "sha256": "a4654065339f400f31a14692c752c831ef9deef07fc09af8562d844a3ade34d1"
+      "bytes": 2759,
+      "sha256": "0fa447ce2b28116b056d8827a80294ced2ffda458e2210f05b23bbef55ff1abd"
     },
     {
       "path": "tools/preview_camera_ui.py",

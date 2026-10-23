@@ -10,7 +10,7 @@
 
 复用原4.01 Android `libGLESv2_dmp.so`/`libGLESv1_CM_dmp.so`/`libDMPSUGIRM.so` 的现有ELF/DWARF及本机Apple LLVM，只做本地读取，不并入MIT发行包。两份GLES的293项寄存器枚举一致；同一错误纹理全局的分配/纹理/虚读引用已闭合。新增小型只读提取与GDB观察脚本，复用现有QEMU运行器和RSP方式，无新增依赖/构建系统。
 
-Sony官方内核缓存固定哈希仍为f502295d086c9e523758b86dc27134d78004a487f8ffe052cfa7d78aa3051cfa；ma1co/qemu固定1909382c0d3533051cead7fde70ca8e84807ee14的三版二进制保持。DMP官方产品页未提供寄存器合同；Luna检索与既有libctru固定9b55eda44cf80b971503991e0c78f9bc8fe50425均不足以证明Sony端口/IRQ语义，未复制PICA执行代码。原库调试路径不是已取得的SDK源码；未声称可以重新分发专有代码。精确来源、地址和欠项见`handoff/runs/20261023T015609Z-sugilite-semantics/FINDINGS.md`。
+Sony官方内核缓存固定哈希仍为f502295d086c9e523758b86dc27134d78004a487f8ffe052cfa7d78aa3051cfa；ma1co/qemu固定1909382c0d3533051cead7fde70ca8e84807ee14的三版二进制保持。DMP官方产品页未提供寄存器合同；公开资料检索与既有libctru固定9b55eda44cf80b971503991e0c78f9bc8fe50425均不足以证明Sony端口/IRQ语义，未复制PICA执行代码。原库调试路径不是已取得的SDK源码；未声称可以重新分发专有代码。精确来源、地址和欠项见`handoff/runs/20261023T015609Z-sugilite-semantics/FINDINGS.md`。
 
 
 # 01｜源码复用调查与采购决策

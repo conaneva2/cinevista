@@ -17,6 +17,6 @@ MIT不是强制衍生项目继续开源的许可。我们选择主动开源并�
 不整包合并JPEG.CAM，不复制网站、字体、LUT集合；若选其中代码，先完成文件级许可复核、冻结相关来源、补测试并在提交中标注。发现上游通用问题时优先提issue/PR，而不是长期维护无记录的私有分叉。
 
 ## 公开仓库尚未建立
-本包是待放入用户选定仓库的本地工程。README、LICENSE、CONTRIBUTING、SECURITY、AGENTS、Issue/PR模板、workflow已经设置；GitHub权限、必需检查、CODEOWNERS、发布签名、漏洞私报都必须实际在远端配置后才成立。
+本包是待放入用户选定仓库的本地工程。README、LICENSE、CONTRIBUTING、SECURITY、Issue/PR模板、workflow已经设置；GitHub权限、必需检查、CODEOWNERS、发布签名、漏洞私报都必须实际在远端配置后才成立。
 
 SBOM/签名出处与构建溯源在真实依赖和首次合格APK后生成。不拿一个候选库列表冒充通过审计的SBOM。

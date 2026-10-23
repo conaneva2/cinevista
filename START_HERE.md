@@ -1,6 +1,6 @@
 # 从 v0.6 继续，不开空项目
 
-1. 读取 PROJECT_STATUS.md、AGENTS.md 和 docs/15_NATIVE_PERSISTENCE.md。
+1. 读取 PROJECT_STATUS.md、CONTRIBUTING.md 和 docs/15_NATIVE_PERSISTENCE.md。
 2. 使用现有模块、构建与主机测试；不要重写已测几何或软件调色内核。
 3. 首轮设备任务是最小原生颜色的“保存→退出→正常重启→不进App原生拍照→恢复”。复用已理解的MIT机制，目标机型/固件未鉴定字段保持阻断。
 4. 实时样张创作仍必须实现；原生可实现预览需标定，不退回参数表，也不把现有软件LUT改名冒充。

@@ -1,5 +1,9 @@
 # GitHub 公开源码快照｜2026-10-23
 
+## 2026-10-23：公开资料整理
+
+公开协作入口统一为 CONTRIBUTING.md、docs/04_WORKFLOW.md 与产品文档；内部工具配置和专用交接材料已从当前源码树移除。当前相机暂停、仿真欠项与硬件验收状态不变。已复用本地工具链运行 python3 tools/cv.py check，退出码为 0；当前源码树文件名与文本检查未发现内部工具名称残留。
+
 本副本排除了私人环境、固件、原始日志和旧 Git 历史。新增源码级 QEMU 补丁归档；许可和发布边界见 [PUBLICATION](docs/PUBLICATION.md)。下方为各阶段研究记录，旧结果不能覆盖最新边界。完整相机模拟器、Android 桌面、APK安装与重启验证仍未通过。
 
 最近独立存储探针在原驱动冷初始化时记录到 mumin_devif_init 超时和 boss_init 返回 -10003；70秒宿主观察窗口内未完成模块加载，不能据此认定存储可用。未操作相机。
@@ -20,7 +24,7 @@
 
 新增只读客体实验，两处原指令断点确认命令计数0→4、wait_done=1，首次确为空同步提交。原GLES1/GLES2的293项寄存器枚举交叉一致。驱动等待/清理bit31已知，但端口传播、mask四位字段、虚读宽度和完成顺序仍未证实；未为推进启动注入IRQ或改原断言。原窗口/Android/APK仍未通过，没有新增GPU执行模型。
 
-本轮保留语义提取和动态证据，继续执行用户要求的模拟器长期目标。Luna按此前授权复查公开资料，未找到匹配硬件合同；搜索受限处明示。未改原固件、三版QEMU或默认操作台，无相机操作/新APK/工具安装/大下载。证据：`handoff/runs/20261023T015609Z-sugilite-semantics/FINDINGS.md`；续接：`handoff/runs/20261023T015609Z-sugilite-semantics/SESSION.md`。G08/G10保持进行中，CAMERA_WRITE_HOLD保留。
+本轮保留语义提取和动态证据，继续执行用户要求的模拟器长期目标。公开资料复查未找到匹配硬件合同；搜索受限处明示。未改原固件、三版QEMU或默认操作台，无相机操作/新APK/工具安装/大下载。证据：`handoff/runs/20261023T015609Z-sugilite-semantics/FINDINGS.md`；续接：`handoff/runs/20261023T015609Z-sugilite-semantics/SESSION.md`。G08/G10保持进行中，CAMERA_WRITE_HOLD保留。
 
 ## 最新：首个GPU命令构建已追清，取指前端已运行；执行与完成仍待证
 
@@ -98,7 +102,7 @@ G07完成范围是宿主构建与最小Linux实际启动。完整Sony服务、An
 
 已建立仅主机的固件方法回放环境：实际解析官方4.01和原事故APK资源，24个条件案例符合预期（20个方法、4个真实PMCA循环）。图标在资源膨胀成功的替身条件下触发启动器BitmapDrawable强转异常；100%进度不代表最终完成；同步方法在扫描失败后仍可删除安装标记，而删除失败的返回值会被忽略。文件系统、Settings、扫描、Binder和绘制为显式替身，没有执行完整APK/Android开机，也没有复现真实整机循环重启或确认唯一根因。
 
-Luna找到ma1co/qemu的CXD90014模型及OpenMemories-CI的RX100M5更新系统测试，修正此前仅依官方板型列表的判断；A7R II完整正常系统仍未启动。G05完成范围仅为本阶段方法实验环境，G03仍in_progress、T11仍blocked。未操作相机、未改生产源码/原始固件、无新APK，保留CAMERA_WRITE_HOLD。
+社区资料中找到ma1co/qemu的CXD90014模型及OpenMemories-CI的RX100M5更新系统测试，修正此前仅依官方板型列表的判断；A7R II完整正常系统仍未启动。G05完成范围仅为本阶段方法实验环境，G03仍in_progress、T11仍blocked。未操作相机、未改生产源码/原始固件、无新APK，保留CAMERA_WRITE_HOLD。
 入口：[实验环境说明](docs/INSTALL_BOOT_LAB.md)；证据：`handoff/runs/20261022T075951Z-install-boot-lab/FINDINGS.md`；续接：`handoff/runs/20261022T075951Z-install-boot-lab/SESSION.md`。
 
 
@@ -270,7 +274,7 @@ PMCA固定a82f5ba，独立Python3.12 ARM64 venv、libusb1.0.30、依赖冻结/�
 
 ## 最新用户语言与设计要求
 
-已确认简体中文为默认产品语言，写入AGENTS与相机UI说明。已核查Android多语言资源机制，推荐Linear暗色层级结合IBM信息结构，该段记录早期调研，现已按上方用户选定方案实现。U03负责实际中文资源化、语言偏好和字体验收；当前探针仍含英文，本轮仅规范/调研更新，无新APK或机测。
+已确认简体中文为默认产品语言，写入开发约定与相机UI说明。已核查Android多语言资源机制，推荐Linear暗色层级结合IBM信息结构，该段记录早期调研，现已按上方用户选定方案实现。U03负责实际中文资源化、语言偏好和字体验收；当前探针仍含英文，本轮仅规范/调研更新，无新APK或机测。
 
 ## 最新相机UI工作（U01）
 

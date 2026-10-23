@@ -20,7 +20,7 @@
 | [原生持久化](15_NATIVE_PERSISTENCE.md) | 产品主要求与研发范围 |
 | [原生验收](16_NATIVE_COLOR_VALIDATION.md) | 退出、重启、恢复和预览验证 |
 | [相机操作卡](../handoff/DEVICE_TEST_CARD.md) | 当前可执行的集中机测步骤 |
-| [代理规则](../AGENTS.md) | 所有开发代理共同遵守的规则 |
+| [参与开发](../CONTRIBUTING.md) | 贡献、验证与评审要求 |
 
 架构决策记录放在`docs/adr/`。制度、事实、历史记录分开维护，完整清单见[文档注册表](../config/documentation.json)。
 

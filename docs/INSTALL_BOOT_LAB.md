@@ -51,7 +51,7 @@ source .local/env.sh
 
 ## 完整模拟器的社区线索
 
-Luna 调研发现 [ma1co/qemu 的 BIONZ 板级实现](https://github.com/ma1co/qemu/blob/1909382c0d3533051cead7fde70ca8e84807ee14/hw/arm/bionz.c)，包含 CXD90014。此前只看官方 QEMU 板型列表，不足以排除社区支持，现予修正。
+社区资料调研发现 [ma1co/qemu 的 BIONZ 板级实现](https://github.com/ma1co/qemu/blob/1909382c0d3533051cead7fde70ca8e84807ee14/hw/arm/bionz.c)，包含 CXD90014。此前只看官方 QEMU 板型列表，不足以排除社区支持，现予修正。
 
 [OpenMemories-CI 的 CXD90014 测试](https://github.com/ma1co/OpenMemories-CI/blob/4f8c6367a75e9afd02bc684425e3fbff424b2223/tests/test_cxd90014.py) 目标是 DSC-RX100M5，包含更新内核、加载器及 USB 更新路径测试；直接内核测试替换 init 为 BusyBox shell。它不是 A7R II 正常 Android 开机/应用安装验收。完整加载器测试还使用 bootrom、boot1、boot5、nflasha1、Backup.bin、DmmConfig.bin、ulogio.bin；直接内核测试不要求全部这些文件。
 

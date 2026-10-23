@@ -53,7 +53,7 @@ Manifest为`0.4-probe`、versionCode4、debuggable=true；捕获每次页面访�
 
 ### A06：固定日志文件可能覆盖历史
 
-`tools/doctor.py` 写`evidence/environment-v0.4.json`；构建/测试也写固定结果名。本次特意在隔离副本跑。Codex接手时先建独立运行目录；若重构证据结构，同时更新消费者，不能伪造历史日期。
+`tools/doctor.py` 写`evidence/environment-v0.4.json`；构建/测试也写固定结果名。本次特意在隔离副本跑。继续开发时先建独立运行目录；若重构证据结构，同时更新消费者，不能伪造历史日期。
 
 ### A07：版本锁和远端CI未完成资格
 

@@ -1,6 +1,6 @@
-# Codex 执行任务簿
+# 开发任务簿
 
-本文件是开发执行计划，不是已完成清单。已知实现与限制见根目录 CODEX_HANDOFF.md。用户Mac平台、产品名和目标不再重新确认。每个任务只交付实际证据；硬件阻断不妨碍完成独立主机任务。
+本文件是开发执行计划，不是已完成清单。已知实现与限制见根目录 PROJECT_STATUS.md；产品与架构要求见 docs/02_ARCHITECTURE.md 和 docs/15_NATIVE_PERSISTENCE.md。每个任务只交付实际证据；硬件阻断不妨碍完成独立主机任务。
 
 本Mac执行更新（2026-09-19）：T00、T01已完成；T02必要过渡检查已实现但完整资格仍进行中；T03未检测到Sony设备且安装器尚待审查。实际APK、测试和阻断见PROJECT_STATUS及`handoff/runs/20260919T141703Z/SESSION.md`。下面的“初始状态”保留原交接计划含义，以task-board.json为当前状态。
 

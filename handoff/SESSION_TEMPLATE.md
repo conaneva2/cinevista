@@ -1,4 +1,4 @@
-# 本轮开发结束／额度中断时的续接记录
+# 开发记录模板
 
 日期：
 工作目录／分支／提交（没有git则写文件清单）：
@@ -36,4 +36,4 @@ Mac／Safari：是否真正运行、输入和范围：
 
 更新勾选：PROJECT_STATUS／CHANGELOG／必要ADR／任务板／来源台账／证据索引。
 
-不要在这里重新写全项目需求；引用 CODEX_HANDOFF.md。不要承诺后台工作或未来某时会交付，记录当前真实状态即可。
+项目需求引用 docs/02_ARCHITECTURE.md 和 docs/15_NATIVE_PERSISTENCE.md，当前状态引用 PROJECT_STATUS.md；本记录只描述实际完成的工作和待办事项。

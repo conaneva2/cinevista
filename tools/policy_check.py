@@ -3,7 +3,7 @@
 import json,re,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-REQUIRED=('AGENTS.md','README.md','LICENSE','CONTRIBUTING.md','SECURITY.md','PROJECT_STATUS.md','CHANGELOG.md','TODO.md','docs/README.md','docs/USER_GUIDE.md','docs/DOCUMENTATION.md','docs/GITEE.md','config/documentation.json','.gitee/ISSUE_TEMPLATE.zh-CN.md','.gitee/PULL_REQUEST_TEMPLATE.zh-CN.md','CLAUDE.md','GEMINI.md','config/modules.json','config/toolchain.lock.json','third_party/upstreams.lock.json','.github/pull_request_template.md','.github/workflows/ci.yml','docs/01_REUSE_AUDIT.md','docs/02_ARCHITECTURE.md','docs/03_ENVIRONMENT.md','docs/04_WORKFLOW.md','docs/05_TESTING.md')
+REQUIRED=('README.md','LICENSE','CONTRIBUTING.md','SECURITY.md','PROJECT_STATUS.md','CHANGELOG.md','TODO.md','docs/README.md','docs/USER_GUIDE.md','docs/DOCUMENTATION.md','docs/GITEE.md','config/documentation.json','.gitee/ISSUE_TEMPLATE.zh-CN.md','.gitee/PULL_REQUEST_TEMPLATE.zh-CN.md','config/modules.json','config/toolchain.lock.json','third_party/upstreams.lock.json','.github/pull_request_template.md','.github/workflows/ci.yml','docs/01_REUSE_AUDIT.md','docs/02_ARCHITECTURE.md','docs/03_ENVIRONMENT.md','docs/04_WORKFLOW.md','docs/05_TESTING.md')
 def validate(root):
     errors=[]
     for name in REQUIRED:
