@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-23",
+  "date": "2026-10-24",
   "scope": "Source-only public snapshot; no proprietary inputs or old Git history",
   "host_check_exit_code": 0,
   "patches_apply_to_pinned_base": true,
@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 32125,
-      "sha256": "1d54a5f21258ed254b9809a3e07f52ae6dad9071267062727a29298bac6ca370"
+      "bytes": 32563,
+      "sha256": "c5fd5a33af3343f0dc808974503126d36954cb9fb4fb4deaab950b21cfed8ef6"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 48118,
-      "sha256": "ce954fabbdc2ea87c4285df97fca593856828766315107dbcc6753bee3778a77"
+      "bytes": 48977,
+      "sha256": "b052e86c96034fa696a62c4f802ccd2cb5a45a2131dbf79ceb8b38d821c8248c"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7665,
-      "sha256": "0a21fcdef801a073153d0da666378fbbedcd5a68e7edcd8a9f0f23d6078f9517"
+      "bytes": 7651,
+      "sha256": "3dbbd3190cb2a6edb6db1dd649e8cb37941619189024ea07ad125e1e0c836922"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 40056,
-      "sha256": "31b76cf604a34b2d7ccb7fca52c435e0be665290cd7c0d953218c55d22d77f54"
+      "bytes": 40771,
+      "sha256": "afeccda616778a55650cd80f9f2426755d0c7de609f84519ff70a5194aeb50f1"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 10481,
-      "sha256": "e5efa70d277cd5f2e39db5c0b5b141d97e5eabc1d767d16514a34fba589cd327"
+      "bytes": 10814,
+      "sha256": "f8102a9aacde136bd870dff9aacbd86e6aac83900a63e6e0bc8ddf730c289a64"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 15176,
-      "sha256": "843663caec69d81b4c5c026bef9675da981190c79a236ca0cacd1b873f4f640e"
+      "bytes": 15487,
+      "sha256": "24193adb3c97075ed88e63b952299a0b81535f05f8d8a2b8a10fdd785a4e7b81"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 12325,
-      "sha256": "dbb6d8c5f0390ee9ab90ab9b9371db9328573291d3b7e4f9930c85fe9a6ef5ba"
+      "bytes": 12777,
+      "sha256": "5e3eac999b9dff8a7a26504923a7736ceb68991eb837ffe8ac05a7bcaa38a12c"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 22819,
-      "sha256": "dfd3dc4f83dd1c856f8ce7e3904d1eabff21534e4170fea7ef3300209c0b62dd"
+      "bytes": 24503,
+      "sha256": "5ce91134b59567027d5426c5f2ea8de40a24e8bb68715099a0d60ac9056f265c"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -592,8 +592,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 49182,
-      "sha256": "07152aed8a8fae48f4b650aea0780a468a5e7a1f6df371ded7db7ea2b248b259"
+      "bytes": 49168,
+      "sha256": "b4799989eb64aab76b4c7930d4b1523f9e317671f5fa033e154b929e65b86500"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -1056,11 +1056,12 @@
     "verified_source_files": 207
   },
   "latest_research": {
-    "evidence_id": "R27",
-    "scope": "Original BOSS operation attribution, PBI differences and two isolated boot comparisons. Default reset timeout versus conditional BOSS timeout; invalid synthetic boot input observed, not established as timeout cause. No verified Sony reset defaults or Android completion.",
-    "evidence_checks_passed": 76,
-    "boot_record_checks_passed": 28,
-    "guest_runs": 2,
+    "evidence_id": "R28",
+    "scope": "Recovered matching 4.01 NAND init parameter/config copies through original WBI page table and module verification. A bounded conditional boot lets original driver generate matching 52-byte device info. Synthetic bad-block/media and reset-profile limits remain; no BOSS/GPU/Android completion.",
+    "evidence_checks_passed": 53,
+    "guest_runs": 1,
+    "snapshot_parameter_bytes_recovered": 220,
+    "nonrelocation_code_bytes_compared": 88184,
     "completion_proven": false,
     "public_raw_evidence": false
   }

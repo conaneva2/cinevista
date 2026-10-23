@@ -35,6 +35,7 @@
 | R25 | `20261023T144549Z-boss-candidate-provenance` | `candidate-provenance.json`、`candidate-evidence.json`、`goal-audit.json`、`validation.json` | 两个WBI候选匹配ARSC数组、ODEX命中为字符串索引；26项核查，剩余弱候选未认证，完整目标仍受阻 |
 | R26 | `20261023T150817Z-a6000-new-leads` | `new-evidence.json`、`boss-driver-comparison.json`、`driver-origin.json` / `driver-offline.json` | A6000原BOSS协议/4.01 PBM差异、SA外壳、43项静态与保护核查；协议模型仍候选 |
 | R27 | `20261023T153511Z-boss-operation-contract` | `operation-inventory.json`、`contract-evidence.json`、`boot-evidence.json`、`boot-control-01` / `boot-profile-01`、`validation.json` | 18类操作归属、PBI布局、76项静态检查及两次隔离启动；初始坏块指针无效，GPU/BOSS仍未完成 |
+| R28 | `20261023T160247Z-boot-input-origin` | `snapshot-search.json`、`recovered-inputs.json`、`input-evidence.json`、`init-replay-01`、`validation.json` | 恢复20+200字节原参数副本，原驱动回放生成匹配52字节信息；53项检查、一次限定初始化启动，非完整存储/Android |
 
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 
