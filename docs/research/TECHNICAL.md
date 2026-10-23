@@ -94,11 +94,27 @@ R19 的原驱动对照确认共同中断消费者；R20 的整库与邻接接口
 
 A6000 `mpool_new` 对块数商 ≤31 返回空；4.01 对商 >32 返回空。各自调用参数支持该差异，不能把 A6000 实现替换进需要两块大池的 4.01。池大小也不能据此直接命名为某分辨率或图像格式。
 
-两者 ANativeWindow 的 dequeue/lock/queue/cancel 回调偏移分别为 `0x48/0x4c/0x50/0x5c`；gralloc lock/unlock 为 `0x88/0x8c`。两份 gralloc 都进入 `ws_hal_lock/unlock`，4.01 另有 `handle+0x14 == 0x158` 的早返回条件，其字段含义未确认。
+两者 ANativeWindow 的 dequeue/lock/queue/cancel 回调偏移分别为 `0x48/0x4c/0x50/0x5c`；gralloc lock/unlock 为 `0x88/0x8c`。两份 gralloc 都进入 `ws_hal_lock/unlock`，4.01 另有 `handle+0x14 == 0x158` 的早返回条件。R21 已确认它来自私有格式参数，具体像素布局仍未知。
 
-CPU 地址转换后调用 `memcpy` 只能证明 CPU 拷贝路径，不能证明 GPU 已见到数据。后续应查 MA 映射属性、缓存维护和 ws_hal 实际缓冲所有权。
+CPU 地址转换后调用 `memcpy` 只能证明 CPU 拷贝路径；R21 进一步核查了映射属性和窗口锁定协议，仍未证明 GPU 完成。
 
 分析工具也有边界：gralloc 混合 ARM/Thumb，曾出现整库默认反汇编把 Thumb 当 ARM 的问题；最终限定函数已按 ELF 标志重新解码。以后不能把默认整库输出直接当全部函数的正确指令。
+
+## 4a. 内存映射与窗口锁定：R21 新增的可核对范围
+
+可以把缓冲区理解成 CPU 和图形设备共用的一块工作区。确认地址、控制 CPU 缓存、获得窗口锁、完成 GPU 工作，是四件不同的事。
+
+**实际映射。** 新的只读 QEMU 观察取得原生进程的映射表。128 字节对象与首个命令包都位于同一个 32 MiB 的 `/dev/stream` 共享映射中；按“映射物理起点 + 虚拟地址相对偏移”换算，与断点读取的物理地址一致。128 字节内容仍是 64 个 `0xff00`。这把前轮原生 `libObj` 的指针和实际映射连接起来；它不是把 Android 的同名 MA 库直接当成原生实现。
+
+**缓存属性。** 原 `stream.ko` 清除页保护值的 `0x3c` 位，再向 `remap_pfn_range` 提供带 `0x40` 的保护值；本版官方内核对应 `L_PTE_MT_MASK` 和 `L_PTE_DIRTY`，清除后的内存类型为 uncached。原 `grm_ma.ko` 另有刷新/失效入口，分别把方向 1/2 交给 `___dma_single_cpu_to_dev`；官方定义分别为 TO_DEVICE/FROM_DEVICE。其存在不证明首个提交实际调用了该入口，也不证明 GPU 内部缓存排空或完成中断已产生。
+
+**Android MA 的静态行为。** `libma` 的相关创建路径默认按物理范围选择 `/dev/stream`（`0x80000000–0xbfffffff`）或 `/dev/mem`（`0xc0000000–0xcfffffff`），以共享、可读写方式映射。默认打开标志是 `0x1002`，对应此版的 O_RDWR 与 O_DSYNC；不能把它写成完整 O_SYNC，也不能据此证明全部内存路径采用相同属性。
+
+**窗口缓冲。** `libdihal` 通过消息队列 `0x017f04b0` 获取共享管理区，以 MA 直接映射 2064 字节：16 字节头加 32 个 64 字节记录。lock/unlock 根据记录所属 PID 分本进程和跨进程两条路径。前者由信号量保护锁持有者字段；后者发送命令 1/2，等待对应响应并检查命令号和结果。unlock 清除锁字段，不能等同于 queueBuffer、释放图像或 GPU fence 已完成。原生服务端如何处理这些请求仍待追踪。
+
+**`0x158` 的修订。** 原 gralloc 注册的 alloc 回调从第 4 个参数取得 format，比较 `0x158` 后写入特殊描述符的 `+0x14`。AOSP 4.1.2 的 alloc 接口和 `0x100–0x1ff` 私有格式保留范围与之相符。因此已确认“它是私有格式选择”，尚不能命名其像素编码或用途。该特殊分支建立描述符后跳过通常的窗口分配路径，不能推广为其他缓冲也可以跳过窗口服务。[AOSP gralloc 接口](https://raw.githubusercontent.com/aosp-mirror/platform_hardware_libhardware/android-4.1.2_r1/include/hardware/gralloc.h)、[私有格式范围](https://raw.githubusercontent.com/aosp-mirror/platform_system_core/android-4.1.2_r1/include/system/graphics.h)。
+
+本轮 45 项输入、指令、映射和保护核查通过；一次客体观察完成，检查时 IRQ76 计数仍为 0。QEMU 执行模型没有修改，窗口、Android 和 APK 没有新增验收。下一步是原生窗口服务端与实际提交路径的缓存调用，GPU 硬件完成条件仍单独待证。
 
 ## 5. BOSS、引导程序和存储
 

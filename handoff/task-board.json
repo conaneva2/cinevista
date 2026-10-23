@@ -964,7 +964,7 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
       ],
-      "note": "原生存储与Sony服务依赖未闭合；控制器持久性不等于持久/data。见docs/research/CONTINUATION.md。"
+      "note": "R21确认原生stream映射、CPU缓存属性与窗口客户端；IRQ76仍为0，服务端/GPU完成/BOSS依赖未闭合。"
     },
     {
       "id": "G09",
@@ -1065,7 +1065,7 @@
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
         "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
       ],
-      "note": "缺GPU执行完成与BOSS加载依据；窗口、桌面、APK和冷启动未通过。见docs/research/CONTINUATION.md。"
+      "note": "R21确认原生stream映射、CPU缓存属性与窗口客户端；IRQ76仍为0，服务端/GPU完成/BOSS依赖未闭合。"
     },
     {
       "id": "G12",

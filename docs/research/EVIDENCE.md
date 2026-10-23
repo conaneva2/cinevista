@@ -29,9 +29,11 @@
 | R19 | `20261023T121316Z-config-driver-origin` | `actual-driver-comparison.json`、`a6000-driver-origin.json` / `rx100v-driver-origin.json` | 三机原驱动比较、更新包命名载荷清单 |
 | R20 | `20261023T123445Z-dmp-library-comparison` | `library-comparison.json`、`evidence-audit.json`、`adjacent-evidence.json`、`validation.json` | 三机原库、62+56 项静态核查、离线重读及保护哈希 |
 
+| R21 | `20261023T132539Z-ma-window-contract` | `contract-evidence.json`、`functions.json`、`mapping-01/operand-buffer.json`、`validation.json` | MA/stream 缓存属性、原生实际映射、窗口管理区及私有格式；45 项核查与一次只读客体观察 |
+
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 
-新入口 `20261023T130029Z-memory-window-contract` 仅有符号清单，不作行为证据。文档整理与同步记录在 `20261023T130744Z-research-handbook-publication`。
+早期入口 `20261023T130029Z-memory-window-contract` 仅有符号清单；后续行为核查和运行观察在 R21，不能混用两轮结果。文档整理与同步记录在 `20261023T130744Z-research-handbook-publication`。
 
 ## 原文件身份：只发布摘要，不发布载荷
 
@@ -93,3 +95,5 @@ A6000 六库与固定公开清单匹配。RX100 V 三库与已有 4.01 原文件
 3. 分开保存输入身份、分析方法、原观察、结论与未验证项。阴性检索必须说明目录、容器、字节范围和匹配规则。
 4. 复用其他机型时同时记录一致处和差异；共同消费者不能补出未知生产者。
 5. 分享技术事实和自有工具前检查来源许可；不得把带 hash 的专有文件误认为可以公开分发。
+
+R21 补充来源：本地既有 Sony 官方 GPL 内核包（SHA-256 `f502295d086c9e523758b86dc27134d78004a487f8ffe052cfa7d78aa3051cfa`），只取页保护、DMA、内存映射和打开标志相关文件；AOSP `android-4.1.2_r1` 的 gralloc.h 与 graphics.h，Apache-2.0 告知保留于私有来源缓存。两份文本共 13,816 字节；URL 与文件摘要在 R21 的 public-inputs.json。仅引用接口事实，未引入其实现。
