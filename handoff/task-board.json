@@ -1096,13 +1096,14 @@
         "不操作相机或改变固件模型",
         "不上传原厂载荷、私有环境或旧历史"
       ],
-      "status": "in_progress",
+      "status": "completed",
       "evidence": [
         "docs/research/README.md",
         "docs/research/EVIDENCE.md",
-        "docs/research/CONTINUATION.md"
+        "docs/research/CONTINUATION.md",
+        "https://github.com/conaneva2/cinevista/commit/540e07395c455b0c8eafbde3c09c7c10ce70d38d"
       ],
-      "note": "文档已整理，检查和远端同步核验进行中；不改变G08/G10。"
+      "note": "五份研究手册、两份工作区工程检查和公开源码树/匿名身份读回核验完成；不改变G08/G10及真机暂停。"
     }
   ],
   "latest_session": "docs/research/CONTINUATION.md"
