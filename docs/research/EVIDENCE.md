@@ -31,6 +31,8 @@
 
 | R21 | `20261023T132539Z-ma-window-contract` | `contract-evidence.json`、`functions.json`、`mapping-01/operand-buffer.json`、`validation.json` | MA/stream 缓存属性、原生实际映射、窗口管理区及私有格式；45 项核查与一次只读客体观察 |
 
+| R22 | `20261023T135110Z-native-window-server` | `server-links.json`、`server-evidence.json`、`window-01/window-observation.json`、`validation.json` | 原生管理区注册/线程/命令1–2；39 项核查与一次首提交顺序观察 |
+
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 
 早期入口 `20261023T130029Z-memory-window-contract` 仅有符号清单；后续行为核查和运行观察在 R21，不能混用两轮结果。文档整理与同步记录在 `20261023T130744Z-research-handbook-publication`。
