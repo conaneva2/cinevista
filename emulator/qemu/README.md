@@ -2,7 +2,7 @@
 
 Base: [ma1co/qemu](https://github.com/ma1co/qemu/tree/1909382c0d3533051cead7fde70ca8e84807ee14), commit 1909382c0d3533051cead7fde70ca8e84807ee14 (QEMU 5.1.0 lineage).
 
-This directory preserves the emulator source changes from the local research environment. It contains no Sony firmware, proprietary code, binaries, RAM images, graphics assets or device logs. Apply the four patches in filename order to the exact base source; review before using another QEMU version.
+This directory preserves the emulator source changes from the local research environment. It contains no Sony firmware, proprietary code, binaries, RAM images, graphics assets or device logs. Apply the six patches in filename order to the exact base source; review before using another QEMU version.
 
 | Patch | Scope | License |
 |---|---|---|
@@ -10,11 +10,15 @@ This directory preserves the emulator source changes from the local research env
 | 0002-nand-persistence.patch | Virtual NAND program/erase persistence; flush before existing completion path | GPL-2.0-or-later |
 | 0003-sugilite-control.patch | Optional limited clock/reset MMIO model; no graphics execution or interrupts | GPL-2.0-or-later |
 | 0004-sugilite-frontend.patch | Optional RAM command-format observer; no opcode side effects, DMA writes, rendering or completion | GPL-2.0-or-later |
+| 0005-nand-reset-profile.patch | Previously tested single-bank reset plus opt-in native IRQ/reset-mask profile; Sony reset defaults remain unverified | GPL-2.0-or-later |
+| 0006-nand-config-ecc-guard.patch | Four verified writable configuration latches and opt-in refusal of unmodeled ECC transfers; no ECC execution or new completion | GPL-2.0-or-later |
 
-QEMU [LICENSE](LICENSE), [GPLv2](COPYING) and [LGPLv2.1](COPYING.LIB) are copied unmodified from the base. Existing notices remain in upstream files. translate-all.c credits Fabrice Bellard (2003); files without a specific license follow the QEMU root notice. Project-authored modifications: Copyright (c) 2026 CineVista contributors, under the corresponding per-file license above. The root CineVista MIT license does not override these licenses. Patches are dated 2026-10-22/23; no executable is redistributed here.
+QEMU [LICENSE](LICENSE), [GPLv2](COPYING) and [LGPLv2.1](COPYING.LIB) are copied unmodified from the base. Existing notices remain in upstream files. translate-all.c credits Fabrice Bellard (2003); files without a specific license follow the QEMU root notice. Project-authored modifications: Copyright (c) 2026 CineVista contributors, under the corresponding per-file license above. The root CineVista MIT license does not override these licenses. Patches are dated 2026-10-22/24; no executable is redistributed here.
 
 The graphics models are opt-in devices bionz_sugilite_ctrl and bionz_sugilite_frontend. Observed fetch is not execution. Power-on values and timing are not calibrated against physical hardware. NAND tests cover synthetic controller-level media only, not ECC, bad blocks, Sony FTL, mounted Android /data or APK persistence.
 
 test_nand_persistence.py is an archived project-authored MIT host test. It expects a privately prepared fixture and QEMU under .local; it is not a standalone installer and is not run automatically. It creates synthetic media; never point experimental storage commands at physical devices or valuable images. Proprietary boot inputs are intentionally absent.
 
 Remaining blockers include the GPU completion contract, window service, native storage initialization and APK lifecycle validation. No assertions are disabled and no artificial GPU-completion signals are implemented.
+
+For R29 storage research, explicitly set `-global bionz_nand.strict-ecc=on`. ECC-enabled DMA/PIO reads then terminate with an unsupported-model diagnostic before touching buffers/media or producing completion. This is a research boundary, not an emulation of Sony hardware error reporting. The legacy default remains compatible with archived synthetic non-ECC tests and must not be used as ECC validation. Configuration registers reset to deterministic lab zeros; physical power-on defaults and codeword layout are not established. Native boot probes additionally use the experimental `native-irq` and `reset-irq-enable` properties; these are not promoted to hardware facts.

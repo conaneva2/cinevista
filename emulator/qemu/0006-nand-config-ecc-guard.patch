@@ -1,0 +1,133 @@
+--- a/hw/block/bionz_nand.c
++++ b/hw/block/bionz_nand.c
+@@ -15,6 +15,11 @@
+ #define COMMAND_IRQ_DELAY 100000
+ 
+ #define REG_DEVICE_RESET             0x000
++#define REG_ECC_ENABLE               0x0e0
++#define REG_ECC_CORRECTION           0x1b0
++#define REG_CFG_NUM_DATA_BLOCKS      0x6d0
++#define REG_CFG_META_DATA_SIZE       0x6e0
++
+ #define REG_GLOBAL_INT_ENABLE        0x0f0
+ #define REG_NUMBER_OF_PLANES         0x140
+ #define REG_PAGES_PER_BLOCK          0x150
+@@ -59,6 +64,13 @@
+     qemu_irq native_intr;
+     bool native_irq;
+     bool reset_irq_enable;
++    bool strict_ecc;
++
++    /* Configuration readback only. ECC datapath and power-on values unknown. */
++    uint32_t reg_ecc_enable;
++    uint32_t reg_ecc_correction;
++    uint32_t reg_cfg_num_data_blocks;
++    uint32_t reg_cfg_meta_data_size;
+     QEMUTimer *update_irq_timer;
+ 
+     BlockBackend *blk;
+@@ -103,6 +115,18 @@
+     NandState *s = BIONZ_NAND(opaque);
+ 
+     switch (offset) {
++        case REG_ECC_ENABLE:
++            return s->reg_ecc_enable;
++
++        case REG_ECC_CORRECTION:
++            return s->reg_ecc_correction;
++
++        case REG_CFG_NUM_DATA_BLOCKS:
++            return s->reg_cfg_num_data_blocks;
++
++        case REG_CFG_META_DATA_SIZE:
++            return s->reg_cfg_meta_data_size;
++
+         case REG_GLOBAL_INT_ENABLE:
+             return s->reg_global_int_enable;
+ 
+@@ -163,6 +187,22 @@
+             }
+             break;
+ 
++        case REG_ECC_ENABLE:
++            s->reg_ecc_enable = value;
++            break;
++
++        case REG_ECC_CORRECTION:
++            s->reg_ecc_correction = value;
++            break;
++
++        case REG_CFG_NUM_DATA_BLOCKS:
++            s->reg_cfg_num_data_blocks = value;
++            break;
++
++        case REG_CFG_META_DATA_SIZE:
++            s->reg_cfg_meta_data_size = value;
++            break;
++
+         case REG_GLOBAL_INT_ENABLE:
+             s->reg_global_int_enable = value;
+             nand_update_irq(s);
+@@ -270,6 +310,17 @@
+     g_free(ff);
+ }
+ 
++/* The legacy backend stores logical metadata, not raw ECC/OOB codewords.
++ * Opt-in evidence mode must never turn an unsupported ECC transfer into a
++ * clean descriptor/status/IRQ. Stop before touching buffers or the medium.
++ */
++static void nand_require_supported_ecc(NandState *s)
++{
++    if (s->strict_ecc && (s->reg_ecc_enable & 1)) {
++        hw_error("bionz_nand: ECC execution is not modeled\n");
++    }
++}
++
+ static void nand_dma_command(NandState *s)
+ {
+     NandDmaArgs args;
+@@ -280,6 +331,8 @@
+     if (s->dma_args[0] != 0x80 || s->dma_args[2] != 0) {
+         hw_error("%s: Invalid arguments: 0x%x, 0x%x, 0x%x\n", __func__, s->dma_args[0], s->dma_args[1], s->dma_args[2]);
+     }
++
++    nand_require_supported_ecc(s);
+ 
+     cpu_physical_memory_read(s->dma_args[1], &args, sizeof(args));
+ 
+@@ -358,6 +411,7 @@
+         case DATA_DATA:
+             switch ((s->ctrl >> 26) & 3) {
+                 case 0b01:// MAP01
++                    nand_require_supported_ecc(s);
+                     if (s->blk && blk_pread(s->blk, s->offset, &value, size) < 0) {
+                         hw_error("%s: Cannot read block device\n", __func__);
+                     }
+@@ -400,6 +454,7 @@
+                             nand_erase(s, s->ctrl & 0xffffff);
+                             s->reg_intr_status0 |= INTR_ERASE_COMP;
+                         } else if ((value >> 8) == 0x20) {// pipeline read-ahead
++                            nand_require_supported_ecc(s);
+                             s->reg_intr_status0 |= INTR_LOAD_COMP;
+                         } else {
+                             break;
+@@ -430,6 +485,11 @@
+     s->ctrl = 0;
+     s->offset = 0;
+ 
++    /* Deterministic lab reset; not a claim about Sony power-on defaults. */
++    s->reg_ecc_enable = 0;
++    s->reg_ecc_correction = 0;
++    s->reg_cfg_num_data_blocks = 0;
++    s->reg_cfg_meta_data_size = 0;
+     s->reg_global_int_enable = 0;
+     s->reg_number_of_planes = 0;
+     s->reg_pages_per_block = 0;
+@@ -489,6 +549,7 @@
+ 
+ static Property nand_properties[] = {
+     DEFINE_PROP_DRIVE("drive", NandState, blk),
++    DEFINE_PROP_BOOL("strict-ecc", NandState, strict_ecc, false),
+     DEFINE_PROP_BOOL("native-irq", NandState, native_irq, false),
+     DEFINE_PROP_BOOL("reset-irq-enable", NandState, reset_irq_enable, false),
+     DEFINE_PROP_UINT32("size", NandState, size, 0),

@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 32563,
-      "sha256": "c5fd5a33af3343f0dc808974503126d36954cb9fb4fb4deaab950b21cfed8ef6"
+      "bytes": 33102,
+      "sha256": "7908900874a63cdbe726ab73bc9a77273586ca0443c25841c9a8e2de8d3f12ac"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 48977,
-      "sha256": "b052e86c96034fa696a62c4f802ccd2cb5a45a2131dbf79ceb8b38d821c8248c"
+      "bytes": 49878,
+      "sha256": "e4e367285a0a86ab1486759a16f359aed68ac78c808d05233012c6ae09a570ba"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7651,
-      "sha256": "3dbbd3190cb2a6edb6db1dd649e8cb37941619189024ea07ad125e1e0c836922"
+      "bytes": 7697,
+      "sha256": "52b18c9346b75f728b9b42efa54ceaf8f3b22d0ad99fbbc1d55a9322e62ca1fe"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 40771,
-      "sha256": "afeccda616778a55650cd80f9f2426755d0c7de609f84519ff70a5194aeb50f1"
+      "bytes": 41592,
+      "sha256": "4e35a951e8ee93320b3e207ec2b43151fc3b386572d839e59fbd2cb5ea32006e"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -402,8 +402,8 @@
     },
     {
       "path": "docs/PUBLICATION.md",
-      "bytes": 4643,
-      "sha256": "79af81cf3a3aa79608e56e9fb35c7871000e19f8d0cf58b773da9a65f77db295"
+      "bytes": 5013,
+      "sha256": "ff0500335cd8a9d6bcf796e8d1ba2998f52f1c8257445714ce670cfbf9e82ee8"
     },
     {
       "path": "docs/README.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 10814,
-      "sha256": "f8102a9aacde136bd870dff9aacbd86e6aac83900a63e6e0bc8ddf730c289a64"
+      "bytes": 11012,
+      "sha256": "3b22927fc68e8357f0fbd19a86fd403f8775d718123c844505c2f2b0de825330"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 15487,
-      "sha256": "24193adb3c97075ed88e63b952299a0b81535f05f8d8a2b8a10fdd785a4e7b81"
+      "bytes": 15749,
+      "sha256": "4558572a17bcbcd49d84bd877285faf7d78ce1a1b56b7fb5a31fba5e5f4d9678"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 12777,
-      "sha256": "5e3eac999b9dff8a7a26504923a7736ceb68991eb837ffe8ac05a7bcaa38a12c"
+      "bytes": 13222,
+      "sha256": "033fd0ea06858c1eafcabaab305f1bf6d961c76dcf1d3cfb99822d34ffe88829"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 24503,
-      "sha256": "5ce91134b59567027d5426c5f2ea8de40a24e8bb68715099a0d60ac9056f265c"
+      "bytes": 27751,
+      "sha256": "15d0cd3c72549f66b44e896909429e58f4585d078f3106937881bbc439b92f31"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -546,6 +546,16 @@
       "sha256": "06c86ce90928c78accebf13c384d6e1dbfa2f86383a8a34a3b0ad367742ccb25"
     },
     {
+      "path": "emulator/qemu/0005-nand-reset-profile.patch",
+      "bytes": 4287,
+      "sha256": "572adc196f5324fb39f7f6ff1123e8bdc0f423c8d4d79e114e80f94f5567fd20"
+    },
+    {
+      "path": "emulator/qemu/0006-nand-config-ecc-guard.patch",
+      "bytes": 4347,
+      "sha256": "80c5d86ee484ad5358bb8061dbe3f4890122117538266253417ad30032d7841c"
+    },
+    {
       "path": "emulator/qemu/COPYING",
       "bytes": 17992,
       "sha256": "6f04ae8364d0079a192b14635f4b1da294ce18724c034c39a6a41d1b09df6100"
@@ -562,8 +572,8 @@
     },
     {
       "path": "emulator/qemu/README.md",
-      "bytes": 2549,
-      "sha256": "8f7b46b31af77c6fd1b1b3cd0141ec94439db4883cf9cd8bad6055ab33da85be"
+      "bytes": 3581,
+      "sha256": "513302db4fb285437356b1e1c9e636a7d3cfecafddd70f618f992d18c5e729bd"
     },
     {
       "path": "emulator/qemu/test_nand_persistence.py",
@@ -592,8 +602,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 49168,
-      "sha256": "b4799989eb64aab76b4c7930d4b1523f9e317671f5fa033e154b929e65b86500"
+      "bytes": 49214,
+      "sha256": "f6fc05b82a8be3a7e87370fb3c494497263155988d8f3c3dce752b945a0f367c"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",

@@ -1,0 +1,121 @@
+--- a/hw/block/bionz_nand.c
++++ b/hw/block/bionz_nand.c
+@@ -14,6 +14,7 @@
+ 
+ #define COMMAND_IRQ_DELAY 100000
+ 
++#define REG_DEVICE_RESET             0x000
+ #define REG_GLOBAL_INT_ENABLE        0x0f0
+ #define REG_NUMBER_OF_PLANES         0x140
+ #define REG_PAGES_PER_BLOCK          0x150
+@@ -55,6 +56,9 @@
+     MemoryRegion reg_mmio;
+     MemoryRegion data_mmio;
+     qemu_irq intr;
++    qemu_irq native_intr;
++    bool native_irq;
++    bool reset_irq_enable;
+     QEMUTimer *update_irq_timer;
+ 
+     BlockBackend *blk;
+@@ -81,7 +85,12 @@
+ 
+ static void nand_update_irq(NandState *s)
+ {
+-    qemu_set_irq(s->intr, (s->reg_global_int_enable & 1) && ((s->reg_intr_en0 & s->reg_intr_status0) || (s->reg_dma_intr_en & s->reg_dma_intr)));
++    bool level = (s->reg_global_int_enable & 1) &&
++        ((s->reg_intr_en0 & s->reg_intr_status0) ||
++         (s->reg_dma_intr_en & s->reg_dma_intr));
++    qemu_set_irq(s->intr, level);
++    /* Opt-in native CPU path; existing ARM7 delivery is retained. */
++    qemu_set_irq(s->native_intr, s->native_irq && level);
+ }
+ 
+ static void nand_update_irq_delayed(void *opaque)
+@@ -113,7 +122,7 @@
+             return s->reg_first_block_of_next_pane;
+ 
+         case REG_INTR_STATUS0:
+-            return s->reg_intr_status0 | INTR_RST_COMP;
++            return s->reg_intr_status0;
+ 
+         case REG_INTR_EN0:
+             return s->reg_intr_en0;
+@@ -138,6 +147,22 @@
+     NandState *s = BIONZ_NAND(opaque);
+ 
+     switch (offset) {
++        case REG_DEVICE_RESET:
++            /* Single populated bank, with synchronous command execution.
++             * DEVICE_RESET is a flash command, not a controller-wide reset:
++             * preserve masks, other status, DMA configuration and media.
++             * This functional abstraction does not model NAND reset timing.
++             */
++            if (value == 1 && s->blk && s->size) {
++                s->reg_intr_status0 |= INTR_RST_COMP;
++                nand_update_irq(s);
++            } else if (value) {
++                qemu_log_mask(LOG_UNIMP,
++                              "%s: unmodeled reset bank/device 0x%" PRIx64 "\n",
++                              __func__, value);
++            }
++            break;
++
+         case REG_GLOBAL_INT_ENABLE:
+             s->reg_global_int_enable = value;
+             nand_update_irq(s);
+@@ -412,7 +437,10 @@
+     s->reg_spare_area_size = 0;
+     s->reg_first_block_of_next_pane = 0;
+     s->reg_intr_status0 = 0;
+-    s->reg_intr_en0 = 0;
++    /* Related Denali hardware documents RST_COMP enabled at reset.
++     * Keep this a separate profile until the Sony power-on value is proven.
++     */
++    s->reg_intr_en0 = s->reset_irq_enable ? INTR_RST_COMP : 0;
+     s->reg_dma_enable = 0;
+     s->reg_dma_intr = 0;
+     s->reg_dma_intr_en = 0;
+@@ -423,6 +451,7 @@
+     s->dma_arg_count = 0;
+ 
+     timer_del(s->update_irq_timer);
++    nand_update_irq(s);
+ }
+ 
+ static void nand_realize(DeviceState *dev, Error **errp)
+@@ -453,12 +482,15 @@
+     sysbus_init_mmio(sbd, &s->data_mmio);
+ 
+     sysbus_init_irq(sbd, &s->intr);
++    sysbus_init_irq(sbd, &s->native_intr);
+ 
+     s->update_irq_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, nand_update_irq_delayed, s);
+ }
+ 
+ static Property nand_properties[] = {
+     DEFINE_PROP_DRIVE("drive", NandState, blk),
++    DEFINE_PROP_BOOL("native-irq", NandState, native_irq, false),
++    DEFINE_PROP_BOOL("reset-irq-enable", NandState, reset_irq_enable, false),
+     DEFINE_PROP_UINT32("size", NandState, size, 0),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+--- a/hw/arm/bionz.c
++++ b/hw/arm/bionz.c
+@@ -201,6 +201,7 @@
+ #define CXD90014_IRQ_UART(i) (150 + (i))
+ #define CXD90014_IRQ_HWTIMER(i) (153 + (i))
+ #define CXD90014_IRQ_BOSS 170
++#define CXD90014_IRQ_NAND 172
+ #define CXD90014_IRQ_SIO(i) (201 + (i))
+ #define CXD90014_IRQ_USB 227
+ 
+@@ -928,6 +929,8 @@
+     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, CXD90014_NAND_REG_BASE);
+     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, CXD90014_NAND_DATA_BASE);
+     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, boss_irq);
++    /* Sony GPL platform.c: nandreg (0x20000) uses IRQ_NANDC 172. */
++    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 1, irq[CXD90014_IRQ_NAND - CXD90014_IRQ_OFFSET]);
+ 
+     dev = qdev_new("bionz_bootcon");
+     qdev_prop_set_chr(dev, "chardev", serial_hd(0));

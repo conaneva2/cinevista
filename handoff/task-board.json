@@ -967,7 +967,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R28：恢复4.01原20+200字节参数副本，一轮条件启动生成匹配52字节设备信息；53项核查。BOSS程序、GPU执行、持久存储/Android/APK仍未验收。"
+      "note": "R29：四项NAND配置丢失已由原代码前后启动验证并修复；55项核查、六组控制器测试通过。严格ECC拒绝未建模传输；BOSS程序、原生挂载/GPU/Android/APK仍缺。"
     },
     {
       "id": "G09",
@@ -1071,7 +1071,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R28：恢复4.01原20+200字节参数副本，一轮条件启动生成匹配52字节设备信息；53项核查。BOSS程序、GPU执行、持久存储/Android/APK仍未验收。"
+      "note": "R29：四项NAND配置丢失已由原代码前后启动验证并修复；55项核查、六组控制器测试通过。严格ECC拒绝未建模传输；BOSS程序、原生挂载/GPU/Android/APK仍缺。"
     },
     {
       "id": "G12",
