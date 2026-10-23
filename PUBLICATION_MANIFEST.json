@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 31686,
-      "sha256": "145d92782be10c20eb5248dabee536f6352dcf56b8e2481ecc0ff3c80f11a14b"
+      "bytes": 32125,
+      "sha256": "1d54a5f21258ed254b9809a3e07f52ae6dad9071267062727a29298bac6ca370"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 47248,
-      "sha256": "2fb1cd0e4df18f7f4aa262604a4909e4722c1bbf4a898a5d595660db1886883c"
+      "bytes": 48118,
+      "sha256": "ce954fabbdc2ea87c4285df97fca593856828766315107dbcc6753bee3778a77"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7657,
-      "sha256": "ec3871b8a7fadaa25b4d000f714f0f9db9648df13a75779ce83513f910c891cb"
+      "bytes": 7665,
+      "sha256": "0a21fcdef801a073153d0da666378fbbedcd5a68e7edcd8a9f0f23d6078f9517"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 39323,
-      "sha256": "16ddc402534b694eb666c8c516f28b3856954a5b6ad3fc882cfcc87c765fd972"
+      "bytes": 40056,
+      "sha256": "31b76cf604a34b2d7ccb7fca52c435e0be665290cd7c0d953218c55d22d77f54"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 10057,
-      "sha256": "998bdde6e299e4b189530a6f806f59084a0863fb95acd094245ed2a11c588faf"
+      "bytes": 10481,
+      "sha256": "e5efa70d277cd5f2e39db5c0b5b141d97e5eabc1d767d16514a34fba589cd327"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 14861,
-      "sha256": "1bea9388f2ccdafd13f4445127fb5a8bb2b866f165b7053a769e270f248baa1d"
+      "bytes": 15176,
+      "sha256": "843663caec69d81b4c5c026bef9675da981190c79a236ca0cacd1b873f4f640e"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 11765,
-      "sha256": "9f9fe1e9ca032cab57b42b6c209b00633392e1cf86dff0db6c5bafbbd4115c58"
+      "bytes": 12325,
+      "sha256": "dbb6d8c5f0390ee9ab90ab9b9371db9328573291d3b7e4f9930c85fe9a6ef5ba"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 20260,
-      "sha256": "dc09c4bdb75ec0e7c514e597230081efd805fcff679b68fc484123a4786e28f3"
+      "bytes": 22819,
+      "sha256": "dfd3dc4f83dd1c856f8ce7e3904d1eabff21534e4170fea7ef3300209c0b62dd"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -592,8 +592,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 49174,
-      "sha256": "f70aa6e0e6d26fddc57c19c81775519d62c07ce616b68b124ded437125272f3f"
+      "bytes": 49182,
+      "sha256": "07152aed8a8fae48f4b650aea0780a468a5e7a1f6df371ded7db7ea2b248b259"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -1056,10 +1056,11 @@
     "verified_source_files": 207
   },
   "latest_research": {
-    "evidence_id": "R26",
-    "scope": "A6000 original BOSS/NAND driver comparison with A7R II 4.01; shared CPU-side protocol and distinct PBM version check; SA candidate envelope validated; complete BOSS protocol emulation remains an unproven research option; GPU completion contract still missing",
-    "evidence_checks_passed": 43,
-    "guest_runs": 0,
+    "evidence_id": "R27",
+    "scope": "Original BOSS operation attribution, PBI differences and two isolated boot comparisons. Default reset timeout versus conditional BOSS timeout; invalid synthetic boot input observed, not established as timeout cause. No verified Sony reset defaults or Android completion.",
+    "evidence_checks_passed": 76,
+    "boot_record_checks_passed": 28,
+    "guest_runs": 2,
     "completion_proven": false,
     "public_raw_evidence": false
   }

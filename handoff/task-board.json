@@ -967,7 +967,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R26：A6000原BOSS驱动对照43项核查通过；完整协议模型为待验证候选，4.01 PBM有额外版本检查。GPU完成规则、原生存储、Android/APK验收仍缺。"
+      "note": "R27：18类BOSS操作归属、76项静态检查与两次隔离启动。默认复位/条件BOSS超时；合成启动坏块指针ffffffff，完整存储/图形/Android/APK仍未验收。"
     },
     {
       "id": "G09",
@@ -1071,7 +1071,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R26：A6000原BOSS驱动对照43项核查通过；完整协议模型为待验证候选，4.01 PBM有额外版本检查。GPU完成规则、原生存储、Android/APK验收仍缺。"
+      "note": "R27：18类BOSS操作归属、76项静态检查与两次隔离启动。默认复位/条件BOSS超时；合成启动坏块指针ffffffff，完整存储/图形/Android/APK仍未验收。"
     },
     {
       "id": "G12",
