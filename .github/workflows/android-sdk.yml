@@ -1,0 +1,25 @@
+name: Android SDK build (manual; no device certification)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sdk-build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Attempt official SDK installation; unavailable API10 is a real failure
+        run: |
+          command -v sdkmanager
+          sdkmanager 'build-tools;30.0.3' 'platforms;android-10'
+      - name: Validate dependencies then compile
+        run: python3 tools/cv.py android
+      - name: Explicit scope
+        run: echo 'SDK build is not a camera install, hardware test or release approval.'

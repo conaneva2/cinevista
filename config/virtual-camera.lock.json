@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "runner": "handoff/runs/20261022T235438Z-ulogio-emulator/run_guest.py",
+  "commands": "handoff/runs/20261022T235438Z-ulogio-emulator/console.commands",
+  "flags": [
+    "--native-only",
+    "--logging",
+    "--a7rii-power",
+    "--backup-memory",
+    "--recovered-config",
+    "--stock-memory",
+    "--stream",
+    "--end-on-exception"
+  ],
+  "inputs": {
+    "handoff/runs/20261022T235438Z-ulogio-emulator/run_guest.py": "38f7d430de417671c704afe0d2229e9f8d34b8191ee5226519b4b52023ec6c85",
+    "handoff/runs/20261022T235438Z-ulogio-emulator/console.commands": "eeba5c365adeed7f472f5bebf1a7ebb8bb7afbf34068c11fc64621e6123a7a97",
+    ".local/compat-lab/qemu-build/build-arm/arm-softmmu/qemu-system-arm": "cf823fe3a1f832a40d5c984421e2ff203fce671847d7e923502999a22313c020",
+    ".local/compat-lab/ulogio-wbi/stream-fixture.json": "764cbee038ac75ad16924efb28e41d008c8f2eb30ecb9ad0d9584898b7d55ef8",
+    ".local/compat-lab/ulogio-wbi/native-stream-root.cramfs": "1eee481fc9d50e8cee613b561ff63811581ef7a864fe8ccc0075171fff37c5c0",
+    ".local/compat-lab/ulogio-wbi/kemco-stock-memory.txt": "008bc5beedca69e454a8e4ee9f4fca136e24103041e2f3da2f7de05ef76e2026",
+    ".local/compat-lab/qemu-research/a7rii-4.01/shell-candidate/candidate.json": "56f805b06a6e5445520b7734688cf0222595ffc270406bc61ec93d7b24feda30",
+    ".local/compat-lab/qemu-research/a7rii-4.01/shell-candidate/minimal-root.cramfs": "73c563ea15edbbb741c5f59f4ce5796f884a6eaca5002493c49e7718f258dec9",
+    ".local/compat-lab/storage-android/synthetic-bootparams.bin": "f28eb91029e9fa045e9151fe479787540ad3f7054ddb3dd7da05ed3f6e491631"
+  },
+  "profile": {
+    "model": "ILCE-7RM2",
+    "firmware": "4.01",
+    "cpu": "Cortex-A5",
+    "soc_core_count": 4,
+    "emulated_linux_cpus": 1,
+    "physical_memory_bytes": 1073741824,
+    "physical_memory_source": "original kemco.txt and pinned QEMU board",
+    "firmware_reserved_ranges": [
+      [
+        "0x80000000",
+        "0x28000"
+      ],
+      [
+        "0x82d90000",
+        "0x15b1000"
+      ],
+      [
+        "0x8e800000",
+        "0x31800000"
+      ]
+    ],
+    "lab_extra_reservation": "0x10000 beyond first firmware range for kemco",
+    "timing_calibrated": false,
+    "cpu_mhz": null,
+    "setting_limit_bytes": 13631488,
+    "android_data_partition_bytes": 104595456,
+    "nand_logical_end_bytes": 460062720,
+    "nand_physical_bytes": null,
+    "experimental_nand_bytes": 67108864,
+    "android_data_mounted": false,
+    "real_framebuffer": false,
+    "real_button_bridge": false,
+    "apk_execution": false,
+    "observed_linux_memtotal_kib": 201516,
+    "icount": "shift=2 (virtual time convention; not measured MHz)"
+  }
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="lens_control" />
+    <item type="id" name="frame_control" />
+    <item type="id" name="settings_control" />
+</resources>

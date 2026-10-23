@@ -1,0 +1,1071 @@
+{
+  "schema": "cinevista.handoff-task-board/1",
+  "date": "2026-10-23",
+  "baseline": "engineering-v0.6; camera-0.4-probe; studio-software-0.2",
+  "note": "Live local execution status; completed host tasks are not device certification. See latest session.",
+  "tasks": [
+    {
+      "id": "T00",
+      "title": "基线接手与独立复跑",
+      "priority": "P0",
+      "depends_on": [],
+      "modules": [
+        "handoff",
+        "tools",
+        "evidence"
+      ],
+      "device_required": false,
+      "scope": "确认源码/工作树，不重建空项目；先保存历史证据，再执行环境与主机检查。",
+      "outputs": [
+        "基线哈希核验",
+        "用户Mac的环境报告",
+        "独立run-id日志",
+        "实际已完成/欠项表"
+      ],
+      "acceptance": [
+        "191个原文件保持可追溯；本地用户改动没有被覆盖",
+        "实际运行doctor/check并记录退出码",
+        "最新目标以ADR0011为准",
+        "没有把Linux历史结果当用户Mac通过"
+      ],
+      "negatives": [
+        "工作区有用户改动时先保存/报告，不reset --hard",
+        "日志写入新目录，不覆盖历史后称为旧结果"
+      ],
+      "status": "completed",
+      "evidence": [
+        "handoff/runs/20260919T141703Z/baseline.json",
+        "handoff/runs/20260919T141703Z/baseline-commands.json",
+        "handoff/runs/20260919T141703Z/mac-doctor-final.json",
+        "handoff/runs/20260919T141703Z/host-check-complete.log"
+      ]
+    },
+    {
+      "id": "T01",
+      "title": "Mac真实SDK与第一个开发APK",
+      "priority": "P0",
+      "depends_on": [
+        "T00"
+      ],
+      "modules": [
+        "tools",
+        "config",
+        ".github",
+        "app/AndroidManifest.xml"
+      ],
+      "device_required": false,
+      "scope": "复核Recipe Lab构建路径，取得可信平台库和官方工具；实际走完类型编译、资源、DEX、对齐、签名、检查。",
+      "outputs": [
+        "工具链精确版本与已取得的hash",
+        "真实构建日志",
+        "可验签开发APK或明确失败点",
+        "本地签名身份指纹（不含私钥）"
+      ],
+      "acceptance": [
+        "非语法解析：所有Android源真实SDK编译成功才标构建成功",
+        "记录DEX/minSdk/targetSdk/权限/类定义及签名",
+        "构建产物名称与Manifest一致",
+        "若缺可信API10包，提交可验证替代ADR，不伪造SDK"
+      ],
+      "negatives": [
+        "不因Apple Silicon把相机ABI改成arm64-v8a",
+        "不为了构建关闭SIP/Gatekeeper或下载来源不明修复SDK",
+        "不以JDK新版本推导相机新API可用"
+      ],
+      "status": "completed",
+      "evidence": [
+        "handoff/runs/20260919T141703Z/toolchain-downloads.json",
+        "handoff/runs/20260919T141703Z/sdk-complete.log",
+        "handoff/runs/20260919T141703Z/sdk-complete/android-build-status.json",
+        "handoff/runs/20260919T141703Z/sdk-complete/apk-signature.txt"
+      ],
+      "note": "Development APK only. Qualification/production release/device gates remain closed."
+    },
+    {
+      "id": "T02",
+      "title": "升级过渡期规范与证据门禁",
+      "priority": "P0",
+      "depends_on": [
+        "T00"
+      ],
+      "modules": [
+        "tools/check_app_source.py",
+        "tools/inspect_apk.py",
+        "tools/release_check.py",
+        "tests/tools",
+        "config"
+      ],
+      "device_required": false,
+      "scope": "保留纯Java探针检查；为已审查的JNI/API可选路径设计严格例外。历史unknown断言改为fixture+证据一致性测试。",
+      "outputs": [
+        "检查策略与构建profile",
+        "状态证据schema校验",
+        "必要ADR",
+        "正向/负向工程测试"
+      ],
+      "acceptance": [
+        "未经批准的native库/ABI/包定义仍会失败",
+        "implemented或verified必须有相应能力证据；不是永远要求false",
+        "门禁报告绑定型号/固件/构建/参数指纹，检查路径和hash",
+        "启用的软件增强功能须有自己的验收，不能忽略optional_features"
+      ],
+      "negatives": [
+        "伪造verified、只建空证据文件、指向仓库外路径均应拒绝",
+        "不删除check、不把失败变continue-on-error",
+        "不因写入字符串出现就误判已审查的native profile，也不放开全部Backup"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "handoff/runs/20260919T141703Z/tools-tests-after-fixture-fix.log",
+        "docs/adr/0012-local-build-evidence-profiles.md"
+      ],
+      "note": "Necessary transition checks implemented. Optional API/native ELF/linking qualification and gate-specific human evidence review remain."
+    },
+    {
+      "id": "T03",
+      "title": "USB安装、运行时与摄影基础探针",
+      "priority": "P0",
+      "depends_on": [
+        "T01"
+      ],
+      "modules": [
+        "sony",
+        "camera-api",
+        "app",
+        "device-reports"
+      ],
+      "device_required": true,
+      "scope": "Mac宿主通过已审查PMCA/MTP/libusb读取设备；用户知情安装。验证应用列表启动、生命周期、按键、原生预览与一次快门。",
+      "outputs": [
+        "实际型号/固件/SDK/显示和按键记录",
+        "安装与启动结果",
+        "单次原生捕获及回执记录",
+        "失败原因分类"
+      ],
+      "acceptance": [
+        "API10构建约束与设备SDK事实分开",
+        "用户不需一直连接Mac即可从应用列表运行",
+        "回执不自动提升为源文件确认",
+        "正常退出不留下无法恢复的相机占用"
+      ],
+      "negatives": [
+        "不默认已有Wi-Fi ADB、USB ADB或旧Mac驱动",
+        "不以桌面模拟画面代替实际取景",
+        "不将第一次实验扩大成不明参数批量写入"
+      ],
+      "status": "blocked",
+      "evidence": [
+        "handoff/runs/20260919T141703Z/usb-ioreg.json",
+        "handoff/runs/20260919T225708Z-connection/info-wrapper.log",
+        "docs/CAMERA_CONNECTION.md",
+        "handoff/runs/20260920T013642Z-mtp-query/SESSION.md",
+        "handoff/runs/20260920T014014Z-first-install/SESSION.md",
+        "handoff/runs/20260920T014513Z-boot-loop-incident/SESSION.md",
+        "handoff/runs/20260920T015104Z-offline-investigation/SESSION.md",
+        "handoff/runs/20260920T015336Z-passive-usb/SESSION.md",
+        "handoff/runs/20260920T015912Z-reset-research/SESSION.md",
+        "handoff/runs/20260920T020751Z-usb-evidence-correction/SESSION.md",
+        "handoff/runs/20260920T021221Z-passive-usb-retest/SESSION.md",
+        "handoff/runs/20260920T022824Z-firmware-offline-analysis/SESSION.md",
+        "handoff/runs/20260920T024526Z-install-forensic-review/SESSION.md",
+        "handoff/runs/20260920T031004Z-manufacturer-recovery-research/SESSION.md",
+        "handoff/runs/20260920T032059Z-upstream-issue-review/SESSION.md",
+        "handoff/runs/20260920T033316Z-recovery-entry-triage/SESSION.md",
+        "handoff/runs/20260920T033623Z-boot-path-analysis/SESSION.md",
+        "handoff/runs/20260920T034308Z-safe-mode-callchain/SESSION.md",
+        "handoff/runs/20260920T035024Z-input-bridge-analysis/SESSION.md",
+        "handoff/runs/20260920T035712Z-console-routing/FINDINGS.md",
+        "handoff/runs/20260920T040707Z-user-source-review/FINDINGS.md",
+        "handoff/runs/20260920T052255Z-charger-interface-review/FINDINGS.md",
+        "handoff/runs/20260927T053659Z-recovery-feasibility/FINDINGS.md"
+      ],
+      "note": "用户确认仅电池、USB已拔掉时，拨到OFF后仍重复重启动作数次。复核原始命令/报错及官方4.01：Installing 100%在正常路径对应机身安装器成功回调后的通知，但结束握手未确认；错误在GetProxyMessage数据阶段返回后读取PTP响应时，未保存数据体，不能断言机身未发完成消息。APK传输/落盘/状态收尾不完整与新资源触发系统兼容故障继续并列调查。Sony安装器会尝试创建安装标记，恢复分支会同步应用，因此未刷固件不能推导未改变系统维护的状态。无新增机身操作、无恢复结论。 保留既有图标静态缺陷，不以它排除安装状态/同步问题；根因未知，机身写入暂停。 确认A7R II厂家维修手册使用Adjust Station及本型号Adjust Manual，但未证明黑屏无USB时可强制重刷。公开4.01升级器要求USB Mass Storage，已有4.01按官方流程结束。未找到可验证的本故障救砖包；无机身操作。 通过GitHub只读API筛选478条open Issue标题/正文，并读取12条重点帖完整评论。#433评论确认A7RM2，安装中断后循环重启且USB来不及连接，未报告软件恢复；#702安装APK后OFF仍重启与本机相似。#488提供A6000特殊15针接口读取启动日志线索，尚未验证适用于A7R II。 离线确认4.01保留安全模式检测方法，但启动调用链有Sony优化字节码解析缺口，不能据此给出按键恢复步骤。ADB脚本/属性存在不等于对外可连接。修正被动USB记录范围：追加全部VID/PID及可用的数字端口位置，不再只依赖Sony厂商筛选；新增3项反向测试通过，未重新通电。 使用同固件libdvm真实22项内联表与仅改容器版本标记的离线分析副本，解析出ServerThread→detectSafeMode→enterSafeMode静态调用链；关键方法无解析占位错误。InputServant存在uinput及默认映射，但物理按键/早期持键状态/故障进度未闭环，仍不能给出可靠安全模式操作卡。 进一步确认Sony输入服务通过uinput转发按键，初始化/资源状态切换不能等同于持续采样所有已按住按钮；安全模式物理触发仍未证实。早期init的forced-senser检查读取机内文件，非已发现的按键/SD卡入口；另定位独立于Android的控制台程序及设备路径，物理接入未验证。 离线从原始initrd确认/dev/ttycons为指向ttyAM0的符号链接，内核含AMBA/PL011驱动字符串；init根据/proc/cmdline中的console=ttyAM0选择launch_shell参数。未确认物理针脚、电平、实际启用或故障日志；不是USB恢复已可用。 引用来源存在语言解锁关闭后恢复的用户自述，但前提为已有解锁设置且能进Mass Storage；不符合目前已知安装史及USB表现。DPReview两帖403，浏览器超时，正文未读到。未改变机身操作暂停。 用户Windows11只读记录确认：无电池、OFF、USB连接时054C:0994，Class03/00/00，USB Charger，状态OK；采样只记录一次出现。已确认充电HID枚举，不等于MTP/MSC/恢复接口。源码核验尚无可验证充电HID到恢复模式的转换路径。 离线确认固定PMCA包含ILCE-7RM2更新载荷，型号与官方4.01匹配，主体firmware段0字节、带updater模块；但USB入口仍依赖已可通信设备，源码自动可写挂载设置区，应用数据恢复涉及双备份与同步。尚未验证故障时独立入口或可靠回滚；未操作机身、未生成新固件/APK，继续暂停机身操作。"
+    },
+    {
+      "id": "T04",
+      "title": "配方导入与不可变颜色计划",
+      "priority": "P0",
+      "depends_on": [
+        "T00"
+      ],
+      "modules": [
+        "studio",
+        "core或新增color-core",
+        "io",
+        "camera-api",
+        "sony"
+      ],
+      "device_required": false,
+      "scope": "定义严格的语义配方与有效计划，先实现只读导入和确认，不直接写硬件；补JS/Java共享测试向量。",
+      "outputs": [
+        "版本化数据契约/迁移说明",
+        "相机端严格解析器",
+        "不可变ColorPlan及内容指纹",
+        "正反向测试向量"
+      ],
+      "acceptance": [
+        "CVL/CVP/CVG职责分开，旧schema不静默改变含义",
+        "拒绝重复键/非有限数/未知危险字段/越界节点/路径穿越",
+        "来源与改编许可完整保留",
+        "错误机型/固件/RAW互斥在计划阶段可见"
+      ],
+      "negatives": [
+        "不允许导入硬件地址、代码、shell或二进制补丁",
+        "文件作者不能靠verified字段自证",
+        "导入成功不等于已写入相机"
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "id": "T05",
+      "title": "最小原生参数与存储映射研究",
+      "priority": "P0",
+      "depends_on": [
+        "T02",
+        "T03"
+      ],
+      "modules": [
+        "sony",
+        "config",
+        "device-reports",
+        "third_party"
+      ],
+      "device_required": true,
+      "scope": "从Recipe Lab和OpenMemories可复用机制出发，做目标机身必要字段只读差分、手工单变量变更/恢复，鉴定映射和同步。",
+      "outputs": [
+        "目标机型/固件的必要字段白名单",
+        "取值/宽度/符号/镜像项/互斥语义",
+        "原生JNI资格与来源说明（若需要）",
+        "读取与恢复试验记录"
+      ],
+      "acceptance": [
+        "同一语义字段经重复单变量变化与菜单对应确认",
+        "硬件地址只存在受审查驱动，不进用户配方",
+        "持久化的候选字段与运行时矩阵能力分别记录",
+        "保护阻断保持阻断"
+      ],
+      "negatives": [
+        "不复制A6000槽地址猜测",
+        "能力查询true/false都不作为唯一结论",
+        "不记录或公开全机隐私备份作为默认数据"
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "id": "T06",
+      "title": "原生发布、正常重启直拍与恢复",
+      "priority": "P0",
+      "depends_on": [
+        "T04",
+        "T05"
+      ],
+      "modules": [
+        "sony",
+        "颜色发布协调器",
+        "app",
+        "device-reports"
+      ],
+      "device_required": true,
+      "scope": "先实现一个小的受支持原生外观；用户确认、必要备份、保存、读回、退出原生拍摄、重启后不进App首拍、恢复。",
+      "outputs": [
+        "最小NativeColorStore/PublishCoordinator",
+        "必要字段恢复记录",
+        "NC02-NC06真实样片/模式证据",
+        "不同时期状态与错误报告"
+      ],
+      "acceptance": [
+        "冷启动后第一次取证前没有打开App或后台重施",
+        "计划3次正常开关机，实际次数如实记；逐模式记录",
+        "已发布与临时预览退出策略分开",
+        "恢复只改必要字段，失败明确"
+      ],
+      "negatives": [
+        "不以任意LUT写文件、自启动、删resetHook替代",
+        "不中断写卡时拔电池作为首测",
+        "不把两次独立拍摄哈希不一致判颜色失败"
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "id": "T07",
+      "title": "Recipe Lab配方正式选择性集成",
+      "priority": "P1",
+      "depends_on": [
+        "T04",
+        "T05"
+      ],
+      "modules": [
+        "third_party",
+        "颜色配方模块",
+        "sony",
+        "studio"
+      ],
+      "device_required": true,
+      "scope": "固定上游许可/提交，从数据与已理解参数开始；建立机型依赖图和收藏，不合入整个Activity或危险持久化槽。",
+      "outputs": [
+        "明确可追溯的移植diff与许可证",
+        "少量代表性已鉴定配方",
+        "RAW/曝光/矩阵/超菜单范围依赖表",
+        "切换后生效稳定性报告"
+      ],
+      "acceptance": [
+        "数据实际进入工程而非只改adopt台账",
+        "缺关键参数不静默略过仍显示同款",
+        "曝光建议与实际曝光更改分开",
+        "切换立即拍摄不会无提示记录上一配方"
+      ],
+      "negatives": [
+        "不自动关闭RAW、不把PE与普通CS当同类",
+        "不抹掉作者/原配方名和改编记录",
+        "不大量新增颜色名称掩盖核心能力未通"
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "id": "T08",
+      "title": "A7R II原生预览响应模型",
+      "priority": "P1",
+      "depends_on": [
+        "T03",
+        "T05"
+      ],
+      "modules": [
+        "studio/模型",
+        "host或独立标定工具",
+        "device-reports"
+      ],
+      "device_required": true,
+      "scope": "设计并收集有限参数域的基线/变化样片；构建可解释响应模型，独立场景验证；软件预览保持可用。",
+      "outputs": [
+        "基线协议与样片索引",
+        "模型与版本/适用域",
+        "拟合和独立验证区分",
+        "颜色误差方法与用户A/B结果"
+      ],
+      "acceptance": [
+        "真实相机样片不是人工靶软件输出冒充",
+        "曝光/WB/输入空间等条件明确",
+        "模型未覆盖或未校准有醒目标识",
+        "拒绝无法原生表达的精确移植宣称"
+      ],
+      "negatives": [
+        "不从一张已调色JPEG逆推出完整ISP",
+        "不写虚构DeltaE或跨机身兼容概率",
+        "不将非商用Film Studio模型/系数复制为MIT"
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "id": "T09",
+      "title": "Studio原生实时创作与同计划导出",
+      "priority": "P1",
+      "depends_on": [
+        "T04",
+        "T06",
+        "T08"
+      ],
+      "modules": [
+        "studio",
+        "颜色合同",
+        "相机导入/发布"
+      ],
+      "device_required": true,
+      "scope": "保留软件参考；原生模式显示将发布计划的估计效果，创作目标与适配版可对照；导出绑定同一计划。",
+      "outputs": [
+        "Mac上实际验收的原生工作区",
+        "参数/模型/输入指纹一致的导出",
+        "相机实际结果回传比较",
+        "失败/近似解释与用户可拒绝流程"
+      ],
+      "acceptance": [
+        "滑杆真正更新导入样片，不退回参数表",
+        "最新预览与导出参数一致，过时计算不能覆盖",
+        ".CVL导出/导入/写入/重启通过分层显示",
+        "Mac Safari真实文件打开与功能检查"
+      ],
+      "negatives": [
+        "不把当前软件HSL滑杆改标签冒充Sony",
+        "不无声降级复杂外观",
+        "不可因单一场景好看就标广泛标定"
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "id": "T10",
+      "title": "宽幅拍摄与原片安全出片闭环",
+      "priority": "P1",
+      "depends_on": [
+        "T03"
+      ],
+      "modules": [
+        "sony/媒体适配",
+        "core",
+        "io",
+        "app",
+        "图像输出后端"
+      ],
+      "device_required": true,
+      "scope": "可靠关联一次捕获到源文件，65:24/2.39/移框共用Geometry；先原生小图后真实尺寸，必要时引入成熟软件编码。",
+      "outputs": [
+        "捕获-源图匹配证据",
+        "原生/软件图像后端选择记录",
+        "实际几何成片与源哈希",
+        "App回看和原生索引各自结果"
+      ],
+      "acceptance": [
+        "普通镜头不拉伸；有效区域机测校准",
+        "保留原片，不覆盖、不误处理另一张照片",
+        "输出分辨率/方向/色彩/EXIF清晰",
+        "卡满/退出/重试/取消不损坏源图"
+      ],
+      "negatives": [
+        "不以最新文件轮询作为最终可靠配对",
+        "不把人工Canvas小图当高分辨率Sony滤镜",
+        "不盲目复制全部APP/MakerNote或写原生媒体数据库"
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "id": "T11",
+      "title": "实时反挤压、对焦与EVF",
+      "priority": "P0",
+      "depends_on": [
+        "T03"
+      ],
+      "modules": [
+        "sony/显示取帧",
+        "app",
+        "core",
+        "图像后端"
+      ],
+      "device_required": true,
+      "scope": "用户将机内实时反挤压作为继续开发门槛。结合官方4.01与源码离线鉴定；B取帧自绘已有官方JPEG调用依据，A原生预览变换未闭环。录像DSP路径5已追到EffectMovieRec和处理画布替换RecPin；本轮找到SCALAR_MOVIE_REC的Camera→Scalar出3→Effect→MovieRecorder入0拓扑，及MovieEncoder主路YC请求MC(type0,dir1,no0,osal005700f9)。VEF/可选TCUB、效果与编码模式的运行时分支未确认，不能泛化全部格式。独立宽高SCALE/resizeTrim已追到model1/event0xa→ObjScalar3017→HAPI201→SDF票据任务及标准YC输出；尚无逐帧回送录像的桥接与实时性能证明。整体实机验收受设备暂停阻断，不操作相机；软件编码不作为当前主方案。 本轮确认SDF/MC同MMC服务、SDF票据消费及MC分层/定时释放与Vsync清理；SDF录像时序继承、引用转移与持续吞吐仍未验证。",
+      "outputs": [
+        "四边/圆/网格与动态内容证据",
+        "逐后端成功或失败结论",
+        "背屏和EVF独立报告",
+        "对焦/快门/显示恢复与最终照片对照"
+      ],
+      "acceptance": [
+        "改变实际内容比例且fit保边，不是遮幅或fill裁切",
+        "倍率/画幅独立；对焦检查不改变成片裁切",
+        "读取内容更新与光学延迟，不用UI重绘率",
+        "最终用真实变形镜头验正"
+      ],
+      "negatives": [
+        "有TextureView不自动算通过",
+        "未知DeviceMemory不随意当裸像素",
+        "背屏成功不推导EVF/HDMI/视频成功"
+      ],
+      "status": "blocked",
+      "evidence": [
+        "handoff/runs/20261022T014755Z-desqueeze-feasibility/FINDINGS.md",
+        "handoff/runs/20261022T014755Z-desqueeze-feasibility/SESSION.md",
+        "docs/adr/0014-desqueeze-feasibility-gate.md",
+        "handoff/runs/20261022T021116Z-video-encoder-feasibility/FINDINGS.md",
+        "handoff/runs/20261022T021116Z-video-encoder-feasibility/SESSION.md",
+        "handoff/runs/20261022T023458Z-dsp-movie-chain/FINDINGS.md",
+        "handoff/runs/20261022T023458Z-dsp-movie-chain/SESSION.md",
+        "handoff/runs/20261022T032031Z-rec-pin-dsp-geometry/FINDINGS.md",
+        "handoff/runs/20261022T032031Z-rec-pin-dsp-geometry/SESSION.md",
+        "handoff/runs/20261022T034123Z-movie-peer-scale-backend/FINDINGS.md",
+        "handoff/runs/20261022T034123Z-movie-peer-scale-backend/SESSION.md",
+        "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/FINDINGS.md",
+        "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/SESSION.md"
+      ]
+    },
+    {
+      "id": "T12",
+      "title": "集成回归、摄影体验与发行交付",
+      "priority": "P2",
+      "depends_on": [
+        "T02",
+        "T06",
+        "T07",
+        "T09",
+        "T10",
+        "T11"
+      ],
+      "modules": [
+        "全工程",
+        ".github",
+        "docs",
+        "发行"
+      ],
+      "device_required": true,
+      "scope": "串联三主目标，验证设置冲突、模式/重启、保存、安全、UI；仅在明确授权后创建公开仓库/发行。",
+      "outputs": [
+        "最终兼容/限制矩阵",
+        "稳定版本、安装/升级/恢复说明",
+        "真实启用功能的证据门禁",
+        "源码/许可证/签名/产物hash与隐私审核"
+      ],
+      "acceptance": [
+        "无APK能力、颜色、几何与版本虚假宣传",
+        "所有必需和实际启用功能均有证据",
+        "密钥不公开，升级身份连续",
+        "用户在真实摄影中验收核心流程"
+      ],
+      "negatives": [
+        "正式发布不能因host tests全绿绕过机测",
+        "不将所有机型和视频格式扩展为已支持",
+        "不因用户愿意开源就自动公开照片/备份/第三方素材"
+      ],
+      "status": "not_started",
+      "evidence": []
+    },
+    {
+      "id": "G01",
+      "title": "模块边界与文档制度落地",
+      "priority": "P0",
+      "depends_on": [
+        "T00"
+      ],
+      "device_required": false,
+      "status": "completed",
+      "modules": [
+        "tools",
+        "tests/tools",
+        "docs",
+        "handoff"
+      ],
+      "outputs": [
+        "统一说明书和文档注册表",
+        "自动生成TODO",
+        "强化架构/文档检查",
+        "本地Git及协作模板"
+      ],
+      "acceptance": [
+        "统一check通过",
+        "当前状态与README一致",
+        "不伪造远端CI或机测"
+      ],
+      "evidence": [
+        "docs/ENGINEERING_AUDIT.md",
+        "handoff/runs/20260919T144316Z-engineering/check-1.log",
+        "handoff/runs/20260919T144316Z-engineering/android-1.log"
+      ],
+      "note": "模块/文档检查与真实SDK构建通过；Gitee远端接入单列G02。"
+    },
+    {
+      "id": "G02",
+      "title": "Gitee私有仓库与远端检查接入",
+      "priority": "P1",
+      "depends_on": [
+        "G01"
+      ],
+      "device_required": false,
+      "status": "in_progress",
+      "modules": [
+        ".gitee",
+        "docs"
+      ],
+      "outputs": [
+        "私有远端URL和提交SHA",
+        "保护分支与CI实际状态"
+      ],
+      "acceptance": [
+        "私有可见性读回核实",
+        "源代码提交不含私密数据",
+        "远端检查有真实执行记录"
+      ],
+      "evidence": [
+        "docs/GITEE.md",
+        "handoff/runs/20260919T145923Z-gitee-push/push-initial.json",
+        "handoff/runs/20260919T145923Z-gitee-push/verify-initial.json"
+      ],
+      "note": "用户确认私有，Git身份已配置；初始提交bf1cea0已推送main并核对远端哈希。远端CI/保护规则仍待实际接入，API可见性未独立读回。"
+    },
+    {
+      "id": "U01",
+      "title": "相机首页布局解耦与本地结构预览",
+      "priority": "P1",
+      "depends_on": [
+        "T01"
+      ],
+      "modules": [
+        "app",
+        "tools",
+        "docs"
+      ],
+      "device_required": false,
+      "status": "completed",
+      "outputs": [
+        "同源XML首页",
+        "离线结构草图",
+        "原生预览接入说明"
+      ],
+      "acceptance": [
+        "主机检查和真实SDK构建通过",
+        "页面明确限制且浏览器实际打开"
+      ],
+      "negatives": [
+        "不模拟Sony取景",
+        "不将假设视口当设备显示参数"
+      ],
+      "evidence": [
+        "docs/CAMERA_UI_PREVIEW.md",
+        "handoff/runs/20260919T151319Z-camera-ui/check.log",
+        "handoff/runs/20260919T151319Z-camera-ui/android/android-build-status.json",
+        "handoff/runs/20260919T151319Z-camera-ui/browser-check.md"
+      ]
+    },
+    {
+      "id": "U02",
+      "title": "同源Android原生界面预览接入",
+      "priority": "P1",
+      "depends_on": [
+        "U01"
+      ],
+      "modules": [
+        "app",
+        "tools"
+      ],
+      "device_required": false,
+      "status": "not_started",
+      "outputs": [
+        "固定工具链开发预览配置",
+        "真实Android布局渲染或模拟器截图"
+      ],
+      "acceptance": [
+        "复用现有资源，不新建重复产品",
+        "模拟状态与生产Sony装配隔离",
+        "记录真实运行，不以HTML代替Android渲染"
+      ],
+      "negatives": [
+        "不宣称Sony取景或EVF通过"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "U03",
+      "title": "中文默认界面与语言资源化",
+      "priority": "P1",
+      "depends_on": [
+        "U01"
+      ],
+      "modules": [
+        "app",
+        "studio",
+        "tools"
+      ],
+      "device_required": false,
+      "status": "in_progress",
+      "outputs": [
+        "中文用户文案",
+        "语言资源与偏好边界",
+        "中英文布局检查"
+      ],
+      "acceptance": [
+        "默认中文且语言选择不改Sony系统设置",
+        "协议键与计划指纹不依赖语言",
+        "SDK编译与预览通过，字体机测单独记录"
+      ],
+      "negatives": [
+        "不把资源默认值误称始终强制中文",
+        "不把Mac中文显示当相机字体通过"
+      ],
+      "evidence": [],
+      "note": "三页操作提示已集中为默认中文；诊断原始字段不翻译。英语资源/语言选择与实机字形尚未完成。"
+    },
+    {
+      "id": "U04",
+      "title": "已选中文取景布局与SDK实现",
+      "priority": "P1",
+      "depends_on": [
+        "U01"
+      ],
+      "modules": [
+        "app",
+        "tools"
+      ],
+      "device_required": false,
+      "status": "completed",
+      "outputs": [
+        "中文取景XML与焦点样式",
+        "探针设置与原始诊断",
+        "验签开发APK"
+      ],
+      "acceptance": [
+        "统一check与真实SDK构建通过",
+        "顶部布局与Surface分离",
+        "未提升机测资格"
+      ],
+      "negatives": [
+        "不把浏览器当Android渲染",
+        "不将倍率按钮视为真实反挤压成功"
+      ],
+      "evidence": [
+        "docs/CAMERA_UI_PREVIEW.md",
+        "handoff/runs/20260919T160456Z-native-ui/android3.log",
+        "handoff/runs/20260919T160456Z-native-ui/check.log",
+        "handoff/runs/20260919T160456Z-native-ui/20260919T160456Z-native-ui-apk3/android-build-status.json",
+        "handoff/runs/20260919T160456Z-native-ui/browser-check.md"
+      ]
+    },
+    {
+      "id": "G03",
+      "title": "启动图标兼容性与安装恢复门禁",
+      "priority": "P0",
+      "depends_on": [
+        "T01"
+      ],
+      "modules": [
+        "app/res/drawable",
+        "tools/inspect_apk.py",
+        "tests/tools",
+        "handoff"
+      ],
+      "device_required": false,
+      "scope": "依据官方4.01固件的图标类型约束，修复APK资源与包检查；先以事故原APK建立反向案例。安装授权、回执与恢复可行性需明确，主机通过不解除事故隔离。",
+      "outputs": [
+        "位图图标发布契约",
+        "原XML图标拒绝案例",
+        "打包资源/配置变体负向测试",
+        "未恢复机身的安装暂停门禁"
+      ],
+      "acceptance": [
+        "原事故APK被契约检查拒绝，不只检查当前源码",
+        "仅主机生成的修正版也不得宣称恢复或自动安装",
+        "对话中的授权范围与恢复条件可追溯"
+      ],
+      "negatives": [
+        "不删掉校验使旧APK继续放行",
+        "不因疑似根因就再次向故障相机安装"
+      ],
+      "status": "in_progress",
+      "evidence": [
+        "handoff/runs/20260920T022824Z-firmware-offline-analysis/FINDINGS.md",
+        "handoff/runs/20260920T024526Z-install-forensic-review/FINDINGS.md",
+        "handoff/runs/20260920T041708Z-launcher-gate/FINDINGS.md",
+        "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/original-apk-gate.json"
+      ],
+      "note": "G03新增最终包启动图标/组件契约：复用aapt30.0.3解析编译清单、全部图标配置并解码PNG；拒绝XML/别名/系统图标、NinePatch、额外组件及显式process/persistent。11项测试通过；事故原APK拒绝exit2，当前源码构建在资源预检按预期停止exit1。未替换生产图标、无新可安装APK、无机身操作。 生产资源替换、修正版完整构建与安装恢复门禁仍未完成。 2026-10-22原事故APK主机重检仍拒绝exit2；不是运行或整机循环复现。"
+    },
+    {
+      "id": "G04",
+      "title": "电脑仿真与安装启动兼容环境可行性调研",
+      "priority": "P0",
+      "depends_on": [],
+      "device_required": false,
+      "status": "completed",
+      "modules": [
+        "handoff",
+        "docs"
+      ],
+      "scope": "仅离线调研：核对完整固件仿真依赖，界定普通Android替身、固件组件兼容环境与整机模型的覆盖；不包含搭建/运行模拟器或设备验证。",
+      "outputs": [
+        "固件专用硬件依赖证据",
+        "分层仿真范围与局限",
+        "原事故APK离线反向案例"
+      ],
+      "acceptance": [
+        "区分调研完成与环境实现完成",
+        "不能把dummy或主机门禁当Sony运行复现",
+        "保留无相机操作和未验证实体恢复边界"
+      ],
+      "evidence": [
+        "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/FINDINGS.md",
+        "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/emulator-hardware-dependencies.json",
+        "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/local-emulator-inventory.json",
+        "handoff/runs/20261022T073608Z-sdf-lifecycle-emulator/original-apk-gate.json"
+      ],
+      "note": "调研完成；完整A7R II仿真不可直接落地，局部兼容环境为候选且尚未构建。没有安装依赖或下载镜像。 2026-10-22后续发现ma1co/qemu含CXD90014板型；RX100M5更新系统测试不等于A7R II完整模拟。第一阶段方法环境见G05。"
+    },
+    {
+      "id": "G05",
+      "title": "安装启动兼容实验环境第一阶段：固件方法离线回放",
+      "priority": "P0",
+      "depends_on": [
+        "G04"
+      ],
+      "device_required": false,
+      "status": "completed",
+      "modules": [
+        "tools",
+        "tests",
+        "config",
+        "docs",
+        "handoff"
+      ],
+      "scope": "按官方4.01和事故APK资源建立有限方法回放、真实PMCA合成通信、故障注入及虚拟状态重建；不包括完整APK安装/Android开机或真实硬件故障复现。",
+      "outputs": [
+        "固定SHA-256的本地输入锁",
+        "固件方法回放与显式服务适配器",
+        "24个条件场景的结果/指令轨迹/快照",
+        "CXD90014社区模拟资料与范围修正"
+      ],
+      "acceptance": [
+        "不操作相机、不建立设备后端或网络连接",
+        "从实际固件方法执行分支并记录偏移，未知指令/API或输入漂移停止",
+        "原APK图标资源路径与类型分派可追溯，条件与事实分别记录",
+        "安装100%与完成回执区分，Resume(8)与状态快照重建不称为真实重启",
+        "有源代码、复跑入口和主机验证；不解除事故隔离"
+      ],
+      "evidence": [
+        "handoff/runs/20261022T075951Z-install-boot-lab/FINDINGS.md",
+        "handoff/runs/20261022T075951Z-install-boot-lab/results-summary.json",
+        "handoff/runs/20261022T075951Z-install-boot-lab/SESSION.md",
+        "docs/INSTALL_BOOT_LAB.md"
+      ],
+      "note": "24个条件案例符合预期；完整APK/Android未执行，黑屏循环与恢复未验证。新增13项主机边界测试；67个本地输入开头/结束核验。G03与T11状态不变。"
+    },
+    {
+      "id": "G06",
+      "title": "QEMU与4.01启动材料鉴定及最小Linux候选准备",
+      "priority": "P0",
+      "depends_on": [
+        "G05"
+      ],
+      "device_required": false,
+      "status": "completed",
+      "modules": [
+        "handoff",
+        "docs"
+      ],
+      "scope": "离线核对QEMU源码与4.01启动材料、构建能力和Android/安装缺口；准备并回读验证最小Linux用户态候选。明确不包括QEMU编译运行、完整更新系统或Android启动。",
+      "outputs": [
+        "原始内核/initrd及Android启动材料manifest",
+        "kemco参数入口与QEMU加载地址证据",
+        "最小Linux候选root及参数JSON",
+        "NAND写/擦未持久实现证据",
+        "宿主构建缺口与逐级验收路径"
+      ],
+      "acceptance": [
+        "不操作相机、不修改原始固件",
+        "区分正常内核候选和缺失的专用更新系统",
+        "记录候选文件层验证，不当作客体开机通过",
+        "以源码证明安装/重启持久化限制",
+        "列明宿主、系统服务、数据分区与事故状态缺口"
+      ],
+      "evidence": [
+        "handoff/runs/20261022T082324Z-qemu-boot-readiness/FINDINGS.md",
+        "handoff/runs/20261022T082324Z-qemu-boot-readiness/boot-candidate.json",
+        "handoff/runs/20261022T082324Z-qemu-boot-readiness/host-preflight.json",
+        "handoff/runs/20261022T082324Z-qemu-boot-readiness/SESSION.md"
+      ],
+      "note": "候选905216 bytes，CRC/字节/链接/mode回读通过；无QEMU可执行程序、未安装pkg-config、未编译或开机。QEMU NAND写/擦完成不代表落盘；继续运行与完整Android仍未完成。"
+    },
+    {
+      "id": "G07",
+      "title": "构建Sony QEMU并定位4.01最小Linux首次启动停点",
+      "priority": "P0",
+      "depends_on": [
+        "G06"
+      ],
+      "device_required": false,
+      "status": "completed",
+      "modules": [
+        "handoff",
+        "docs"
+      ],
+      "scope": "用户授权本机构建依赖安装与纯电脑最小Linux启动；不包括相机、完整Android或APK安装。",
+      "outputs": [
+        "可复现构建命令与宿主补丁",
+        "限时启动日志与第一处停点",
+        "后续依赖清单"
+      ],
+      "acceptance": [
+        "不连接或操作相机，原固件hash保持不变",
+        "记录真实构建结果及执行参数",
+        "区分进程存在、内核输出、根挂载和用户态成功",
+        "说明未启动部分和下次可复跑入口"
+      ],
+      "evidence": [
+        "handoff/runs/20261022T084735Z-qemu-first-boot/FINDINGS.md",
+        "handoff/runs/20261022T084735Z-qemu-first-boot/build-manifest.json",
+        "handoff/runs/20261022T084735Z-qemu-first-boot/boot-03-mux/result.json",
+        "handoff/runs/20261022T084735Z-qemu-first-boot/boot-04-inspect/result.json",
+        "handoff/runs/20261022T084735Z-qemu-first-boot/boot-05-guarded/result.json",
+        "handoff/runs/20261022T084735Z-qemu-first-boot/SESSION.md"
+      ],
+      "note": "定制QEMU构建及4.01最小Linux启动完成；TCI+非EXEC缓存补丁，原内核未改。真实guest命令及tmpfs读回通过。完整Android/APK、更新系统、持久存储与事故重现未验证，T11/G03不变。"
+    },
+    {
+      "id": "G08",
+      "title": "验证虚拟存储重启保留并追踪4.01 Android服务启动",
+      "priority": "P0",
+      "depends_on": [
+        "G07"
+      ],
+      "device_required": false,
+      "status": "in_progress",
+      "modules": [
+        "handoff",
+        "docs"
+      ],
+      "scope": "仅电脑上的定制QEMU存储与原版Android启动；禁止操作相机。",
+      "outputs": [
+        "持久写/擦补丁与全新进程读回对照",
+        "Linux文件系统持久性边界",
+        "Android动态日志与Sony服务具体停点"
+      ],
+      "acceptance": [
+        "原始固件hash不变且无相机操作",
+        "控制器写入与擦除跨整个QEMU重启验证",
+        "客体可写文件系统重新挂载后读回验证",
+        "实际启动Android并记录Sony服务阻塞，区分临时替代条件"
+      ],
+      "evidence": [
+        "handoff/runs/20261022T091300Z-qemu-storage-android/FINDINGS.md",
+        "handoff/runs/20261022T091300Z-qemu-storage-android/nand-persistent-01/result.json",
+        "handoff/runs/20261022T091300Z-qemu-storage-android/nand-02-patched/serial.log",
+        "handoff/runs/20261022T091300Z-qemu-storage-android/android-03-logcat/serial.log",
+        "handoff/runs/20261022T091300Z-qemu-storage-android/android-04-osal/serial.log",
+        "handoff/runs/20261022T091300Z-qemu-storage-android/android-05-inspect/serial.log",
+        "handoff/runs/20261022T091300Z-qemu-storage-android/SESSION.md",
+        "handoff/runs/20261022T100302Z-a7rii-board-alignment/FINDINGS.md",
+        "handoff/runs/20261022T100302Z-a7rii-board-alignment/board-tests.json",
+        "handoff/runs/20261022T100302Z-a7rii-board-alignment/partition-audit.json",
+        "handoff/runs/20261022T100302Z-a7rii-board-alignment/android-backup-memory-01/result.json",
+        "handoff/runs/20261022T100302Z-a7rii-board-alignment/SESSION.md",
+        "handoff/runs/20261022T100302Z-a7rii-board-alignment/android-bootin-01/result.json",
+        "handoff/runs/20261022T100302Z-a7rii-board-alignment/native-assertion.json",
+        "handoff/runs/20261022T225823Z-gl-common/FINDINGS.md",
+        "handoff/runs/20261022T225823Z-gl-common/native-control-trace-02/trace.json",
+        "handoff/runs/20261022T225823Z-gl-common/native-ma-trace-02/trace.json",
+        "handoff/runs/20261022T225823Z-gl-common/native-dmm-config-01/result.json",
+        "handoff/runs/20261022T225823Z-gl-common/native-logging-trace-03/trace.json",
+        "handoff/runs/20261022T225823Z-gl-common/SESSION.md",
+        "handoff/runs/20261022T235438Z-ulogio-emulator/FINDINGS.md",
+        "handoff/runs/20261022T235438Z-ulogio-emulator/core-stream-trace-02/trace.json",
+        "handoff/runs/20261022T235438Z-ulogio-emulator/hardware-limits-01/result.json",
+        "handoff/runs/20261023T002402Z-sugilite-window/FINDINGS.md",
+        "handoff/runs/20261023T002402Z-sugilite-window/fonts-core-trace-01/trace.json",
+        "handoff/runs/20261023T002402Z-sugilite-window/graphics-mmio-trace-01/trace.json",
+        "handoff/runs/20261023T002402Z-sugilite-window/fonts-egl-trace-01/trace.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/FINDINGS.md",
+        "handoff/runs/20261023T004916Z-sugilite-model/model-manifest.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/evidence-checks.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/control-wait-trace-01/trace.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/gpu-submit-trace-01/gpu-trace.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/SESSION.md",
+        "handoff/runs/20261023T012044Z-sugilite-command/FINDINGS.md",
+        "handoff/runs/20261023T012044Z-sugilite-command/model-manifest.json",
+        "handoff/runs/20261023T012044Z-sugilite-command/frontend-runtime-summary.json",
+        "handoff/runs/20261023T012044Z-sugilite-command/operand-02/operand-buffer.json",
+        "handoff/runs/20261023T012044Z-sugilite-command/qtest-front-01/result.json",
+        "handoff/runs/20261023T012044Z-sugilite-command/SESSION.md",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/FINDINGS.md",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/original-semantics.json",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/gles1-enum-crosscheck.json",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/empty-finish-01/empty-finish.json",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/SESSION.md",
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/FINDINGS.md",
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/driver-audit.json",
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
+      ],
+      "note": "原GPU诊断入口审计确认任务软件signal不能代替硬件IRQ；新公开A6000日志支持同系列SMAPH-S30/IRQ76，但缺逐命令硬件协议。未新增执行模型或启动进展，窗口/Android/APK仍未通过，长期目标进行中。"
+    },
+    {
+      "id": "G09",
+      "title": "虚拟相机开发操作台与日志配置恢复",
+      "priority": "P0",
+      "depends_on": [
+        "G07"
+      ],
+      "device_required": false,
+      "status": "completed",
+      "modules": [
+        "tools",
+        "tests/tools",
+        "config",
+        "docs",
+        "handoff"
+      ],
+      "scope": "交付仿相机背面宿主操作台和真实固定启动实验；不包括原生背屏/按键、完整Android或APK安全环境。",
+      "outputs": [
+        "恢复配置来源和动态验证",
+        "gl_common创建返回值原断言正常分支证据",
+        "本地操作台与资源限制说明"
+      ],
+      "acceptance": [
+        "原始固件和QEMU二进制不变，无相机操作",
+        "原日志/DMM加载成功，gl_common创建通过原断言",
+        "浏览器启动/停止/导航实际验证，不开放未就绪APK入口",
+        "主机输入漂移/错误语义等测试通过"
+      ],
+      "evidence": [
+        "handoff/runs/20261022T235438Z-ulogio-emulator/FINDINGS.md",
+        "handoff/runs/20261022T235438Z-ulogio-emulator/browser-check.json",
+        "handoff/runs/20261022T235438Z-ulogio-emulator/ui-tests.log",
+        "docs/VIRTUAL_CAMERA.md"
+      ],
+      "note": "完成范围严格限开发预览；完整虚拟相机验收列G10，不提供真机安全保证。"
+    },
+    {
+      "id": "G10",
+      "title": "原生显示输入、Android和APK安装启动虚拟环境",
+      "priority": "P0",
+      "depends_on": [
+        "G08",
+        "G09"
+      ],
+      "device_required": false,
+      "status": "in_progress",
+      "modules": [
+        "tools",
+        "config",
+        "docs",
+        "handoff"
+      ],
+      "scope": "按用户新优先级推进完整第一阶段模拟器，仍不操作相机。",
+      "outputs": [
+        "原生显示/按键接入",
+        "Android启动器与应用真实执行",
+        "持久数据和故障注入结果",
+        "模型覆盖及未覆盖硬件清单"
+      ],
+      "acceptance": [
+        "原断言启用且Sony窗口/核心服务正常初始化",
+        "Android/system_server/启动器实际运行",
+        "APK真实安装启动退出并保留日志",
+        "安装中断及整个QEMU重启后数据保留/同步有正反对照",
+        "硬件配置有依据，未知性能/器件明确标注"
+      ],
+      "negatives": [
+        "不以网页外壳当完整模拟器",
+        "不以主机速度推断真机性能",
+        "不把模拟通过当真机安全保证"
+      ],
+      "evidence": [
+        "handoff/runs/20261022T235438Z-ulogio-emulator/FINDINGS.md",
+        "handoff/runs/20261023T002402Z-sugilite-window/FINDINGS.md",
+        "handoff/runs/20261023T002402Z-sugilite-window/fonts-core-trace-01/trace.json",
+        "handoff/runs/20261023T002402Z-sugilite-window/graphics-mmio-trace-01/trace.json",
+        "handoff/runs/20261023T002402Z-sugilite-window/fonts-egl-trace-01/trace.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/FINDINGS.md",
+        "handoff/runs/20261023T004916Z-sugilite-model/model-manifest.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/evidence-checks.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/control-wait-trace-01/trace.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/gpu-submit-trace-01/gpu-trace.json",
+        "handoff/runs/20261023T004916Z-sugilite-model/SESSION.md",
+        "handoff/runs/20261023T012044Z-sugilite-command/FINDINGS.md",
+        "handoff/runs/20261023T012044Z-sugilite-command/model-manifest.json",
+        "handoff/runs/20261023T012044Z-sugilite-command/frontend-runtime-summary.json",
+        "handoff/runs/20261023T012044Z-sugilite-command/operand-02/operand-buffer.json",
+        "handoff/runs/20261023T012044Z-sugilite-command/qtest-front-01/result.json",
+        "handoff/runs/20261023T012044Z-sugilite-command/SESSION.md",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/FINDINGS.md",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/original-semantics.json",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/gles1-enum-crosscheck.json",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/empty-finish-01/empty-finish.json",
+        "handoff/runs/20261023T015609Z-sugilite-semantics/SESSION.md",
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/FINDINGS.md",
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/driver-audit.json",
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/public-crosscheck.json",
+        "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
+      ],
+      "note": "原GPU诊断入口审计确认任务软件signal不能代替硬件IRQ；新公开A6000日志支持同系列SMAPH-S30/IRQ76，但缺逐命令硬件协议。未新增执行模型或启动进展，窗口/Android/APK仍未通过，长期目标进行中。"
+    }
+  ],
+  "latest_session": "handoff/runs/20261023T022306Z-sugilite-diagnostics/SESSION.md"
+}

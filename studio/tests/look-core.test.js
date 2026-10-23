@@ -1,0 +1,27 @@
+/* SPDX-License-Identifier: MIT */
+'use strict';
+const {test}=require('node:test'),assert=require('node:assert/strict');
+const C=require('../look-core.js');
+const cs=()=>C.make('sony-creative-style'), pp=()=>C.make('sony-picture-profile');
+test('creative defaults valid and unverified',()=>assert.deepEqual(C.validate(cs()),[]));
+test('picture profile defaults valid',()=>assert.deepEqual(C.validate(pp()),[]));
+test('roundtrip all supported engines',()=>{for(const k of Object.keys(C.engines)){let a=C.make(k);assert.deepEqual(C.parse(C.serialize(a)),a);}});
+test('all field upper and lower bounds validate',()=>{for(const k of Object.keys(C.engines)){for(const f of C.engines[k].filter(x=>x.type==='integer')){for(const n of [f.min,f.max]){let a=C.make(k);a.parameters[f.key]=n;assert.deepEqual(C.validate(a),[]);}}}});
+test('out of range values are rejected',()=>{let a=pp();a.parameters.saturation=33;assert.throws(()=>C.serialize(a));});
+test('creative and PP saturation ranges cannot mix',()=>{let a=cs();a.parameters.saturation=20;assert.throws(()=>C.serialize(a));let b=pp();b.parameters.saturation=20;assert.equal(C.validate(b).length,0);});
+test('A7RII does not claim S-Log3',()=>{let a=pp();a.parameters.gamma='S-Log3';assert.throws(()=>C.serialize(a));});
+test('unknown parameters and slot addresses fail closed',()=>{let a=cs();a.parameters.backup_address='0x01070013';assert.throws(()=>C.serialize(a));});
+test('self certification refused',()=>{let a=cs();a.validation.status='verified';assert.throws(()=>C.serialize(a));});
+test('other model is refused',()=>{let a=cs();a.target.model='ILCE-6000';assert.throws(()=>C.serialize(a));});
+test('numeric IDs not accepted as semantic mode',()=>{let a=cs();a.parameters.style=3;assert.throws(()=>C.serialize(a));});
+test('path traversal / long filename / control chars refused',()=>{for(const id of ['../evil','LONGNAME99','A\n']){let a=cs();a.id=id;assert.throws(()=>C.serialize(a));}});
+test('cannot silently apply exposure',()=>{let a=cs();a.exposure.policy='auto';assert.throws(()=>C.serialize(a));});
+test('missing param not silently defaulted',()=>{let a=pp();delete a.parameters.black_level;assert.throws(()=>C.serialize(a));});
+test('manual sheet contains warnings and does not pick a PP slot',()=>{const t=C.manual(pp());assert.match(t,/未实机验证/);assert.match(t,/不指定或覆盖任何槽/);assert.match(t,/Black Level/);});
+test('monochrome saturation unavailable',()=>{let a=cs();a.parameters.style='monochrome';a.parameters.saturation=1;assert.throws(()=>C.serialize(a));});
+test('huge file refused',()=>assert.throws(()=>C.parse(' '.repeat(C.maxBytes+1))));
+test('malformed input does not deserialize as valid',()=>{for(const text of ['null','[]','{}','NaN','{'])assert.throws(()=>C.parse(text));});
+test('upstream attribution survives roundtrip',()=>{let a=cs();a.provenance={kind:'adapted',author:'Editor',license:'MIT',upstream:{project:'Recipe Lab',commit:'d4c64239ddb775e11b9343b54bc71616dd62a7a5',recipe:'example',license:'MIT'}};assert.deepEqual(C.parse(C.serialize(a)).provenance,a.provenance);});
+test('adapted look cannot omit provenance',()=>{let a=cs();a.provenance.kind='adapted';assert.throws(()=>C.serialize(a));});
+test('knee/gamma interaction displayed',()=>assert.ok(C.warnings(pp()).some(t=>t.includes('Knee 不生效'))));
+test('NaN integer input rejected',()=>{let a=cs();a.parameters.contrast=NaN;assert.throws(()=>C.serialize(a));});

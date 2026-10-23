@@ -1,0 +1,52 @@
+build/
+dist/
+.local/
+.idea/
+.vscode/*.log
+__pycache__/
+*.pyc
+*.class
+*.jks
+*.keystore
+*.p12
+*.pk8
+.env
+.env.*
+!.env.example
+local.properties
+.DS_Store
+# Raw private device data belongs outside the repository.
+device-reports/private/
+
+# Local execution records may contain machine paths; publish reviewed summaries only.
+handoff/runs/
+evidence/runs/
+*.apk
+*.ap_
+*.dex
+*.pem
+*.key
+# Both environment templates are public, never local .env values.
+!.env.macos.example
+
+# Historical raw execution evidence also remains local.
+/evidence/
+/handoff/evidence/
+
+# Public source snapshot: prohibit proprietary/runtime inputs.
+*.bin
+*.raw
+*.img
+*.cramfs
+*.elf
+*.so
+*.ko
+*.smali
+*.oat
+*.odex
+*.zip
+*.tar*
+*.ttf
+*.otf
+*.log
+/emulator/qemu/*/

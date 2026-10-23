@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src blob: data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>幕野 Studio · 配方编写台</title><link rel="stylesheet" href="studio.css"></head><body>
+<header><div><h1>幕野 <span>Studio</span></h1><p>在 Mac 编写颜色，在相机确认颜色。</p></div><div class="tag">0.1 ALPHA · 离线配方工具</div></header>
+<div class="notice"><b>这不是 Sony 调色模拟器。</b>当前可以编辑配方、导出 .CVL 和手工设置单、对照本地样片；尚不能把参数自动写进 A7R II。照片不会因滑杆移动而假装“调色完成”。</div>
+<main><section class="settings"><h2>01 / 定义你的配方</h2><div class="row"><label>颜色路径<select id="engine"><option value="sony-creative-style">基础配方 · Creative Style</option><option value="sony-picture-profile">进阶配方 · A7R II Picture Profile</option></select></label></div>
+<div class="row two"><label>配方名称<input id="name" maxlength="64"></label><label>文件代号（1–8 位）<input id="id" maxlength="8" spellcheck="false"></label></div>
+<div class="row two"><label>作者<input id="author" maxlength="120"></label><label>目标固件（未知则留空）<input id="firmware" maxlength="32"></label></div>
+<div class="row two"><label>版本<input id="revision" type="number" min="1" max="2147483647"></label><label>曝光建议（1/3 EV 单位）<input id="ev" type="number" min="-15" max="15" step="1"></label></div>
+<p class="sub">默认值是可编辑工作起点，不是出厂设置。白平衡使用 A/B、G/M 语义，不包含底层地址。</p>
+<div id="parameters"></div><label>创作笔记<textarea id="notes" maxlength="2000" rows="3" placeholder="例如：保留肤色、冷绿阴影、暖高光；用阴天和钨丝灯样片分别确认。"></textarea></label>
+<div id="errors" role="alert"></div><div class="actions"><button id="export">导出 .CVL 草稿</button><button id="manual">导出相机设置单</button><label class="button secondary">导入 .CVL<input id="import" type="file" accept=".CVL,.cvl,.json" hidden></label></div><p id="status" aria-live="polite">所有操作在本地。没有云端上传或后台服务。</p></section>
+<section class="review"><h2>02 / 用真实样片确认</h2><p>选用同一场景、明确记录曝光与白平衡的相机样片。这里仅显示文件，不给它们套模拟滤镜。</p>
+<div class="photo"><label class="button secondary">选择样片 A<input id="photoA" type="file" accept="image/jpeg,image/png" hidden></label><figure><img id="imageA" alt="尚未选择样片 A"><figcaption id="captionA">原始样片或第一组配方</figcaption></figure></div>
+<div class="photo"><label class="button secondary">选择样片 B<input id="photoB" type="file" accept="image/jpeg,image/png" hidden></label><figure><img id="imageB" alt="尚未选择样片 B"><figcaption id="captionB">另一组真实配方</figcaption></figure></div>
+<h2>03 / 导出与适配状态</h2><div id="warnings"></div><details><summary>查看将要导出的配方</summary><pre id="json"></pre></details>
+<p class="sub">拟议交付路径：.CVL → 存储卡 CVLOOKS → 幕野 Camera 导入器（待实现）。不用为每个新颜色重编 APK。当前可先按设置单手工输入。</p>
+<p class="sub">更自由的曲线、HSL 和 LUT 调色将是独立的软件颜色工作区。不能将任意 .cube 无损转换为 Sony 参数。</p></section></main>
+<footer>MIT · CineVista project / 配方范围参考 Sony ILCE-7RM2 帮助与 Recipe Lab 方法。当前没有包含上游胶片配方。</footer><script src="look-core.js"></script><script src="studio.js"></script></body></html>

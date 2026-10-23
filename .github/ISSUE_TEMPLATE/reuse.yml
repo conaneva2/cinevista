@@ -1,0 +1,15 @@
+name: Reuse proposal
+description: Evaluate an existing implementation before writing a replacement.
+body:
+  - type: input
+    id: source
+    attributes:
+      label: Upstream repository and immutable commit
+    validations:
+      required: true
+  - type: textarea
+    id: analysis
+    attributes:
+      label: License, exact feature, maturity evidence, API10/ABI fit, adaptation cost and rejection reasons
+    validations:
+      required: true

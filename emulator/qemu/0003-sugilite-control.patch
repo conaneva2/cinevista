@@ -1,0 +1,136 @@
+--- a/hw/misc/Makefile.objs
++++ b/hw/misc/Makefile.objs
+@@ -94,3 +94,5 @@
+ common-obj-$(CONFIG_GRLIB) += grlib_ahb_apb_pnp.o
+ 
+ obj-$(CONFIG_AVR_POWER) += avr_power.o
++
++obj-$(CONFIG_BIONZ) += bionz_sugilite_ctrl.o
+--- a/hw/arm/bionz.c
++++ b/hw/arm/bionz.c
+@@ -1128,6 +1128,7 @@
+ static void cxd90014_machine_init(MachineClass *mc)
+ {
+     mc->desc = "Sony BIONZ CXD90014";
++    machine_class_allow_dynamic_sysbus_dev(mc, "bionz_sugilite_ctrl");
+     mc->init = cxd90014_init;
+     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a5");
+     mc->max_cpus = 2;
+--- /dev/null
++++ b/hw/misc/bionz_sugilite_ctrl.c
+@@ -0,0 +1,115 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* Experimental CXD90014 sugilite control registers, NOT a GPU model.
++ * Evidence: original 4.01 grm_gles clock_up/down; Sony GPL cmpr.h/c:
++ * HTP SET=0, CLR=4, reset asserted by CLR. Do not use CLKRST +4/+8.
++ * Only driver-observed bits are accepted. Power-on state is a lab zero
++ * initial condition, not a measured camera reset value. No clock frequency,
++ * settling time, DMA, rendering, IRQ or completion is implemented.
++ */
++#include "qemu/osdep.h"
++#include "hw/sysbus.h"
++#include "exec/address-spaces.h"
++#include "qemu/log.h"
++
++#define TYPE_SUGI_CTRL "bionz_sugilite_ctrl"
++#define SUGI_CTRL(obj) OBJECT_CHECK(SugiCtrlState, (obj), TYPE_SUGI_CTRL)
++#define NREG 6
++
++typedef struct SugiCtrlReg {
++    MemoryRegion mmio;
++    uint32_t value;
++    unsigned index;
++} SugiCtrlReg;
++
++typedef struct SugiCtrlState {
++    SysBusDevice parent_obj;
++    SugiCtrlReg reg[NREG];
++} SugiCtrlState;
++
++static const hwaddr bases[NREG] = {
++    0xf3400080, 0xf3400280,
++    0xf28040c4, 0xf28041a8, 0xf28050b8, 0xf280518c
++};
++static const uint32_t masks[NREG] = { 0x15, 0x10, 0xf, 0xf, 0xf, 0xf };
++
++static MemTxResult ctrl_read(void *opaque, hwaddr off, uint64_t *value,
++                             unsigned size, MemTxAttrs attrs)
++{
++    SugiCtrlReg *r = opaque;
++    if (off != 0) {
++        qemu_log_mask(LOG_UNIMP, "sugi-ctrl: unsupported read @ 0x%" HWADDR_PRIx "\n", bases[r->index] + off);
++        *value = 0;
++        return MEMTX_ERROR;
++    }
++    *value = r->value;
++    return MEMTX_OK;
++}
++
++static MemTxResult ctrl_write(void *opaque, hwaddr off, uint64_t value,
++                              unsigned size, MemTxAttrs attrs)
++{
++    SugiCtrlReg *r = opaque;
++    if ((value & ~masks[r->index]) || (off != 0 && (r->index >= 2 || off != 4))) {
++        qemu_log_mask(LOG_UNIMP, "sugi-ctrl: unsupported write @ 0x%" HWADDR_PRIx " = 0x%" PRIx64 "\n", bases[r->index] + off, value);
++        return MEMTX_ERROR;
++    }
++    if (r->index >= 2) {
++        r->value = value; /* observed control field; rate/PLL unknown */
++    } else if (off == 0) {
++        r->value |= value;
++    } else {
++        r->value &= ~value;
++    }
++    qemu_log_mask(LOG_UNIMP, "sugi-ctrl: write @ 0x%" HWADDR_PRIx " = 0x%" PRIx64 " state=0x%x\n", bases[r->index] + off, value, r->value);
++    return MEMTX_OK;
++}
++
++static const MemoryRegionOps ctrl_ops = {
++    .read_with_attrs = ctrl_read,
++    .write_with_attrs = ctrl_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid.min_access_size = 4,
++    .valid.max_access_size = 4,
++    .impl.min_access_size = 4,
++    .impl.max_access_size = 4,
++};
++
++static void ctrl_reset(DeviceState *dev)
++{
++    SugiCtrlState *s = SUGI_CTRL(dev);
++    unsigned i;
++    for (i = 0; i < NREG; i++) {
++        s->reg[i].value = 0;
++    }
++}
++
++static void ctrl_realize(DeviceState *dev, Error **errp)
++{
++    SugiCtrlState *s = SUGI_CTRL(dev);
++    unsigned i;
++    for (i = 0; i < NREG; i++) {
++        s->reg[i].index = i;
++        memory_region_init_io(&s->reg[i].mmio, OBJECT(dev), &ctrl_ops,
++                              &s->reg[i], TYPE_SUGI_CTRL, i < 2 ? 8 : 4);
++        sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->reg[i].mmio);
++        sysbus_mmio_map(SYS_BUS_DEVICE(dev), i, bases[i]);
++    }
++}
++
++static void ctrl_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    dc->realize = ctrl_realize;
++    dc->reset = ctrl_reset;
++    dc->user_creatable = true;
++    dc->desc = "Experimental sugilite clock/reset control only (no GPU/IRQ)";
++}
++
++static const TypeInfo ctrl_info = {
++    .name = TYPE_SUGI_CTRL,
++    .parent = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(SugiCtrlState),
++    .class_init = ctrl_class_init,
++};
++static void ctrl_register_types(void) { type_register_static(&ctrl_info); }
++type_init(ctrl_register_types)

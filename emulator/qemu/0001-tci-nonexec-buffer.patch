@@ -1,0 +1,15 @@
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -1066,7 +1066,12 @@
+ #else
+ static inline void *alloc_code_gen_buffer(void)
+ {
++    /* TCI stores bytecode, not executable host instructions. */
++#ifdef CONFIG_TCG_INTERPRETER
++    int prot = PROT_WRITE | PROT_READ;
++#else
+     int prot = PROT_WRITE | PROT_READ | PROT_EXEC;
++#endif
+     int flags = MAP_PRIVATE | MAP_ANONYMOUS;
+     size_t size = tcg_ctx->code_gen_buffer_size;
+     void *buf;

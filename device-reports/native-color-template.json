@@ -1,0 +1,38 @@
+{
+  "schema": "cinevista.native-color-evidence/1",
+  "status": "unknown",
+  "model": "ILCE-7RM2",
+  "firmware": null,
+  "sdk_int": null,
+  "apk_sha256": null,
+  "look_fingerprint": null,
+  "settings_map_revision": null,
+  "native_mode": null,
+  "original_settings_backup": null,
+  "checks": {
+    "scoped-write-readback": {
+      "state": "unknown",
+      "evidence": []
+    },
+    "native-shoot-after-exit": {
+      "state": "unknown",
+      "evidence": []
+    },
+    "native-shoot-after-reboot-without-app": {
+      "state": "unknown",
+      "evidence": []
+    },
+    "restore": {
+      "state": "unknown",
+      "evidence": []
+    },
+    "preview-match": {
+      "state": "unknown",
+      "evidence": []
+    }
+  },
+  "completed_normal_power_cycles": 0,
+  "app_started_before_postboot_capture": null,
+  "known_overrides": [],
+  "notes": "模板不是设备报告；禁止用 App 重施参数、自启动或主机测试作为原生重启通过证据。"
+}

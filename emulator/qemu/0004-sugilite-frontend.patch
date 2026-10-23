@@ -1,0 +1,174 @@
+--- /dev/null
++++ b/hw/misc/bionz_sugilite_frontend.c
+@@ -0,0 +1,153 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* Experimental, opt-in command fetch/decode observer, NOT a GPU executor.
++ * Original 4.01 libObj+67e7c0 writes physical base to +1804, count to +1800.
++ * +6bd0a0 builds [id << 16 | 0xf000, value], 8 bytes per single-value unit.
++ * This observer samples RAM at the count write; that sampling point is NOT
++ * a claim about hardware start timing. No DMA writes, opcode side effects,
++ * GPU register readbacks, completion status, IRQ, rendering or performance.
++ * Unknown formats are refused. Even decoded instructions remain unexecuted.
++ */
++#include "qemu/osdep.h"
++#include "hw/sysbus.h"
++#include "exec/address-spaces.h"
++#include "qemu/log.h"
++
++#define TYPE_SUGI_FRONT "bionz_sugilite_frontend"
++#define SUGI_FRONT(obj) OBJECT_CHECK(SugiFrontState, (obj), TYPE_SUGI_FRONT)
++/* Host diagnostic budget, NOT a hardware limit. */
++#define LAB_MAX_UNITS 256
++
++typedef struct SugiFrontState {
++    SysBusDevice parent_obj;
++    MemoryRegion mmio;
++    uint32_t observed_address;
++    bool address_observed;
++} SugiFrontState;
++
++static void front_sample(SugiFrontState *s, uint32_t count)
++{
++    hwaddr addr = s->observed_address;
++    hwaddr bytes = (hwaddr)count * 8, translated, available = bytes;
++    MemoryRegion *mr;
++    uint8_t data[LAB_MAX_UNITS * 8];
++    const char *reason = NULL;
++    unsigned i;
++
++    if (!s->address_observed) {
++        reason = "address-not-observed";
++    } else if (count == 0) {
++        reason = "zero-count";
++    } else if (count > LAB_MAX_UNITS) {
++        reason = "lab-count-limit";
++    } else if (addr & 7) {
++        reason = "unaligned-address";
++    } else if (addr < 0x80000000ULL || addr + bytes > 0xc0000000ULL) {
++        reason = "outside-ram-range";
++    }
++    /* Diagnostic latch only. Never infer another task from stale input. */
++    s->address_observed = false;
++    if (reason) {
++        qemu_log_mask(LOG_UNIMP, "sugi-fetch: blocked reason=%s addr=0x%"
++                      HWADDR_PRIx " units=%u\n", reason, addr, count);
++        return;
++    }
++    /* Reject MMIO, holes, ROM and cross-region reads before touching memory. */
++    mr = address_space_translate(&address_space_memory, addr, &translated,
++                                 &available, false, MEMTXATTRS_UNSPECIFIED);
++    if (available < bytes || !memory_region_is_ram(mr) ||
++        memory_region_is_ram_device(mr) || memory_region_is_rom(mr)) {
++        qemu_log_mask(LOG_UNIMP,
++                      "sugi-fetch: blocked reason=not-contiguous-writable-ram\n");
++        return;
++    }
++    if (address_space_read(&address_space_memory, addr, MEMTXATTRS_UNSPECIFIED,
++                           data, bytes) != MEMTX_OK) {
++        qemu_log_mask(LOG_UNIMP, "sugi-fetch: blocked reason=ram-read-error\n");
++        return;
++    }
++    qemu_log_mask(LOG_UNIMP, "sugi-fetch: submit addr=0x%" HWADDR_PRIx
++                  " units=%u bytes=%" HWADDR_PRIu "\n", addr, count, bytes);
++    for (i = 0; i < count; i++) {
++        uint32_t header = ldl_le_p(data + i * 8);
++        uint32_t value = ldl_le_p(data + i * 8 + 4);
++        if ((header & 0xffff) != 0xf000) {
++            qemu_log_mask(LOG_UNIMP, "sugi-fetch: blocked reason=unsupported-format"
++                          " unit=%u header=0x%08x\n", i, header);
++            return;
++        }
++        /* Opaque ID/value: no guessed meaning for 116/117/44/10 or others. */
++        qemu_log_mask(LOG_UNIMP, "sugi-fetch: unit=%u id=0x%04x value=0x%08x\n",
++                      i, header >> 16, value);
++    }
++    qemu_log_mask(LOG_UNIMP, "sugi-fetch: blocked reason=execution-unimplemented"
++                  " decoded=%u dma-writes=0 irq=0\n", count);
++}
++
++static MemTxResult front_read(void *opaque, hwaddr off, uint64_t *value,
++                              unsigned size, MemTxAttrs attrs)
++{
++    /* The builder only proves writes; no invented readback semantics. */
++    *value = 0;
++    qemu_log_mask(LOG_UNIMP, "sugi-fetch: unsupported register read +0x%"
++                  HWADDR_PRIx "\n", 0x1800 + off);
++    return MEMTX_ERROR;
++}
++
++static MemTxResult front_write(void *opaque, hwaddr off, uint64_t value,
++                               unsigned size, MemTxAttrs attrs)
++{
++    SugiFrontState *s = opaque;
++    if (off == 4) {
++        s->observed_address = value;
++        s->address_observed = true;
++    } else if (off == 0) {
++        front_sample(s, value);
++    } else {
++        return MEMTX_ERROR;
++    }
++    return MEMTX_OK;
++}
++
++static const MemoryRegionOps front_ops = {
++    .read_with_attrs = front_read,
++    .write_with_attrs = front_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid.min_access_size = 4,
++    .valid.max_access_size = 4,
++    .impl.min_access_size = 4,
++    .impl.max_access_size = 4,
++};
++
++static void front_reset(DeviceState *dev)
++{
++    SugiFrontState *s = SUGI_FRONT(dev);
++    s->observed_address = 0;
++    s->address_observed = false;
++}
++
++static void front_realize(DeviceState *dev, Error **errp)
++{
++    SugiFrontState *s = SUGI_FRONT(dev);
++    memory_region_init_io(&s->mmio, OBJECT(dev), &front_ops, s,
++                          TYPE_SUGI_FRONT, 8);
++    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->mmio);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0xf1001800);
++}
++
++static void front_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    dc->realize = front_realize;
++    dc->reset = front_reset;
++    dc->user_creatable = true;
++    dc->desc = "Experimental sugilite RAM command observer (no execution/IRQ)";
++}
++
++static const TypeInfo front_info = {
++    .name = TYPE_SUGI_FRONT,
++    .parent = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(SugiFrontState),
++    .class_init = front_class_init,
++};
++static void front_register_types(void) { type_register_static(&front_info); }
++type_init(front_register_types)
+--- a/hw/misc/Makefile.objs
++++ b/hw/misc/Makefile.objs
+@@ -96,3 +96,5 @@
+ obj-$(CONFIG_AVR_POWER) += avr_power.o
+ 
+ obj-$(CONFIG_BIONZ) += bionz_sugilite_ctrl.o
++
++obj-$(CONFIG_BIONZ) += bionz_sugilite_frontend.o
+--- a/hw/arm/bionz.c
++++ b/hw/arm/bionz.c
+@@ -1129,6 +1129,7 @@
+ {
+     mc->desc = "Sony BIONZ CXD90014";
+     machine_class_allow_dynamic_sysbus_dev(mc, "bionz_sugilite_ctrl");
++    machine_class_allow_dynamic_sysbus_dev(mc, "bionz_sugilite_frontend");
+     mc->init = cxd90014_init;
+     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a5");
+     mc->max_cpus = 2;

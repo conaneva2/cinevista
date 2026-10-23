@@ -1,0 +1,84 @@
+{
+  "schema_version": 2,
+  "required": [
+    {
+      "id": "production-package-owner",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "sdk-build-and-signature",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "runtime-api-audit",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "target-model-install",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "source-file-safety",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "wide-framing-calibration",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "anamorphic-content-transform",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "color-capability-mapping",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "license-and-assets-review",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "production-signing-approval",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "native-color-exit-retention",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "native-color-powercycle-without-app",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "native-color-scoped-restore",
+      "state": "unknown",
+      "evidence": []
+    },
+    {
+      "id": "native-preview-model-validation",
+      "state": "unknown",
+      "evidence": []
+    }
+  ],
+  "optional_features": [
+    {
+      "id": "software-lut-camera-roundtrip",
+      "state": "unknown",
+      "evidence": [],
+      "note": "若发行版包含软件上色则独立验收；不替代原生持久化必需门禁。当前软件相机端未实现。",
+      "enabled": false
+    }
+  ]
+}

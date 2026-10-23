@@ -1,0 +1,473 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-8qb0dwYUSb6S+wcyc+3qqE5NnF7EJ+iKdB937k/Ssl0='; style-src 'sha256-TeiLdJzQR+1N/WOqmyJ3S8YVEoJODVwgnnfPgeoNAOU='; img-src blob: data:; worker-src blob:; child-src blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"><title>幕野 Studio · 实时调色</title><style>*{box-sizing:border-box}body{margin:0;background:#f2f1ed;color:#222b2b;font:14px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{padding:18px 3%;display:flex;justify-content:space-between;align-items:center;background:#172c2a;color:#faf9f4;gap:20px}h1{font-size:29px;margin:0;font-weight:650;letter-spacing:3px}h1 span{font-size:17px;letter-spacing:1px;font-weight:400;margin-left:8px}header p{margin:3px 0;color:#bdcfca;font-size:13px}.tag{font-size:12px;border:1px solid #637d77;padding:7px 12px}.notice{margin:18px 3% 0;padding:12px 17px;background:#fff2d7;border-left:3px solid #a17121;font-size:13px}main{display:grid;grid-template-columns:minmax(290px,340px) minmax(500px,1fr);gap:20px;padding:20px 3%}.panel{background:white;border:1px solid #d8ded8;padding:20px;min-width:0}.controls{max-height:calc(100vh - 200px);overflow:auto}h2{font-size:14px;letter-spacing:1px;margin:0 0 12px}.sectiontitle{margin-top:22px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:12px;color:#4d5b58}input,select,textarea{font:inherit;width:100%;padding:7px 9px;border:1px solid #b5c5be;background:#fff;color:#152d25;border-radius:3px;margin-top:4px}input[type=range]{padding:0;accent-color:#224e41}.param{padding:8px 0;border-bottom:1px solid #edf0ed}.sliderline{display:flex;align-items:center;gap:10px}.sliderline input{flex:1;min-width:0}output{width:42px;text-align:right;font-size:12px;font-variant-numeric:tabular-nums;color:#183f36;font-weight:600}.actions,.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}button,.button{font:inherit;font-size:12px;padding:9px 12px;background:#224e41;color:white;border:0;border-radius:3px;cursor:pointer;display:inline-block;line-height:1.5}button:disabled{opacity:.4;cursor:not-allowed}.secondary{background:#e9eee9;color:#254737}.small{max-width:180px;padding:6px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sub{font-size:12px;color:#697672;margin:9px 0}summary{cursor:pointer;font-size:13px;font-weight:600;padding:11px 0}details{border-top:1px solid #dce2db}#curvePreview{width:100%;height:105px}figure{margin:14px 0;background:#25322e;min-height:290px;display:flex;align-items:center;justify-content:center;padding:12px;position:relative}#preview{max-width:100%;height:auto;max-height:56vh;object-fit:contain}#preview[hidden]{display:none}#empty{color:#cad8d1;text-align:center;padding:40px;font-size:15px}#compareLabel{font-size:12px;color:#506a5c}#photoMeta{font-size:12px;overflow-wrap:anywhere}.tools select{width:auto;max-width:220px;margin:0;font-size:12px}.tools input[type=range]{width:120px;margin:0}#sampleTabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.export{margin-top:18px;padding-top:16px;border-top:1px solid #dce2db}.check{display:flex;align-items:flex-start;gap:9px;margin:12px 0}.check input{width:16px;margin-top:4px;flex:none}.check span{font-size:12px}#status{font-size:12px;min-height:26px;color:#436557}#error{font-size:13px;color:#a33030;white-space:pre-wrap}footer{padding:0 3% 24px;font-size:12px;color:#697672}input:focus,select:focus,textarea:focus,button:focus-visible,.button:focus-within{outline:2px solid #af8e46;outline-offset:2px}@media(max-width:1000px){main{grid-template-columns:minmax(270px,310px) 1fr}.tag{display:none}}@media(max-width:780px){main{grid-template-columns:1fr}.controls{max-height:none;order:2}.viewer{order:1}header{align-items:start}#preview{max-height:none}}
+</style></head><body>
+<header><div><h1>幕野 <span>Studio</span></h1><p>导入样张，看着颜色调整。预览与导出使用同一份 LUT。</p></div><div class="tag">0.2 ALPHA · 本地实时软件调色</div></header>
+<div class="notice"><b>软件颜色工作区。</b>本页保留实时软件调色，但导出的 LUT 不能让相机在退出幕野、重启后原生拍照时自动生效。原生直拍是项目主目标，其受限预览标定与发布器尚未完成；本页不是 Sony 原生 PP 模拟器。仅按 sRGB 全范围设计，不处理 RAW、Log 或 HDR。</div>
+<main><section class="panel controls"><h2>01 / 自制颜色</h2>
+<div class="two"><label>配方名称<input id="name" maxlength="64" value="我的胶片颜色"></label><label>文件代号<input id="id" maxlength="8" value="MYLOOK01" spellcheck="false"></label></div>
+<div class="actions sectiontitle"><button id="undo" class="secondary">撤销</button><button id="redo" class="secondary">重做</button><button id="reset" class="secondary">恢复中性</button></div>
+<div id="basic"></div><details><summary>明暗曲线 · 五点</summary><canvas id="curvePreview" width="280" height="105"></canvas><p class="sub">全局 RGB 明暗曲线。节点单调约束，使用分段线性映射；不是索尼 Gamma 菜单。</p><div id="curve"></div></details>
+<details><summary>阴影 / 高光偏色</summary><div id="splitTone"></div></details><details><summary>六色调整 · HSV 色相与饱和度</summary><div id="selective"></div></details>
+<p class="sub">本版不添加颗粒、晕光、模糊或空间蒙版，以确保所有可见调色都能写进同一份 3D LUT。</p></section>
+<section class="panel viewer"><h2>02 / 实时样张</h2><div class="tools"><label class="button">导入样张<input id="photos" type="file" accept="image/jpeg,image/png" multiple hidden></label>
+<select id="resolution" aria-label="预览分辨率"><option value="640">预览长边 640</option><option value="960" selected>预览长边 960</option><option value="1600">预览长边 1600</option></select>
+<select id="compare" aria-label="对照方式"><option value="after">当前调色</option><option value="split">左右对照</option><option value="before">原图</option></select><button id="hold" class="secondary">按住看原图</button></div>
+<div id="sampleTabs"></div><figure><div id="empty">导入一张你的照片<br><small>最多 6 张，可切换检查同一颜色；不上传照片。</small></div><canvas id="preview" hidden aria-label="调色预览"></canvas></figure>
+<div class="tools"><span id="compareLabel">当前调色</span><input id="split" type="range" min="0" max="100" value="50" aria-label="左右对照分界位置"></div><p id="photoMeta" class="sub">使用与相机软件出片相同基线的 sRGB JPEG；预览降采样不改变导出的 LUT。</p>
+<p id="status" role="status" aria-live="polite">初始化…</p><div id="error" role="alert"></div>
+<div class="export"><h2>03 / 保存与导出</h2><div class="two"><label>LUT 网格<select id="size"><option value="17">17³ · 更小</option><option value="33" selected>33³ · 更细</option></select></label><div><span class="sub">继续编辑</span><label class="button secondary">导入工程 .CVG<input id="openProject" type="file" accept=".CVG,.cvg,.json" hidden></label></div></div>
+<label class="sectiontitle">样张的相机输入基线<textarea id="baseline" rows="2" maxlength="600" placeholder="记录实际的 Creative Style 或 PP、DRO、白平衡策略等。不要把不同配方的 JPEG 当作同一输入。"></textarea></label>
+<label class="check"><input id="confirmInput" type="checkbox"><span>我确认此样张用于 sRGB 软件调色；将来相机应用时使用相同输入基线，不重复套用另一份外观。此确认不是机型兼容认证。</span></label>
+<div class="actions"><button id="saveProject" class="secondary">保存工程 .CVG</button><button id="exportCube">导出 LUT .CUBE</button><button id="exportPackage">导出 App 素材 .CVP</button><button id="exportImage" class="secondary">导出预览 PNG</button></div>
+<p class="sub">.CUBE 为当前可见颜色表；.CVG 保留可编辑参数；.CVP 是 App 内软件上色素材，不是机身原生持久预设；Camera 导入器待实现。相机不会自动识别这些自定义文件。预览 PNG 不是原尺寸成片。</p></div></section></main>
+<footer>MIT · CineVista / Camera v0.4 保持不变；v0.6 仅修订原生持久化要求与本页范围提示，未新增相机实现。浏览器负责图像解码、sRGB 画布与缩放；本工具未标定你的显示器，也未实测 macOS 27 / Safari 或 A7R II。没有联网请求或云端处理。</footer>
+<script type="text/plain" id="worker-core">/* SPDX-License-Identifier: MIT
+ * CineVista software-look prototype. NOT a Sony CS/PP emulator.
+ * Browser decoding/colour conversion/resampling are provided by the platform.
+ * Small bounded RGB LUT contract; no general RAW, ICC or LUT framework here.
+ */
+(function (root) {
+  'use strict';
+  const VERSION = 'cinevista-rgb-look/0.2';
+  const fields = [
+    ['exposure','数字亮度 / EV',0,-2,2,0.05],
+    ['temperature','冷暖（创作偏色，非相机 K 值）',0,-100,100,1],
+    ['tint','绿 / 洋红（创作偏色）',0,-100,100,1],
+    ['contrast','对比度',0,-100,100,1],
+    ['saturation','饱和度',0,-100,100,1],
+    ['vibrance','低饱和色增强',0,-100,100,1],
+    ['shadows','暗部亮度',0,-100,100,1],
+    ['highlights','亮部亮度',0,-100,100,1],
+    ['fade','黑位抬升',0,0,100,1],
+    ['shadowWarmth','阴影冷暖',0,-100,100,1],
+    ['highlightWarmth','高光冷暖',0,-100,100,1],
+    ['shadowTint','阴影绿 / 洋红',0,-100,100,1],
+    ['highlightTint','高光绿 / 洋红',0,-100,100,1]
+  ].map(x=>({key:x[0],label:x[1],value:x[2],min:x[3],max:x[4],step:x[5]}));
+  const clamp = x => Math.min(1,Math.max(0,x));
+  const cleanText = (s,n) => typeof s==='string' && s.length<=n && !/[\x00-\x08\x0b\x0c\x0e-\x1f]/.test(s);
+  function parameters() {
+    const p={}; fields.forEach(f=>p[f.key]=f.value);
+    p.curve=[0,0.25,0.5,0.75,1];p.hue=[0,0,0,0,0,0];p.chroma=[0,0,0,0,0,0];return p;
+  }
+  function validate(p) {
+    if(!p || typeof p!=='object' || Array.isArray(p))throw Error('调色参数必须为对象');
+    const allowed=fields.map(f=>f.key).concat(['curve','hue','chroma']);
+    if(Object.keys(p).some(k=>!allowed.includes(k)))throw Error('不支持的调色参数');
+    fields.forEach(f=>{if(typeof p[f.key]!=='number'||!Number.isFinite(p[f.key])||p[f.key]<f.min||p[f.key]>f.max)throw Error('参数超出范围: '+f.key);});
+    for(const [key,n,lo,hi] of [['curve',5,0,1],['hue',6,-30,30],['chroma',6,-100,100]]){
+      if(!Array.isArray(p[key])||p[key].length!==n||p[key].some(v=>typeof v!=='number'||!Number.isFinite(v)||v<lo||v>hi))throw Error('无效数组: '+key);
+    }
+    if(p.curve.some((v,i)=>i>0&&v<p.curve[i-1]))throw Error('明暗曲线必须单调；不能让高输入点低于前一点');
+    return p;
+  }
+  const decode = x => x<=0.04045?x/12.92:Math.pow((x+0.055)/1.055,2.4);
+  const encode = x => x<=0.0031308?12.92*x:1.055*Math.pow(x,1/2.4)-0.055;
+  function curve(x,a){x=clamp(x)*4;const i=Math.min(3,Math.floor(x));return a[i]+(a[i+1]-a[i])*(x-i);}
+  function rgbToHsv(r,g,b){
+    const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;let h=0;
+    if(d>1e-12){if(max===r)h=(g-b)/d+(g<b?6:0);else if(max===g)h=(b-r)/d+2;else h=(r-g)/d+4;h/=6;}
+    return [h,max===0?0:d/max,max];
+  }
+  function hsvToRgb(h,s,v){h=((h%1)+1)%1*6;const i=Math.floor(h),f=h-i,p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s);
+    return [[v,t,p],[q,v,p],[p,v,t],[p,q,v],[t,p,v],[v,p,q]][i%6];}
+  function transform(r,g,b,p){
+    const e=Math.pow(2,p.exposure);
+    const warm=p.temperature/100,tint=p.tint/100;
+    r=encode(decode(r)*e*Math.pow(2,0.30*warm+0.10*tint));
+    g=encode(decode(g)*e*Math.pow(2,-0.20*tint));
+    b=encode(decode(b)*e*Math.pow(2,-0.30*warm+0.10*tint));
+    const y=clamp(0.2126*r+0.7152*g+0.0722*b), dark=(1-y)*(1-y), light=y*y;
+    const offset=0.22*(p.shadows/100*dark+p.highlights/100*light);
+    const w=(p.shadowWarmth*dark+p.highlightWarmth*light)/100*0.075;
+    const t=(p.shadowTint*dark+p.highlightTint*light)/100*0.060;
+    r+=offset+w+t*.5;g+=offset-t;b+=offset-w+t*.5;
+    const k=Math.pow(2,p.contrast/100);
+    const adjust=x=>curve(clamp((x-0.5)*k+0.5)+p.fade/100*0.1*Math.pow(1-clamp(x),2),p.curve);
+    r=adjust(r);g=adjust(g);b=adjust(b);
+    let lum=.2126*r+.7152*g+.0722*b;
+    const hi=Math.max(r,g,b),lo=Math.min(r,g,b),sat0=hi>0?(hi-lo)/hi:0;
+    const sat=Math.max(0,(1+p.saturation/100)*(1+p.vibrance/100*(1-sat0)));
+    r=clamp(lum+(r-lum)*sat);g=clamp(lum+(g-lum)*sat);b=clamp(lum+(b-lum)*sat);
+    if(p.hue.some(x=>x!==0)||p.chroma.some(x=>x!==0)){
+      let [h,s,v]=rgbToHsv(r,g,b);const pos=h*6,i=Math.floor(pos)%6,f=pos-Math.floor(pos),j=(i+1)%6;
+      h+=(p.hue[i]*(1-f)+p.hue[j]*f)/360;
+      s=clamp(s*(1+(p.chroma[i]*(1-f)+p.chroma[j]*f)/100));
+      [r,g,b]=hsvToRgb(h,s,v);
+    }
+    return [clamp(r),clamp(g),clamp(b)];
+  }
+  function buildLut(p,size=33){
+    validate(p);if(![17,33].includes(size))throw Error('本原型仅支持 17³ 或 33³');
+    const values=new Float32Array(3*size*size*size);let o=0;
+    // Iridas .cube: red varies fastest, then green, then blue.
+    for(let b=0;b<size;b++)for(let g=0;g<size;g++)for(let r=0;r<size;r++){
+      const v=transform(r/(size-1),g/(size-1),b/(size-1),p);
+      values[o++]=v[0];values[o++]=v[1];values[o++]=v[2];
+    }
+    return {size,values};
+  }
+  function checkLut(lut){
+    if(!lut||![17,33].includes(lut.size)||!(lut.values instanceof Float32Array)||lut.values.length!==3*lut.size**3)throw Error('无效 LUT');
+    for(const v of lut.values)if(!Number.isFinite(v)||v<0||v>1)throw Error('LUT 仅支持有限 0–1 数值');return lut;
+  }
+  function sample(lut,r,g,b,out=[0,0,0]){
+    const n=lut.size,m=n-1;
+    const x=clamp(r)*m,y=clamp(g)*m,z=clamp(b)*m;
+    const ix=Math.min(m-1,Math.floor(x)),iy=Math.min(m-1,Math.floor(y)),iz=Math.min(m-1,Math.floor(z));
+    const dx=x-ix,dy=y-iy,dz=z-iz,a=lut.values;
+    const i=3*(ix+n*(iy+n*iz)),sy=n*3,sz=n*n*3;
+    for(let c=0;c<3;c++){
+      const p=i+c;
+      const u0=a[p]*(1-dx)+a[p+3]*dx,u1=a[p+sy]*(1-dx)+a[p+sy+3]*dx;
+      const u2=a[p+sz]*(1-dx)+a[p+sz+3]*dx,u3=a[p+sz+sy]*(1-dx)+a[p+sz+sy+3]*dx;
+      out[c]=(u0*(1-dy)+u1*dy)*(1-dz)+(u2*(1-dy)+u3*dy)*dz;
+    }return out;
+  }
+  function apply(lut,rgba){
+    checkLut(lut);if(!rgba||rgba.length%4)throw Error('需要 RGBA 像素');
+    const out=new Uint8ClampedArray(rgba.length),v=[0,0,0];
+    for(let i=0;i<rgba.length;i+=4){sample(lut,rgba[i]/255,rgba[i+1]/255,rgba[i+2]/255,v);
+      out[i]=Math.floor(clamp(v[0])*255+.5);out[i+1]=Math.floor(clamp(v[1])*255+.5);out[i+2]=Math.floor(clamp(v[2])*255+.5);out[i+3]=rgba[i+3];}
+    return out;
+  }
+  function cube(lut,id='MYLOOK01'){
+    checkLut(lut);if(!/^[A-Z0-9_]{1,8}$/.test(id))throw Error('文件代号须为 1–8 位大写字母、数字或下划线');
+    const rows=['TITLE "'+id+'"','# CineVista software look. sRGB full-range -> sRGB full-range.',
+      '# Interpolation contract: trilinear; no Sony PP/CS emulation.',
+      'LUT_3D_SIZE '+lut.size,'DOMAIN_MIN 0 0 0','DOMAIN_MAX 1 1 1'];
+    for(let i=0;i<lut.values.length;i+=3)rows.push([lut.values[i],lut.values[i+1],lut.values[i+2]].map(x=>x.toPrecision(9)).join(' '));
+    return rows.join('\n')+'\n';
+  }
+  function project(p,meta){
+    validate(p);meta=meta||{};
+    if(!/^[A-Z0-9_]{1,8}$/.test(meta.id||''))throw Error('配方代号须为 1–8 位大写字母、数字或下划线');
+    if(!cleanText(meta.name,64)||!meta.name.trim())throw Error('请填写配方名称');
+    if(!cleanText(meta.baseline||'',600))throw Error('源设置说明过长或包含控制字符');
+    if(![17,33].includes(meta.size))throw Error('无效 LUT 尺寸');
+    return {schema:'cinevista.grade/1',algorithm:VERSION,id:meta.id,name:meta.name,size:meta.size,
+      input:{encoding:'sRGB',range:'full',stage:'jpeg-before-software-look',camera_baseline:meta.baseline||''},
+      output:{encoding:'sRGB',range:'full'},interpolation:'trilinear',parameters:JSON.parse(JSON.stringify(p)),
+      camera_status:'unverified'};
+  }
+  function parseProject(text){
+    if(typeof text!=='string'||new TextEncoder().encode(text).length>65536)throw Error('工程文件过大');
+    const v=JSON.parse(text);
+    if(!v||v.schema!=='cinevista.grade/1'||v.algorithm!==VERSION)throw Error('工程版本或调色算法不兼容');
+    const allowed=['schema','algorithm','id','name','size','input','output','interpolation','parameters','camera_status'];
+    if(Object.keys(v).some(k=>!allowed.includes(k)))throw Error('工程包含未知字段');
+    if(v.camera_status!=='unverified'||v.interpolation!=='trilinear'||v.input?.encoding!=='sRGB'||v.input?.range!=='full'||v.input?.stage!=='jpeg-before-software-look'||v.output?.encoding!=='sRGB'||v.output?.range!=='full')throw Error('此原型只支持未认证的 sRGB 全范围软件颜色工程');
+    return project(v.parameters,{id:v.id,name:v.name,size:v.size,baseline:v.input.camera_baseline});
+  }
+  function makePackage(p,meta,lut){
+    const v=project(p,meta);if(!v.input.camera_baseline.trim())throw Error('先记录样张的相机颜色设置，避免机内重复上色');
+    if(lut.size!==v.size)throw Error('LUT 分辨率不一致');
+    return {schema:'cinevista.lut-package/1',status:'draft-camera-importer-not-implemented',project:v,
+      payload:{kind:'iridas-cube',text:cube(lut,v.id)},notes:'离线软件调色数据；不是 Sony 原生 Picture Profile；原片应保留。'};
+  }
+  const api={VERSION,fields,parameters,validate,transform,buildLut,checkLut,sample,apply,cube,project,parseProject,makePackage};
+  if(typeof module==='object'&&module.exports)module.exports=api;root.CineVistaGrade=api;
+}(typeof globalThis==='undefined'?this:globalThis));
+</script><script type="text/plain" id="worker-body">/* SPDX-License-Identifier: MIT — in-memory Worker; latest-result selection is owned by UI. */
+let source=null;
+self.onmessage=function(e){
+  const m=e.data;
+  try{
+    if(m.type==='image'){source=m.pixels?new Uint8ClampedArray(m.pixels):null;return;}
+    if(m.type!=='render')throw Error('Unknown worker message');
+    const start=performance.now(),lut=CineVistaGrade.buildLut(m.parameters,m.size);
+    const pixels=source?CineVistaGrade.apply(lut,source):null;
+    self.postMessage({type:'render',id:m.id,size:lut.size,lut:lut.values.buffer,
+      pixels:pixels?pixels.buffer:null,ms:performance.now()-start},pixels?[lut.values.buffer,pixels.buffer]:[lut.values.buffer]);
+  }catch(err){self.postMessage({type:'error',id:m.id,message:String(err.message||err)});}
+};
+</script><script>/* SPDX-License-Identifier: MIT
+ * CineVista software-look prototype. NOT a Sony CS/PP emulator.
+ * Browser decoding/colour conversion/resampling are provided by the platform.
+ * Small bounded RGB LUT contract; no general RAW, ICC or LUT framework here.
+ */
+(function (root) {
+  'use strict';
+  const VERSION = 'cinevista-rgb-look/0.2';
+  const fields = [
+    ['exposure','数字亮度 / EV',0,-2,2,0.05],
+    ['temperature','冷暖（创作偏色，非相机 K 值）',0,-100,100,1],
+    ['tint','绿 / 洋红（创作偏色）',0,-100,100,1],
+    ['contrast','对比度',0,-100,100,1],
+    ['saturation','饱和度',0,-100,100,1],
+    ['vibrance','低饱和色增强',0,-100,100,1],
+    ['shadows','暗部亮度',0,-100,100,1],
+    ['highlights','亮部亮度',0,-100,100,1],
+    ['fade','黑位抬升',0,0,100,1],
+    ['shadowWarmth','阴影冷暖',0,-100,100,1],
+    ['highlightWarmth','高光冷暖',0,-100,100,1],
+    ['shadowTint','阴影绿 / 洋红',0,-100,100,1],
+    ['highlightTint','高光绿 / 洋红',0,-100,100,1]
+  ].map(x=>({key:x[0],label:x[1],value:x[2],min:x[3],max:x[4],step:x[5]}));
+  const clamp = x => Math.min(1,Math.max(0,x));
+  const cleanText = (s,n) => typeof s==='string' && s.length<=n && !/[\x00-\x08\x0b\x0c\x0e-\x1f]/.test(s);
+  function parameters() {
+    const p={}; fields.forEach(f=>p[f.key]=f.value);
+    p.curve=[0,0.25,0.5,0.75,1];p.hue=[0,0,0,0,0,0];p.chroma=[0,0,0,0,0,0];return p;
+  }
+  function validate(p) {
+    if(!p || typeof p!=='object' || Array.isArray(p))throw Error('调色参数必须为对象');
+    const allowed=fields.map(f=>f.key).concat(['curve','hue','chroma']);
+    if(Object.keys(p).some(k=>!allowed.includes(k)))throw Error('不支持的调色参数');
+    fields.forEach(f=>{if(typeof p[f.key]!=='number'||!Number.isFinite(p[f.key])||p[f.key]<f.min||p[f.key]>f.max)throw Error('参数超出范围: '+f.key);});
+    for(const [key,n,lo,hi] of [['curve',5,0,1],['hue',6,-30,30],['chroma',6,-100,100]]){
+      if(!Array.isArray(p[key])||p[key].length!==n||p[key].some(v=>typeof v!=='number'||!Number.isFinite(v)||v<lo||v>hi))throw Error('无效数组: '+key);
+    }
+    if(p.curve.some((v,i)=>i>0&&v<p.curve[i-1]))throw Error('明暗曲线必须单调；不能让高输入点低于前一点');
+    return p;
+  }
+  const decode = x => x<=0.04045?x/12.92:Math.pow((x+0.055)/1.055,2.4);
+  const encode = x => x<=0.0031308?12.92*x:1.055*Math.pow(x,1/2.4)-0.055;
+  function curve(x,a){x=clamp(x)*4;const i=Math.min(3,Math.floor(x));return a[i]+(a[i+1]-a[i])*(x-i);}
+  function rgbToHsv(r,g,b){
+    const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;let h=0;
+    if(d>1e-12){if(max===r)h=(g-b)/d+(g<b?6:0);else if(max===g)h=(b-r)/d+2;else h=(r-g)/d+4;h/=6;}
+    return [h,max===0?0:d/max,max];
+  }
+  function hsvToRgb(h,s,v){h=((h%1)+1)%1*6;const i=Math.floor(h),f=h-i,p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s);
+    return [[v,t,p],[q,v,p],[p,v,t],[p,q,v],[t,p,v],[v,p,q]][i%6];}
+  function transform(r,g,b,p){
+    const e=Math.pow(2,p.exposure);
+    const warm=p.temperature/100,tint=p.tint/100;
+    r=encode(decode(r)*e*Math.pow(2,0.30*warm+0.10*tint));
+    g=encode(decode(g)*e*Math.pow(2,-0.20*tint));
+    b=encode(decode(b)*e*Math.pow(2,-0.30*warm+0.10*tint));
+    const y=clamp(0.2126*r+0.7152*g+0.0722*b), dark=(1-y)*(1-y), light=y*y;
+    const offset=0.22*(p.shadows/100*dark+p.highlights/100*light);
+    const w=(p.shadowWarmth*dark+p.highlightWarmth*light)/100*0.075;
+    const t=(p.shadowTint*dark+p.highlightTint*light)/100*0.060;
+    r+=offset+w+t*.5;g+=offset-t;b+=offset-w+t*.5;
+    const k=Math.pow(2,p.contrast/100);
+    const adjust=x=>curve(clamp((x-0.5)*k+0.5)+p.fade/100*0.1*Math.pow(1-clamp(x),2),p.curve);
+    r=adjust(r);g=adjust(g);b=adjust(b);
+    let lum=.2126*r+.7152*g+.0722*b;
+    const hi=Math.max(r,g,b),lo=Math.min(r,g,b),sat0=hi>0?(hi-lo)/hi:0;
+    const sat=Math.max(0,(1+p.saturation/100)*(1+p.vibrance/100*(1-sat0)));
+    r=clamp(lum+(r-lum)*sat);g=clamp(lum+(g-lum)*sat);b=clamp(lum+(b-lum)*sat);
+    if(p.hue.some(x=>x!==0)||p.chroma.some(x=>x!==0)){
+      let [h,s,v]=rgbToHsv(r,g,b);const pos=h*6,i=Math.floor(pos)%6,f=pos-Math.floor(pos),j=(i+1)%6;
+      h+=(p.hue[i]*(1-f)+p.hue[j]*f)/360;
+      s=clamp(s*(1+(p.chroma[i]*(1-f)+p.chroma[j]*f)/100));
+      [r,g,b]=hsvToRgb(h,s,v);
+    }
+    return [clamp(r),clamp(g),clamp(b)];
+  }
+  function buildLut(p,size=33){
+    validate(p);if(![17,33].includes(size))throw Error('本原型仅支持 17³ 或 33³');
+    const values=new Float32Array(3*size*size*size);let o=0;
+    // Iridas .cube: red varies fastest, then green, then blue.
+    for(let b=0;b<size;b++)for(let g=0;g<size;g++)for(let r=0;r<size;r++){
+      const v=transform(r/(size-1),g/(size-1),b/(size-1),p);
+      values[o++]=v[0];values[o++]=v[1];values[o++]=v[2];
+    }
+    return {size,values};
+  }
+  function checkLut(lut){
+    if(!lut||![17,33].includes(lut.size)||!(lut.values instanceof Float32Array)||lut.values.length!==3*lut.size**3)throw Error('无效 LUT');
+    for(const v of lut.values)if(!Number.isFinite(v)||v<0||v>1)throw Error('LUT 仅支持有限 0–1 数值');return lut;
+  }
+  function sample(lut,r,g,b,out=[0,0,0]){
+    const n=lut.size,m=n-1;
+    const x=clamp(r)*m,y=clamp(g)*m,z=clamp(b)*m;
+    const ix=Math.min(m-1,Math.floor(x)),iy=Math.min(m-1,Math.floor(y)),iz=Math.min(m-1,Math.floor(z));
+    const dx=x-ix,dy=y-iy,dz=z-iz,a=lut.values;
+    const i=3*(ix+n*(iy+n*iz)),sy=n*3,sz=n*n*3;
+    for(let c=0;c<3;c++){
+      const p=i+c;
+      const u0=a[p]*(1-dx)+a[p+3]*dx,u1=a[p+sy]*(1-dx)+a[p+sy+3]*dx;
+      const u2=a[p+sz]*(1-dx)+a[p+sz+3]*dx,u3=a[p+sz+sy]*(1-dx)+a[p+sz+sy+3]*dx;
+      out[c]=(u0*(1-dy)+u1*dy)*(1-dz)+(u2*(1-dy)+u3*dy)*dz;
+    }return out;
+  }
+  function apply(lut,rgba){
+    checkLut(lut);if(!rgba||rgba.length%4)throw Error('需要 RGBA 像素');
+    const out=new Uint8ClampedArray(rgba.length),v=[0,0,0];
+    for(let i=0;i<rgba.length;i+=4){sample(lut,rgba[i]/255,rgba[i+1]/255,rgba[i+2]/255,v);
+      out[i]=Math.floor(clamp(v[0])*255+.5);out[i+1]=Math.floor(clamp(v[1])*255+.5);out[i+2]=Math.floor(clamp(v[2])*255+.5);out[i+3]=rgba[i+3];}
+    return out;
+  }
+  function cube(lut,id='MYLOOK01'){
+    checkLut(lut);if(!/^[A-Z0-9_]{1,8}$/.test(id))throw Error('文件代号须为 1–8 位大写字母、数字或下划线');
+    const rows=['TITLE "'+id+'"','# CineVista software look. sRGB full-range -> sRGB full-range.',
+      '# Interpolation contract: trilinear; no Sony PP/CS emulation.',
+      'LUT_3D_SIZE '+lut.size,'DOMAIN_MIN 0 0 0','DOMAIN_MAX 1 1 1'];
+    for(let i=0;i<lut.values.length;i+=3)rows.push([lut.values[i],lut.values[i+1],lut.values[i+2]].map(x=>x.toPrecision(9)).join(' '));
+    return rows.join('\n')+'\n';
+  }
+  function project(p,meta){
+    validate(p);meta=meta||{};
+    if(!/^[A-Z0-9_]{1,8}$/.test(meta.id||''))throw Error('配方代号须为 1–8 位大写字母、数字或下划线');
+    if(!cleanText(meta.name,64)||!meta.name.trim())throw Error('请填写配方名称');
+    if(!cleanText(meta.baseline||'',600))throw Error('源设置说明过长或包含控制字符');
+    if(![17,33].includes(meta.size))throw Error('无效 LUT 尺寸');
+    return {schema:'cinevista.grade/1',algorithm:VERSION,id:meta.id,name:meta.name,size:meta.size,
+      input:{encoding:'sRGB',range:'full',stage:'jpeg-before-software-look',camera_baseline:meta.baseline||''},
+      output:{encoding:'sRGB',range:'full'},interpolation:'trilinear',parameters:JSON.parse(JSON.stringify(p)),
+      camera_status:'unverified'};
+  }
+  function parseProject(text){
+    if(typeof text!=='string'||new TextEncoder().encode(text).length>65536)throw Error('工程文件过大');
+    const v=JSON.parse(text);
+    if(!v||v.schema!=='cinevista.grade/1'||v.algorithm!==VERSION)throw Error('工程版本或调色算法不兼容');
+    const allowed=['schema','algorithm','id','name','size','input','output','interpolation','parameters','camera_status'];
+    if(Object.keys(v).some(k=>!allowed.includes(k)))throw Error('工程包含未知字段');
+    if(v.camera_status!=='unverified'||v.interpolation!=='trilinear'||v.input?.encoding!=='sRGB'||v.input?.range!=='full'||v.input?.stage!=='jpeg-before-software-look'||v.output?.encoding!=='sRGB'||v.output?.range!=='full')throw Error('此原型只支持未认证的 sRGB 全范围软件颜色工程');
+    return project(v.parameters,{id:v.id,name:v.name,size:v.size,baseline:v.input.camera_baseline});
+  }
+  function makePackage(p,meta,lut){
+    const v=project(p,meta);if(!v.input.camera_baseline.trim())throw Error('先记录样张的相机颜色设置，避免机内重复上色');
+    if(lut.size!==v.size)throw Error('LUT 分辨率不一致');
+    return {schema:'cinevista.lut-package/1',status:'draft-camera-importer-not-implemented',project:v,
+      payload:{kind:'iridas-cube',text:cube(lut,v.id)},notes:'离线软件调色数据；不是 Sony 原生 Picture Profile；原片应保留。'};
+  }
+  const api={VERSION,fields,parameters,validate,transform,buildLut,checkLut,sample,apply,cube,project,parseProject,makePackage};
+  if(typeof module==='object'&&module.exports)module.exports=api;root.CineVistaGrade=api;
+}(typeof globalThis==='undefined'?this:globalThis));
+
+/* SPDX-License-Identifier: MIT */
+(function(){
+'use strict';
+const G=CineVistaGrade,$=s=>document.getElementById(s);
+let params=G.parameters(),lut=null,source=null,graded=null,width=0,height=0;
+let wanted=0,accepted=0,inflight=false,pending=null,loading=0,files=[],selected=0,held=false;
+let history=[],future=[],editKey=null,dirty=false;
+const status=t=>$('status').textContent=t;
+const error=t=>$('error').textContent=t||'';
+const clone=p=>JSON.parse(JSON.stringify(p));
+const workerText=$('worker-core').textContent+'\n'+$('worker-body').textContent;
+const workerUrl=URL.createObjectURL(new Blob([workerText],{type:'text/javascript'}));
+let worker;
+try{worker=new Worker(workerUrl);}catch(e){error('浏览器未允许本地计算 Worker：'+e.message);return;}
+worker.onerror=e=>{inflight=false;error('图像计算失败：'+(e.message||'Worker unavailable'));toggleExports();};
+function toggleExports(){
+ const ready=!!lut&&accepted===wanted;
+ $('exportCube').disabled=!ready;$('exportPackage').disabled=!ready||!source||!$('confirmInput').checked;
+ $('exportImage').disabled=!ready||!graded;
+}
+function dispatch(){if(inflight||!pending)return;const m=pending;pending=null;inflight=true;worker.postMessage(m);}
+function render(){
+ error('');wanted++;toggleExports();
+ pending={type:'render',id:wanted,parameters:clone(params),size:Number($('size').value)};
+ status('正在更新颜色…');dispatch();
+}
+worker.onmessage=e=>{
+ const m=e.data;inflight=false;
+ if(m.id===wanted){
+   if(m.type==='error'){error(m.message);status('调色失败；没有导出旧颜色。');}
+   else{lut={size:m.size,values:new Float32Array(m.lut)};graded=m.pixels?new Uint8ClampedArray(m.pixels):null;
+     accepted=m.id;draw();status((source?'已更新样张':'等待导入样张')+' · '+m.size+'³ LUT · 本次计算 '+Math.round(m.ms)+' ms（当前环境，不是相机速度）');
+     document.body.dataset.renderId=String(accepted);
+   }
+ }
+ toggleExports();dispatch();
+};
+function ctx(canvas){const c=canvas.getContext('2d',{colorSpace:'srgb',willReadFrequently:true,alpha:false});if(!c)throw Error('Canvas 2D unavailable');return c;}
+function draw(){
+ if(!source||!graded)return;
+ const canvas=$('preview');canvas.width=width;canvas.height=height;
+ const out=new Uint8ClampedArray(graded),mode=held?'before':$('compare').value;
+ const cut=Math.round(width*Number($('split').value)/100);
+ if(mode==='before')out.set(source);
+ else if(mode==='split')for(let y=0;y<height;y++)out.set(source.subarray(y*width*4,(y*width+cut)*4),y*width*4);
+ const c=ctx(canvas);c.putImageData(new ImageData(out,width,height),0,0);
+ if(mode==='split'){c.fillStyle='#f8f5e9';c.fillRect(cut,0,1,height);}
+ $('empty').hidden=true;canvas.hidden=false;
+ $('compareLabel').textContent=mode==='split'?'左：原图 / 右：调色':mode==='before'?'原图':'当前调色';
+}
+function push(){history.push(clone(params));if(history.length>40)history.shift();future=[];updateUndo();}
+function updateUndo(){$('undo').disabled=!history.length;$('redo').disabled=!future.length;}
+function commit(key,fn){if(editKey!==key){push();editKey=key;}fn();dirty=true;updateControlValues();render();}
+function makeSlider(key,label,min,max,step,read,write,parent){
+ const line=document.createElement('div');line.className='param';
+ const lab=document.createElement('label');lab.htmlFor='p_'+key;lab.textContent=label;
+ const row=document.createElement('div');row.className='sliderline';
+ const input=document.createElement('input');input.type='range';input.id='p_'+key;input.min=min;input.max=max;input.step=step;input.value=read();
+ const output=document.createElement('output');output.id='v_'+key;output.htmlFor=input.id;output.textContent=read();
+ input.addEventListener('input',()=>commit(key,()=>write(Number(input.value))));
+ input.addEventListener('change',()=>{editKey=null;});
+ line.append(lab);row.append(input,output);line.append(row);parent.append(line);
+ input._read=read;
+}
+function setupControls(){
+ G.fields.forEach((f,i)=>makeSlider(f.key,f.label,f.min,f.max,f.step,()=>params[f.key],v=>params[f.key]=v,$(i<9?'basic':'splitTone')));
+ ['黑端','暗部','中间调','亮部','白端'].forEach((label,i)=>makeSlider('curve'+i,label,0,100,1,()=>Math.round(params.curve[i]*100),v=>{
+   params.curve[i]=Math.min(i===4?1:params.curve[i+1],Math.max(i===0?0:params.curve[i-1],v/100));
+ },$('curve')));
+ ['红','黄','绿','青','蓝','品红'].forEach((label,i)=>{
+   makeSlider('hue'+i,label+' · 色相 / °',-30,30,1,()=>params.hue[i],v=>params.hue[i]=v,$('selective'));
+   makeSlider('chroma'+i,label+' · 饱和度',-100,100,1,()=>params.chroma[i],v=>params.chroma[i]=v,$('selective'));
+ });
+}
+function updateControlValues(){
+ document.querySelectorAll('input[type=range][id^=p_]').forEach(el=>{el.value=el._read();$('v_'+el.id.slice(2)).textContent=el.value;});
+ const curve=$('curvePreview'),c=ctx(curve);c.clearRect(0,0,curve.width,curve.height);c.fillStyle='#f2f1ed';c.fillRect(0,0,curve.width,curve.height);
+ c.strokeStyle='#cbd5ce';c.lineWidth=1;c.beginPath();c.moveTo(0,curve.height);c.lineTo(curve.width,0);c.stroke();
+ c.strokeStyle='#224e41';c.lineWidth=2;c.beginPath();params.curve.forEach((v,i)=>{const x=i*curve.width/4,y=(1-v)*curve.height;if(i)c.lineTo(x,y);else c.moveTo(x,y);});c.stroke();
+}
+function meta(){return {id:$('id').value.trim(),name:$('name').value.trim(),size:Number($('size').value),baseline:$('baseline').value.trim()};}
+function download(text,name,type){const u=URL.createObjectURL(new Blob([text],{type:type||'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),5000);}
+function ready(){if(!lut||accepted!==wanted)throw Error('颜色仍在更新；请等当前效果完成后再导出');}
+function action(fn){try{error('');fn();}catch(e){error(e.message);}}
+function tabs(){
+ $('sampleTabs').replaceChildren();files.forEach((f,i)=>{const b=document.createElement('button');b.className=i===selected?'small':'small secondary';b.textContent=(i+1)+' · '+f.name;b.title=f.name;
+ b.addEventListener('click',()=>{selected=i;tabs();load(f);});$('sampleTabs').append(b);});
+}
+async function load(file){
+ const token=++loading;wanted++;pending=null;accepted=0;source=null;graded=null;worker.postMessage({type:'image',pixels:null});
+ $('preview').hidden=true;$('empty').hidden=false;$('empty').textContent='正在读取样张…';$('photoMeta').textContent='';
+ $('confirmInput').checked=false;toggleExports();error('');status('正在读取本地样张…');
+ if(!['image/jpeg','image/png'].includes(file.type)){error('当前只接收 JPEG / PNG；RAW、HEIC、Log/HDR 管线不在此版支持范围。');return;}
+ if(file.size>50*1024*1024){error('单张文件上限 50 MiB');return;}
+ let u=URL.createObjectURL(file);
+ try{
+  const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(Error('无法解码该图片'));image.src=u;});
+  if(token!==loading)return;
+  if(image.naturalWidth*image.naturalHeight>65000000)throw Error('此原型限制输入为 6500 万像素以内');
+  const max=Number($('resolution').value),s=Math.min(1,max/Math.max(image.naturalWidth,image.naturalHeight));
+  width=Math.max(1,Math.round(image.naturalWidth*s));height=Math.max(1,Math.round(image.naturalHeight*s));
+  const temp=document.createElement('canvas');temp.width=width;temp.height=height;const c=ctx(temp);c.fillStyle='#fff';c.fillRect(0,0,width,height);c.drawImage(image,0,0,width,height);
+  const a=c.getContextAttributes?.();if(a?.colorSpace&&a.colorSpace!=='srgb')throw Error('未获得 sRGB 画布，停止调色');
+  const pixels=c.getImageData(0,0,width,height,{colorSpace:'srgb'});source=new Uint8ClampedArray(pixels.data);graded=null;
+  const sent=source.slice();worker.postMessage({type:'image',pixels:sent.buffer},[sent.buffer]);
+  $('photoMeta').textContent=file.name+' · 源 '+image.naturalWidth+'×'+image.naturalHeight+' · 预览 '+width+'×'+height+' · sRGB 画布';
+  render();
+ }catch(e){error(e.message);status('没有载入该图片');}finally{URL.revokeObjectURL(u);}
+}
+$('photos').addEventListener('change',e=>{
+ const chosen=Array.from(e.target.files||[]).slice(0,6);if(!chosen.length)return;
+ files=chosen;selected=0;tabs();load(files[0]);e.target.value='';
+});
+$('resolution').addEventListener('change',()=>{if(files[selected])load(files[selected]);});
+$('size').addEventListener('change',()=>{dirty=true;render();});
+$('compare').addEventListener('change',draw);$('split').addEventListener('input',draw);
+$('hold').addEventListener('pointerdown',e=>{held=true;e.target.setPointerCapture(e.pointerId);draw();});
+for(const type of ['pointerup','pointercancel','lostpointercapture'])$('hold').addEventListener(type,()=>{held=false;draw();});
+$('hold').addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();held=true;draw();}});
+$('hold').addEventListener('keyup',()=>{held=false;draw();});$('hold').addEventListener('blur',()=>{held=false;draw();});
+$('undo').addEventListener('click',()=>{if(!history.length)return;future.push(clone(params));params=history.pop();editKey=null;dirty=true;updateUndo();updateControlValues();render();});
+$('redo').addEventListener('click',()=>{if(!future.length)return;history.push(clone(params));params=future.pop();editKey=null;dirty=true;updateUndo();updateControlValues();render();});
+$('reset').addEventListener('click',()=>{push();params=G.parameters();editKey=null;dirty=true;updateControlValues();render();});
+$('saveProject').addEventListener('click',()=>action(()=>{const p=G.project(params,meta());download(JSON.stringify(p,null,2)+'\n',p.id+'.CVG','application/json');dirty=false;status('已导出可继续编辑的工程；不包含样张。');}));
+$('exportCube').addEventListener('click',()=>action(()=>{ready();const p=G.project(params,meta());download(G.cube(lut,p.id),p.id+'.CUBE');status('已导出当前预览所用 LUT。使用方须按 sRGB 全范围、三线性插值解释。');}));
+$('exportPackage').addEventListener('click',()=>action(()=>{ready();if(!$('confirmInput').checked||!source)throw Error('先载入样张并确认 sRGB 输入基线');
+ const pack=G.makePackage(params,meta(),lut);download(JSON.stringify(pack,null,2)+'\n',pack.project.id+'.CVP','application/json');
+ status('已导出相机素材包草稿；Camera 导入/应用尚未接入，不是 Sony 原生预设。');}));
+$('exportImage').addEventListener('click',()=>action(()=>{ready();if(!graded)throw Error('尚未载入样张');
+ const p=G.project(params,meta()),c=document.createElement('canvas');c.width=width;c.height=height;ctx(c).putImageData(new ImageData(graded,width,height),0,0);
+ c.toBlob(blob=>{if(!blob){error('PNG 导出失败');return;}download(blob,p.id+'_PREVIEW.png','image/png');status('已导出 '+width+'×'+height+' 预览 PNG，不是原尺寸相机成片。');},'image/png');}));
+$('openProject').addEventListener('change',async e=>{const f=e.target.files[0];try{if(!f)return;if(f.size>65536)throw Error('工程文件超过 64 KiB');const p=G.parseProject(await f.text());
+ push();params=p.parameters;editKey=null;$('id').value=p.id;$('name').value=p.name;$('size').value=p.size;$('baseline').value=p.input.camera_baseline;
+ $('confirmInput').checked=false;updateControlValues();render();dirty=false;
+ }catch(err){error(err.message);}finally{e.target.value='';}});
+$('confirmInput').addEventListener('change',toggleExports);
+for(const key of ['name','id','baseline'])$(key).addEventListener('input',()=>{dirty=true;});
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+window.addEventListener('pagehide',()=>{worker.terminate();URL.revokeObjectURL(workerUrl);});
+setupControls();updateControlValues();updateUndo();render();
+})();
+</script></body></html>

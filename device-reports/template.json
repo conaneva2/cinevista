@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "project": "CineVista Probe",
+  "version": "0.2",
+  "camera_model": null,
+  "camera_firmware": null,
+  "computer_os": null,
+  "lens": null,
+  "apk_sha256": null,
+  "display": null,
+  "tests": {
+    "launch_exit": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "native_preview": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "half_press": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "single_capture": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "source_file_correlation": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "surface_nonsquare_transform": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "visible_frame_edges": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "synthetic_small_jpeg": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "native_highres_export": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "evf": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    },
+    "native_gallery": {
+      "state": "unknown",
+      "actual": null,
+      "evidence": null
+    }
+  },
+  "consent": {
+    "share_serial": false,
+    "share_photos": false,
+    "share_gps": false
+  }
+}

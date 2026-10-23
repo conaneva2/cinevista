@@ -1,0 +1,48 @@
+幕野 Studio｜手工设置单
+幕野 PP工作草稿 / PPDRAFT1 / revision 1
+目标 ILCE-7RM2；固件 未记录
+状态：未实机验证
+菜单 → Camera Settings → Picture Profile → 选择由你确认可修改的 PP 槽。先记录原参数；本工具不指定或覆盖任何槽。
+
+Gamma: Still
+Color Mode: Still
+Black Level: 0
+Black Gamma Range: Middle
+Black Gamma Level: 0
+Knee Mode: Auto
+Auto Knee Max Point %: 100
+Auto Knee Sensitivity: Mid
+Manual Knee Point %: 90
+Manual Knee Slope: 0
+Saturation（PP 独立范围）: 0
+Color Phase: 0
+Color Depth R: 0
+Color Depth G: 0
+Color Depth B: 0
+Color Depth C: 0
+Color Depth M: 0
+Color Depth Y: 0
+Detail Level: 0
+Detail Adjust Mode: Auto
+Detail V/H Balance: 0
+Detail B/W Balance: Type3
+Detail Limit: 7
+Detail Crispning: 0
+Hi-Light Detail: 0
+白平衡模式: auto
+色温 K（仅 Kelvin 模式）: 5500
+白平衡 A/B：正值为 Amber: 0
+白平衡 G/M：正值为 Green: 0
+
+建议曝光补偿 EV: 0.00（建议，不自动应用）
+白平衡 Kelvin 只在相应模式有效；自动/手动 Knee 与 Detail 只应用当前模式子项。
+DRO、拍摄模式和曝光应记录，且须确认相机未因互斥关系忽略相关设置。
+
+相机端 .CVL 导入器尚未接入。这个文件不是 Sony 原生预设或 LUT，也不能交给 Recipe Lab 直接导入。
+本页不模拟 Sony 成像。参考照片不会随参数改变；真实颜色需要相机样片验证。
+白平衡轴采用语义坐标：正 A、正 G；接入 Sony 时要按机型验证符号，不能照搬整数。
+PP 菜单参数有官方依据，但 App 自动写入尚未验证。当前可导出手工设置单；数值默认是工作起点，不是索尼出厂预设。
+此 Gamma + Auto Knee 组合下 Knee 不生效；不是一个遗漏的曲线功能。
+PP 与 Creative Style 是替代后端，不是可叠加的两套滤镜；Color Depth 不等于任意六轴 HSL。
+
+注释：结构示例，未校准、未进行相机实测，不是胶片复刻预设。

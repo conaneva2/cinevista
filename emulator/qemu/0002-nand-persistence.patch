@@ -1,0 +1,119 @@
+--- a/hw/block/bionz_nand.c
++++ b/hw/block/bionz_nand.c
+@@ -203,10 +203,53 @@
+     .valid.max_access_size = 4,
+ };
+ 
++/* Experimental persistent backend; completion follows successful flush. */
++static void nand_program(NandState *s, uint64_t offset, uint32_t length,
++                         uint32_t guest_buffer)
++{
++    uint8_t *old = g_malloc(length), *data = g_malloc(length);
++    uint32_t i;
++    if (!s->blk || blk_is_read_only(s->blk) ||
++        blk_pread(s->blk, offset, old, length) < 0) {
++        hw_error("nand_program: missing/read-only/unreadable backend\n");
++    }
++    cpu_physical_memory_read(guest_buffer, data, length);
++    for (i = 0; i < length; i++) {
++        data[i] &= old[i]; /* NAND programming clears bits; erase restores ones. */
++    }
++    if (blk_pwrite(s->blk, offset, data, length, 0) < 0) {
++        hw_error("nand_program: write failed\n");
++    }
++    g_free(old);
++    g_free(data);
++}
++
++static void nand_erase(NandState *s, uint32_t page)
++{
++    uint32_t pages = s->reg_pages_per_block;
++    uint64_t offset = (uint64_t)page * NAND_PAGE_SIZE;
++    uint64_t len = (uint64_t)pages * NAND_PAGE_SIZE;
++    uint8_t *ff;
++    if (!s->blk || blk_is_read_only(s->blk) || !pages || pages > 4096 ||
++        page % pages || offset + len > s->size) {
++        hw_error("nand_erase: invalid geometry/range/backend\n");
++    }
++    ff = g_malloc(len);
++    memset(ff, 0xff, len);
++    if (blk_pwrite(s->blk, offset, ff, len, 0) < 0 ||
++        blk_pwrite(s->blk, s->size + (uint64_t)page * NAND_SPARE_SIZE,
++                   ff, pages * NAND_SPARE_SIZE, 0) < 0 ||
++        blk_flush(s->blk) < 0) {
++        hw_error("nand_erase: persistence failed\n");
++    }
++    g_free(ff);
++}
++
+ static void nand_dma_command(NandState *s)
+ {
+     NandDmaArgs args;
+-    uint32_t main_offset, main_len, spare_offset, spare_len;
++    uint64_t main_offset, spare_offset;
++    uint32_t main_len, spare_len;
+     void *buffer;
+ 
+     if (s->dma_args[0] != 0x80 || s->dma_args[2] != 0) {
+@@ -221,8 +264,9 @@
+ 
+     switch ((args.data >> 8) & 0xff) {
+         case 0x20:// read
+-            main_offset = (args.command & 0xffffff) * NAND_PAGE_SIZE;
+-            spare_offset = s->size + (args.command & 0xffffff) * NAND_SPARE_SIZE;
++        case 0x21:// write
++            main_offset = (uint64_t)(args.command & 0xffffff) * NAND_PAGE_SIZE;
++            spare_offset = s->size + (uint64_t)(args.command & 0xffffff) * NAND_SPARE_SIZE;
+ 
+             switch (args.data >> 16) {
+                 case 0x3140:// 0x1000 byte pages
+@@ -240,6 +284,19 @@
+                     hw_error("%s: Invalid read mode: 0x%x\n", __func__, args.data >> 16);
+             }
+ 
++            if (!main_len || main_offset + main_len > s->size ||
++                spare_offset + spare_len > (uint64_t)s->size +
++                                           s->size / NAND_PAGE_SIZE * NAND_SPARE_SIZE) {
++                hw_error("nand_dma_command: out of range\n");
++            }
++            if (((args.data >> 8) & 0xff) == 0x21) {
++                nand_program(s, main_offset, main_len, args.main_buffer);
++                nand_program(s, spare_offset, spare_len, args.spare_buffer);
++                if (blk_flush(s->blk) < 0) {
++                    hw_error("nand_dma_command: flush failed\n");
++                }
++                break;
++            }
+             buffer = g_malloc(main_len);
+             if (s->blk && blk_pread(s->blk, main_offset, buffer, main_len) < 0) {
+                 hw_error("%s: Cannot read block device\n", __func__);
+@@ -255,8 +312,6 @@
+             g_free(buffer);
+             break;
+ 
+-        case 0x21:// write
+-            break;
+ 
+         default:
+             hw_error("%s: Invalid data: 0x%x\n", __func__, args.data);
+@@ -317,6 +372,7 @@
+                 switch ((s->ctrl >> 26) & 3) {
+                     case 0b10:// MAP10
+                         if (value == 1) {// erase
++                            nand_erase(s, s->ctrl & 0xffffff);
+                             s->reg_intr_status0 |= INTR_ERASE_COMP;
+                         } else if ((value >> 8) == 0x20) {// pipeline read-ahead
+                             s->reg_intr_status0 |= INTR_LOAD_COMP;
+@@ -384,6 +440,12 @@
+         }
+     }
+ 
++    if (s->blk && !blk_is_read_only(s->blk) &&
++        blk_set_perm(s->blk, BLK_PERM_CONSISTENT_READ | BLK_PERM_WRITE,
++                     BLK_PERM_ALL, errp) < 0) {
++        return;
++    }
++
+     memory_region_init_io(&s->reg_mmio, OBJECT(dev), &nand_reg_ops, s, TYPE_BIONZ_NAND ".reg", 0x800);
+     sysbus_init_mmio(sbd, &s->reg_mmio);
+ 

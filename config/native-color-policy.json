@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "primary_delivery": "native-persistent",
+  "realtime_sample_preview_required": true,
+  "native_publish_implemented": false,
+  "native_preview_model_calibrated": false,
+  "boot_autostart_substitute_allowed": false,
+  "app_reapply_counts_as_persistence": false,
+  "arbitrary_lut_lossless_native_conversion_claim_allowed": false,
+  "known_native_profiles": [],
+  "target_runtime": {
+    "model": "ILCE-7RM2",
+    "firmware": null,
+    "sdk_int": null,
+    "external_report_sdk_int": 16,
+    "external_report_independently_verified": false,
+    "minimum_build_api": 10
+  },
+  "backends": [
+    {
+      "id": "sony-native-settings",
+      "role": "primary",
+      "persists_after_native_reboot": "unknown"
+    },
+    {
+      "id": "sony-runtime-matrix-gamma",
+      "role": "research",
+      "persists_after_native_reboot": "unknown"
+    },
+    {
+      "id": "software-lut",
+      "role": "secondary",
+      "persists_after_native_reboot": "unsupported-without-app"
+    }
+  ],
+  "evidence_required": [
+    "model-firmware-match",
+    "reviewed-settings-map",
+    "exit-native-jpeg",
+    "powercycle-native-jpeg-without-app",
+    "scoped-restore",
+    "calibrated-native-preview"
+  ]
+}

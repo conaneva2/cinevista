@@ -1,0 +1,6 @@
+# Rename only after substituting real GitHub usernames.
+# Do not claim owner review protection is enabled by this example.
+# /core/ @ACTUAL_CORE_OWNER
+# /sony/ @ACTUAL_CAMERA_OWNER
+# /third_party/ @ACTUAL_LICENSE_REVIEWER
+# /.github/ @ACTUAL_MAINTAINER

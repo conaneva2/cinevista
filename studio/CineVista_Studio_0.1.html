@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qSlZk1WrFmfKU9k5QlEm1/EZaSNDCmwAK7o6u/+bnMc='; style-src 'sha256-a9LK3is6P3jX0lTXJif/VAA/oAYE/wykM2yEfgZ0Cvk='; img-src blob: data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>幕野 Studio · 配方编写台</title><style>*{box-sizing:border-box}body{margin:0;background:#f2f1ed;color:#222b2b;font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{padding:26px 5%;display:flex;justify-content:space-between;align-items:center;background:#172c2a;color:#faf9f4}h1{font-size:32px;margin:0;font-weight:650;letter-spacing:3px}h1 span{font-size:18px;letter-spacing:1px;font-weight:400;margin-left:8px}header p{margin:4px 0 0;color:#bdcfca}.tag{font-size:12px;letter-spacing:1px;border:1px solid #637d77;padding:8px 12px}.notice{margin:24px 5% 0;padding:16px 20px;background:#fff2d7;border-left:4px solid #a17121}main{display:grid;grid-template-columns:minmax(340px,1fr) minmax(340px,1fr);gap:26px;padding:26px 5%}section{background:white;border:1px solid #d8ded8;padding:24px;min-width:0}h2{font-size:15px;letter-spacing:1.4px;margin:0 0 16px}.row{margin-bottom:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;font-size:13px;color:#4d5b58}input,select,textarea{font:inherit;width:100%;padding:9px 11px;border:1px solid #b5c5be;background:#fff;color:#152d25;border-radius:3px;margin-top:4px}input[type=range]{padding:0;width:70%;vertical-align:middle}output{display:inline-block;text-align:right;width:25%;font-variant-numeric:tabular-nums;color:#183f36;font-weight:600}.param{margin:10px 0;padding-bottom:10px;border-bottom:1px solid #eef1ed}.param label{display:flex;justify-content:space-between;gap:10px}.param select{width:53%;margin:0}.sub{font-size:12px;color:#697672}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}button,.button{font:inherit;font-size:13px;padding:10px 14px;background:#224e41;color:white;border:0;border-radius:3px;cursor:pointer;display:inline-block}button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#e9eee9;color:#254737}.review>p{color:#5d6c65;font-size:13px}figure{margin:10px 0 20px;background:#e9ede8;min-height:140px;display:grid;place-items:center;padding:12px}figure img{max-width:100%;max-height:320px;object-fit:contain}figcaption{font-size:12px;color:#59655e;margin-top:7px;overflow-wrap:anywhere}#warnings p{font-size:13px;border-left:3px solid #d7ad63;padding-left:12px;color:#6b5433}pre{font:12px/1.5 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;background:#f4f5f1;padding:12px}#errors{white-space:pre-wrap;font-size:13px;color:#a33030}#status{font-size:12px;color:#52685b}footer{padding:0 5% 28px;font-size:12px;color:#697672}input:focus,select:focus,textarea:focus,button:focus-visible,.button:focus-within{outline:2px solid #af8e46;outline-offset:2px}@media(max-width:850px){main{grid-template-columns:1fr}header{gap:10px;align-items:start}.tag{max-width:160px}}</style></head><body>
+<header><div><h1>幕野 <span>Studio</span></h1><p>在 Mac 编写颜色，在相机确认颜色。</p></div><div class="tag">0.1 ALPHA · 离线配方工具</div></header>
+<div class="notice"><b>这不是 Sony 调色模拟器。</b>当前可以编辑配方、导出 .CVL 和手工设置单、对照本地样片；尚不能把参数自动写进 A7R II。照片不会因滑杆移动而假装“调色完成”。</div>
+<main><section class="settings"><h2>01 / 定义你的配方</h2><div class="row"><label>颜色路径<select id="engine"><option value="sony-creative-style">基础配方 · Creative Style</option><option value="sony-picture-profile">进阶配方 · A7R II Picture Profile</option></select></label></div>
+<div class="row two"><label>配方名称<input id="name" maxlength="64"></label><label>文件代号（1–8 位）<input id="id" maxlength="8" spellcheck="false"></label></div>
+<div class="row two"><label>作者<input id="author" maxlength="120"></label><label>目标固件（未知则留空）<input id="firmware" maxlength="32"></label></div>
+<div class="row two"><label>版本<input id="revision" type="number" min="1" max="2147483647"></label><label>曝光建议（1/3 EV 单位）<input id="ev" type="number" min="-15" max="15" step="1"></label></div>
+<p class="sub">默认值是可编辑工作起点，不是出厂设置。白平衡使用 A/B、G/M 语义，不包含底层地址。</p>
+<div id="parameters"></div><label>创作笔记<textarea id="notes" maxlength="2000" rows="3" placeholder="例如：保留肤色、冷绿阴影、暖高光；用阴天和钨丝灯样片分别确认。"></textarea></label>
+<div id="errors" role="alert"></div><div class="actions"><button id="export">导出 .CVL 草稿</button><button id="manual">导出相机设置单</button><label class="button secondary">导入 .CVL<input id="import" type="file" accept=".CVL,.cvl,.json" hidden></label></div><p id="status" aria-live="polite">所有操作在本地。没有云端上传或后台服务。</p></section>
+<section class="review"><h2>02 / 用真实样片确认</h2><p>选用同一场景、明确记录曝光与白平衡的相机样片。这里仅显示文件，不给它们套模拟滤镜。</p>
+<div class="photo"><label class="button secondary">选择样片 A<input id="photoA" type="file" accept="image/jpeg,image/png" hidden></label><figure><img id="imageA" alt="尚未选择样片 A"><figcaption id="captionA">原始样片或第一组配方</figcaption></figure></div>
+<div class="photo"><label class="button secondary">选择样片 B<input id="photoB" type="file" accept="image/jpeg,image/png" hidden></label><figure><img id="imageB" alt="尚未选择样片 B"><figcaption id="captionB">另一组真实配方</figcaption></figure></div>
+<h2>03 / 导出与适配状态</h2><div id="warnings"></div><details><summary>查看将要导出的配方</summary><pre id="json"></pre></details>
+<p class="sub">拟议交付路径：.CVL → 存储卡 CVLOOKS → 幕野 Camera 导入器（待实现）。不用为每个新颜色重编 APK。当前可先按设置单手工输入。</p>
+<p class="sub">更自由的曲线、HSL 和 LUT 调色将是独立的软件颜色工作区。不能将任意 .cube 无损转换为 Sony 参数。</p></section></main>
+<footer>MIT · CineVista project / 配方范围参考 Sony ILCE-7RM2 帮助与 Recipe Lab 方法。当前没有包含上游胶片配方。</footer><script>/* SPDX-License-Identifier: MIT
+ * CineVista Studio authoring contract. NOT a Sony emulator or a camera driver.
+ * No vendor numeric IDs, addresses or writable firmware slots are accepted.
+ */
+(function (root) {
+  'use strict';
+  const field = (key, label, value, min, max) => ({key,label,default:value,min,max,type:'integer'});
+  const choice = (key,label,value,values) => ({key,label,default:value,values,type:'enum'});
+  const WB = [choice('wb_mode','白平衡模式','auto',['auto','kelvin']),
+    field('wb_kelvin','色温 K（仅 Kelvin 模式）',5500,2500,9900),
+    field('wb_amber_blue','白平衡 A/B：正值为 Amber',0,-7,7),
+    field('wb_green_magenta','白平衡 G/M：正值为 Green',0,-7,7)];
+  const CS = [choice('style','Creative Style','neutral',['standard','vivid','neutral','clear','deep','light','portrait','landscape','sunset','night','autumn','monochrome','sepia']),
+    field('contrast','对比度（标准菜单范围）',0,-3,3),field('saturation','饱和度（标准菜单范围）',0,-3,3),
+    field('sharpness','锐度（标准菜单范围）',0,-3,3),choice('dro','DRO','off',['off','auto','1','2','3','4','5'])];
+  const PP = [choice('gamma','Gamma','Still',['Movie','Still','Cine1','Cine2','Cine3','Cine4','ITU709','ITU709(800%)','S-Log2']),
+    choice('color_mode','Color Mode','Still',['Movie','Still','Cinema','Pro','ITU709 Matrix','Black & White','S-Gamut']),
+    field('black_level','Black Level',0,-15,15),choice('black_gamma_range','Black Gamma Range','Middle',['Wide','Middle','Narrow']),
+    field('black_gamma_level','Black Gamma Level',0,-7,7),choice('knee_mode','Knee Mode','Auto',['Auto','Manual']),
+    field('knee_auto_max','Auto Knee Max Point %',100,90,100),choice('knee_auto_sensitivity','Auto Knee Sensitivity','Mid',['High','Mid','Low']),
+    field('knee_manual_point','Manual Knee Point %',90,75,105),field('knee_manual_slope','Manual Knee Slope',0,-5,5),
+    field('saturation','Saturation（PP 独立范围）',0,-32,32),field('color_phase','Color Phase',0,-7,7),
+    ...['R','G','B','C','M','Y'].map(k=>field('depth_'+k,'Color Depth '+k,0,-7,7)),
+    field('detail_level','Detail Level',0,-7,7),choice('detail_mode','Detail Adjust Mode','Auto',['Auto','Manual']),
+    field('detail_vh_balance','Detail V/H Balance',0,-2,2),choice('detail_bw_balance','Detail B/W Balance','Type3',['Type1','Type2','Type3','Type4','Type5']),
+    field('detail_limit','Detail Limit',7,0,7),field('detail_crispning','Detail Crispning',0,0,7),field('detail_highlight','Hi-Light Detail',0,0,4)];
+  const engines = {'sony-creative-style':CS.concat(WB), 'sony-picture-profile':PP.concat(WB)};
+  const maxBytes = 65536;
+  function make(engine) {
+    if (!engines[engine]) throw Error('Unknown engine');
+    let params={};engines[engine].forEach(f=>{params[f.key]=f.default;});
+    return {schema:'cinevista.look/1',id:'MYLOOK01',name:'我的胶片配方',revision:1,
+      target:{model:'ILCE-7RM2',firmware:null},engine,parameters:params,
+      exposure:{policy:'manual',suggested_ev_thirds:0},
+      provenance:{kind:'user-created',author:'',license:'UNSPECIFIED',upstream:null},
+      validation:{status:'unverified'},notes:''};
+  }
+  function object(o) { return o!==null && typeof o==='object' && !Array.isArray(o); }
+  function keys(o, allowed, path, errors) {
+    if (!object(o)) {errors.push(path+' must be an object');return false;}
+    const actual=Object.keys(o);
+    actual.forEach(k=>{if(!allowed.includes(k))errors.push(path+': unknown field '+k);});
+    allowed.forEach(k=>{if(!Object.prototype.hasOwnProperty.call(o,k))errors.push(path+': missing '+k);});
+    return true;
+  }
+  function text(v,n) {return typeof v==='string' && v.length<=n && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(v);}
+  function validate(v) {
+    const e=[];
+    if(!keys(v,['schema','id','name','revision','target','engine','parameters','exposure','provenance','validation','notes'],'look',e))return e;
+    if(v.schema!=='cinevista.look/1')e.push('schema version unsupported');
+    if(typeof v.id!=='string'|| !/^[A-Z0-9_]{1,8}$/.test(v.id))e.push('id: use 1–8 uppercase letters, digits or underscore');
+    if(!text(v.name,64)||!v.name.trim())e.push('name required (maximum 64 characters)');
+    if(!Number.isInteger(v.revision)||v.revision<1||v.revision>2147483647)e.push('invalid revision');
+    if(!text(v.notes,2000))e.push('notes too long or invalid');
+    if(keys(v.target,['model','firmware'],'target',e)) {
+      if(v.target.model!=='ILCE-7RM2')e.push('target model not supported by this editor');
+      if(v.target.firmware!==null&&(!text(v.target.firmware,32)||!v.target.firmware.trim()))e.push('firmware must be null or a short string');
+    }
+    const fs=engines[v.engine];
+    if(!fs)e.push('engine unsupported (software LUT is a separate future format)');
+    else if(keys(v.parameters,fs.map(f=>f.key),'parameters',e)) {
+      fs.forEach(f=>{const n=v.parameters[f.key];
+        if(f.type==='enum'?!f.values.includes(n):(!Number.isInteger(n)||n<f.min||n>f.max))e.push(f.key+': invalid value');});
+      if(v.parameters.wb_kelvin%100!==0)e.push('wb_kelvin: prototype uses 100 K steps');
+      if(v.engine==='sony-creative-style'&&['monochrome','sepia'].includes(v.parameters.style)&&v.parameters.saturation!==0)e.push('monochrome/sepia: saturation must be 0 (not adjustable)');
+    }
+    if(keys(v.exposure,['policy','suggested_ev_thirds'],'exposure',e)){
+      if(v.exposure.policy!=='manual')e.push('this version must not silently apply exposure compensation');
+      if(!Number.isInteger(v.exposure.suggested_ev_thirds)||Math.abs(v.exposure.suggested_ev_thirds)>15)e.push('EV suggestion out of bounds');
+    }
+    if(keys(v.provenance,['kind','author','license','upstream'],'provenance',e)) {
+      if(!['user-created','adapted'].includes(v.provenance.kind))e.push('provenance kind invalid');
+      if(!text(v.provenance.author,120)||!text(v.provenance.license,80))e.push('provenance text invalid');
+      if(v.provenance.kind==='adapted'&&v.provenance.upstream===null)e.push('adapted look needs upstream attribution');
+      if(v.provenance.upstream!==null) {
+        if(keys(v.provenance.upstream,['project','commit','recipe','license'],'upstream',e)){
+          for(const k of ['project','recipe','license'])if(!text(v.provenance.upstream[k],200)||!v.provenance.upstream[k])e.push('upstream '+k+' invalid');
+          if(!/^[0-9a-f]{40}$/.test(v.provenance.upstream.commit))e.push('upstream commit must be 40 hex');
+        }
+      }
+    }
+    if(keys(v.validation,['status'],'validation',e)&&v.validation.status!=='unverified')e.push('authors cannot self-certify device compatibility; use external evidence');
+    return e;
+  }
+  function serialize(v) {const e=validate(v);if(e.length)throw Error(e.join('\n'));return JSON.stringify(v,null,2)+'\n';}
+  function parse(s) {
+    if(typeof s!=='string'||s.length>maxBytes||new TextEncoder().encode(s).length>maxBytes)throw Error('file exceeds 64 KiB');
+    // Authoring tool only; camera importer must additionally reject duplicate JSON keys.
+    const v=JSON.parse(s);const e=validate(v);if(e.length)throw Error(e.join('\n'));return v;
+  }
+  function warnings(v) {
+    const out=['相机端 .CVL 导入器尚未接入。这个文件不是 Sony 原生预设或 LUT，也不能交给 Recipe Lab 直接导入。',
+      '本页不模拟 Sony 成像。参考照片不会随参数改变；真实颜色需要相机样片验证。',
+      '白平衡轴采用语义坐标：正 A、正 G；接入 Sony 时要按机型验证符号，不能照搬整数。'];
+    if(v.engine==='sony-picture-profile') {
+      out.push('PP 菜单参数有官方依据，但 App 自动写入尚未验证。当前可导出手工设置单；数值默认是工作起点，不是索尼出厂预设。');
+      if(['ITU709(800%)','S-Log2'].includes(v.parameters.gamma))out.push('Log/800% 不是直接分享外观；Black Level 可能无效，Gamma 会改变可用 ISO 范围。');
+      if(v.parameters.knee_mode==='Auto'&&['Still','Cine1','Cine2','Cine3','Cine4','ITU709(800%)','S-Log2'].includes(v.parameters.gamma))out.push('此 Gamma + Auto Knee 组合下 Knee 不生效；不是一个遗漏的曲线功能。');
+      if(v.parameters.knee_mode==='Manual'&&v.parameters.knee_manual_slope===5)out.push('Manual Knee Slope +5 会关闭 Knee。');
+      out.push('PP 与 Creative Style 是替代后端，不是可叠加的两套滤镜；Color Depth 不等于任意六轴 HSL。');
+    }
+    return out;
+  }
+  function manual(v) {
+    serialize(v);
+    const intro=v.engine==='sony-picture-profile'?
+      '菜单 → Camera Settings → Picture Profile → 选择由你确认可修改的 PP 槽。先记录原参数；本工具不指定或覆盖任何槽。':
+      '菜单 → Camera Settings → Creative Style。使用前确认 Picture Profile / Picture Effect 不覆盖 Creative Style；记录原参数。';
+    const lines=['幕野 Studio｜手工设置单',v.name+' / '+v.id+' / revision '+v.revision,
+      '目标 ILCE-7RM2；固件 '+(v.target.firmware||'未记录'),'状态：未实机验证',intro,'',
+      ...engines[v.engine].map(f=>f.label+': '+String(v.parameters[f.key])),
+      '', '建议曝光补偿 EV: '+(v.exposure.suggested_ev_thirds/3).toFixed(2)+'（建议，不自动应用）',
+      '白平衡 Kelvin 只在相应模式有效；自动/手动 Knee 与 Detail 只应用当前模式子项。',
+      'DRO、拍摄模式和曝光应记录，且须确认相机未因互斥关系忽略相关设置。',
+      '', ...warnings(v),'', '注释：'+v.notes];
+    return lines.join('\n')+'\n';
+  }
+  const api={engines,make,validate,parse,serialize,manual,warnings,maxBytes};
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.CineVistaLook=api;
+}(typeof globalThis!=='undefined'?globalThis:this));
+
+/* SPDX-License-Identifier: MIT */
+'use strict';
+const C=CineVistaLook, $=id=>document.getElementById(id);
+let draft=C.make('sony-creative-style'),urls={};
+function bind(){
+  $('engine').value=draft.engine;
+  for(const k of ['name','id','revision','notes'])$(k).value=draft[k];
+  $('author').value=draft.provenance.author;$('firmware').value=draft.target.firmware||'';$('ev').value=draft.exposure.suggested_ev_thirds;
+  $('parameters').replaceChildren();
+  C.engines[draft.engine].forEach(f=>{
+    const line=document.createElement('div');line.className='param';const lab=document.createElement('label');lab.textContent=f.label;
+    const input=document.createElement(f.type==='enum'?'select':'input');input.id='p_'+f.key;input.setAttribute('aria-label',f.label);
+    if(f.type==='enum')f.values.forEach(v=>{const opt=document.createElement('option');opt.value=v;opt.textContent=v;input.append(opt);});
+    else{input.type='range';input.min=f.min;input.max=f.max;input.step=f.key==='wb_kelvin'?100:1;}
+    input.value=draft.parameters[f.key];const val=document.createElement('output');val.textContent=input.value;
+    input.addEventListener('input',()=>{draft.parameters[f.key]=f.type==='enum'?input.value:Number(input.value);val.textContent=input.value;refresh();});
+    if(f.type==='enum')lab.append(input);line.append(lab);if(f.type!=='enum')line.append(input,val);$('parameters').append(line);
+  });refresh();
+}
+function refresh(){
+  const errors=C.validate(draft);$('errors').textContent=errors.join('\n');$('export').disabled=$('manual').disabled=errors.length>0;
+  $('json').textContent=JSON.stringify(draft,null,2);$('warnings').replaceChildren();
+  C.warnings(draft).forEach(t=>{const p=document.createElement('p');p.textContent=t;$('warnings').append(p);});
+}
+function download(text,name,type){const u=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),3000);}
+for(const k of ['name','id','revision','notes'])$(k).addEventListener('input',()=>{draft[k]=k==='revision'?Number($(k).value):$(k).value;refresh();});
+$('author').addEventListener('input',()=>{draft.provenance.author=$('author').value;refresh();});
+$('firmware').addEventListener('input',()=>{draft.target.firmware=$('firmware').value.trim()||null;refresh();});
+$('ev').addEventListener('input',()=>{draft.exposure.suggested_ev_thirds=Number($('ev').value);refresh();});
+$('engine').addEventListener('change',()=>{
+ const keep=draft;const next=C.make($('engine').value);
+ if(!confirm('切换颜色路径将重置本页参数。请先导出要保留的草稿。继续？')){$('engine').value=draft.engine;return;}
+ for(const k of ['name','id','revision','notes','provenance','target'])next[k]=keep[k];draft=next;bind();
+});
+$('export').addEventListener('click',()=>{try{download(C.serialize(draft),draft.id+'.CVL','application/json');$('status').textContent='已导出配方草稿。不是相机适配认证，当前 APK 尚不能自动导入。';}catch(e){$('errors').textContent=e.message;}});
+$('manual').addEventListener('click',()=>{try{download(C.manual(draft),draft.id+'_SETUP.txt','text/plain;charset=utf-8');$('status').textContent='已导出手工设置单。请先记录原相机设置，按实际菜单逐项核对。';}catch(e){$('errors').textContent=e.message;}});
+$('import').addEventListener('change',async e=>{try{const f=e.target.files[0];if(!f)return;if(f.size>C.maxBytes)throw Error('文件超过64 KiB');const d=C.parse(await f.text());draft=d;bind();$('status').textContent='已导入草稿，保留来源信息；设备状态仍未验证。';}catch(err){$('errors').textContent=err.message;}finally{e.target.value='';}});
+for(const key of ['A','B'])$('photo'+key).addEventListener('change',e=>{
+ const f=e.target.files[0];if(!f)return;
+ if(!['image/jpeg','image/png'].includes(f.type)||f.size>30*1024*1024){$('status').textContent='请选不超过30 MiB的JPEG/PNG样片；浏览器显示不代表原生颜色校准。';return;}
+ if(urls[key])URL.revokeObjectURL(urls[key]);urls[key]=URL.createObjectURL(f);$('image'+key).src=urls[key];$('image'+key).alt='本地实拍样片 '+key;
+ $('caption'+key).textContent=f.name+' · 不应用本页参数，不上传';
+});
+window.addEventListener('beforeunload',()=>Object.values(urls).forEach(URL.revokeObjectURL));bind();
+</script></body></html>

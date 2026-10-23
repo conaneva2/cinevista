@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-19",
+  "note": "Adoption decision and immutable research anchors; this is NOT proof that sources are vendored or hardware-qualified. Null candidate commits block importing them.",
+  "upstreams": [
+    {
+      "id": "pmcademo",
+      "repo": "ma1co/PMCADemo",
+      "commit": "12f34e49d48a1d9496ea3c2792911867ea4c985b",
+      "license": "MIT",
+      "decision": "adapt",
+      "included_code": true,
+      "license_file": "third_party/PMCADemo-MIT.txt",
+      "vendored": false,
+      "scope": "existing lifecycle and key-routing adaptation; no full upstream copy"
+    },
+    {
+      "id": "openmemories-framework",
+      "repo": "ma1co/OpenMemories-Framework",
+      "commit": "f8df3504d8684433a331ee869e64f67cc8be9730",
+      "license": "MIT",
+      "decision": "adapt",
+      "included_code": false,
+      "license_file": "third_party/OpenMemories-MIT.txt",
+      "vendored": false,
+      "scope": "reviewed runtime signatures; wrapper adoption/compile-only stubs subject to audit"
+    },
+    {
+      "id": "recipe-lab",
+      "repo": "voxivoid/recipe-lab-sony-pmca",
+      "commit": "d4c64239ddb775e11b9343b54bc71616dd62a7a5",
+      "license": "MIT",
+      "decision": "adopt",
+      "included_code": false,
+      "license_file": "third_party/RecipeLab-MIT.txt",
+      "vendored": false,
+      "scope": "recipe data and reviewed native persistence mechanism; target-model/firmware allowlist required; no blind A6000 slot copying; no code imported this revision"
+    },
+    {
+      "id": "jpeg-cam",
+      "repo": "upsetstomach56/JPEG.CAM-2.0",
+      "commit": "20a30c82a058560c64002e205f2152104c3ea8ba",
+      "license": "root MIT; audit subcomponents/assets separately",
+      "decision": "reference",
+      "included_code": false,
+      "license_file": "third_party/JPEG-CAM-root-MIT.txt",
+      "vendored": false,
+      "scope": "row-wise JPEG, crop, lifecycle references; no whole-app merge"
+    },
+    {
+      "id": "sony-pmca-re",
+      "repo": "ma1co/Sony-PMCA-RE",
+      "commit": null,
+      "license": "MIT",
+      "decision": "external-tool",
+      "included_code": false,
+      "vendored": false,
+      "scope": "installer kept outside APK; pin tested release before device deployment"
+    },
+    {
+      "id": "libjpeg-turbo",
+      "repo": "libjpeg-turbo/libjpeg-turbo",
+      "commit": null,
+      "license": "IJG AND BSD-3-Clause AND Zlib (per project license rollup)",
+      "decision": "candidate",
+      "included_code": false,
+      "vendored": false,
+      "scope": "mature codec, PMCA native build not qualified"
+    },
+    {
+      "id": "libyuv",
+      "repo_url": "https://chromium.googlesource.com/libyuv/libyuv",
+      "commit": null,
+      "license": "verify exact selected source LICENSE before adoption",
+      "decision": "candidate",
+      "included_code": false,
+      "vendored": false,
+      "scope": "YUV/RGB scaling only if usable preview frames exist"
+    },
+    {
+      "id": "devicefarmer-jpeg-build",
+      "repo": "DeviceFarmer/android-libjpeg-turbo",
+      "commit": null,
+      "license": "wrapper and embedded codec licenses must be separately audited",
+      "decision": "historical-reference",
+      "included_code": false,
+      "vendored": false,
+      "scope": "armeabi old-NDK build reference, not automatically approved old codec"
+    },
+    {
+      "id": "film-studio-a7r2",
+      "repo": "Chai-Yu/sony-a7r2-film-studio",
+      "commit": "6934e107a62b723a918e26c243796bc8fd5f749b",
+      "license": "PolyForm-Noncommercial-1.0.0 for original additions; upstream and proprietary materials separate",
+      "decision": "reference",
+      "included_code": false,
+      "vendored": false,
+      "scope": "read-only technical/validation/license research; NO original code, fitted coefficients or base APK imported"
+    },
+    {
+      "id": "ricoh-mod",
+      "repo": "bonyback1/sony-pmca-ricoh-mod",
+      "commit": "7c565898562c73c5073c54dfc831c8c3df9c24cf",
+      "license": "Apache-2.0 for licensed upstream material; Sony base APK separate",
+      "decision": "reference",
+      "included_code": false,
+      "vendored": false,
+      "scope": "runtime hardware interface and reset/persistence distinction; no asset/code imported this revision"
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "documents": [
+    {
+      "path": "README.md",
+      "role": "入口",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "产品/入口变化"
+    },
+    {
+      "path": "PROJECT_STATUS.md",
+      "role": "事实",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "每轮交付"
+    },
+    {
+      "path": "TODO.md",
+      "role": "任务视图",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "任务板更新后生成"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "role": "变更",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "每次交付"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "role": "协作",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "贡献/评审规则变化"
+    },
+    {
+      "path": "SECURITY.md",
+      "role": "数据安全",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "披露/密钥规则变化"
+    },
+    {
+      "path": "docs/README.md",
+      "role": "索引",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "文档新增/移除"
+    },
+    {
+      "path": "docs/USER_GUIDE.md",
+      "role": "用户说明",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "功能/限制/恢复变化"
+    },
+    {
+      "path": "docs/DOCUMENTATION.md",
+      "role": "文档制度",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "流程变化"
+    },
+    {
+      "path": "docs/GITEE.md",
+      "role": "远端",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "托管/权限/CI实际变化"
+    },
+    {
+      "path": "docs/02_ARCHITECTURE.md",
+      "role": "架构",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "接口/依赖变化"
+    },
+    {
+      "path": "docs/04_WORKFLOW.md",
+      "role": "流程",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "评审/合并/交付变化"
+    },
+    {
+      "path": "docs/ENGINEERING_AUDIT.md",
+      "role": "规范核查",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "工程治理核查范围或结论改变"
+    },
+    {
+      "path": "docs/CAMERA_UI_PREVIEW.md",
+      "role": "相机UI预览",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "布局来源/预览工具/验证范围变化"
+    },
+    {
+      "path": "docs/CAMERA_CONNECTION.md",
+      "role": "相机连接",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "固件/宿主环境/连接结果变化"
+    },
+    {
+      "path": "docs/adr/0014-desqueeze-feasibility-gate.md",
+      "role": "决策",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "用户目标或实时反挤压可行性门槛变化"
+    },
+    {
+      "path": "docs/INSTALL_BOOT_LAB.md",
+      "role": "离线实验",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "运行入口/覆盖/依赖/实验边界变化"
+    },
+    {
+      "path": "docs/adr/0015-offline-install-method-lab.md",
+      "role": "决策",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "离线实验架构或解释边界变化"
+    },
+    {
+      "path": "docs/VIRTUAL_CAMERA.md",
+      "role": "虚拟相机说明",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "入口、硬件证据、固件和APK覆盖变化"
+    },
+    {
+      "path": "docs/adr/0016-virtual-camera-first.md",
+      "role": "决策",
+      "owner_role": "change-author-and-maintainer",
+      "update_when": "虚拟相机架构与优先级变化"
+    },
+    {
+      "path": "docs/PUBLICATION.md",
+      "owner_role": "maintainer",
+      "update_when": "public snapshot scope, licensing or rights policy changes"
+    },
+    {
+      "path": "emulator/qemu/README.md",
+      "owner_role": "emulator maintainer",
+      "update_when": "QEMU source patches, licensing or validation boundaries change"
+    }
+  ]
+}

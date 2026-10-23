@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#101114">
+    <LinearLayout android:id="@+id/viewfinder_header" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:minHeight="36dp" android:gravity="center_vertical"
+        android:paddingLeft="12dp" android:paddingRight="12dp" android:background="#191A1E">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="@string/viewfinder_title" android:textColor="#F7F8F8" android:textSize="20sp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/viewfinder_mode" android:textColor="#D0D6E0" android:textSize="16sp" />
+    </LinearLayout>
+    <FrameLayout android:id="@+id/viewfinder_stage" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1" android:clipChildren="true"
+        android:clipToPadding="true" android:background="#000000">
+        <SurfaceView android:id="@+id/viewfinder_surface" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_gravity="center" android:focusable="false" />
+    </FrameLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:background="#191A1E">
+        <Button android:id="@+id/lens_control" style="@style/CameraControl"
+            android:text="@string/lens_initial" android:nextFocusLeft="@id/settings_control"
+            android:nextFocusRight="@id/frame_control" />
+        <Button android:id="@+id/frame_control" style="@style/CameraControl"
+            android:text="@string/frame_initial" android:nextFocusLeft="@id/lens_control"
+            android:nextFocusRight="@id/settings_control" />
+        <Button android:id="@+id/settings_control" style="@style/CameraControl"
+            android:text="@string/settings" android:nextFocusLeft="@id/frame_control"
+            android:nextFocusRight="@id/lens_control" />
+    </LinearLayout>
+    <TextView android:id="@+id/viewfinder_status" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:paddingLeft="12dp" android:paddingRight="12dp"
+        android:paddingTop="4dp" android:paddingBottom="4dp" android:textSize="14sp"
+        android:textColor="#D0D6E0" android:text="@string/preview_limit" />
+</LinearLayout>

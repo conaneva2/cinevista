@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible issue without private camera data.
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and expected/actual behavior
+    validations:
+      required: true
+  - type: input
+    id: build
+    attributes:
+      label: Build ID, camera model and firmware (no serial number)
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized logs and synthetic or authorized sample references
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: No keys, private photos, GPS, passwords or serial numbers are attached.
+          required: true

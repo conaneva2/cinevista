@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "active": "java-probe",
+  "profiles": {
+    "java-probe": {
+      "id": "java-probe",
+      "native_libraries": [],
+      "source_exceptions": []
+    }
+  }
+}

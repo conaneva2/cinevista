@@ -1,0 +1,112 @@
+{
+  "schema": "cinevista.install-boot-lab/1",
+  "scope": "restricted firmware method replay; not a full VM",
+  "apk": "build/android/20260919T160456Z-native-ui-apk3/CineVista-Probe-0.4-debug.apk",
+  "pmca_root": ".local/connection/Sony-PMCA-RE",
+  "pmca_commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+  "methods": {
+    "cache": {
+      "path": ".local/recovery-research/icon-cache-deodex/com/sony/scalar/dlsys/scalaralauncher/IconCache.smali",
+      "signature": "cacheLocked(Landroid/content/ComponentName;Landroid/content/pm/ResolveInfo;)Lcom/sony/scalar/dlsys/scalaralauncher/IconCache$CacheEntry;"
+    },
+    "stamp": {
+      "path": ".local/recovery-research/install-review-deodex/ScalarAInstaller/com/sony/scalar/dlsys/scalarainstaller/InstallAppProgress.smali",
+      "signature": "createInstallStamp()V"
+    },
+    "sync": {
+      "path": "handoff/runs/20260920T034308Z-safe-mode-callchain/resolved-services/com/android/server/pm/PackageManagerService.smali",
+      "signature": "syncAppsFromFilesystemToRam(Ljava/lang/String;)Z"
+    },
+    "resume": {
+      "path": ".local/recovery-research/install-review-deodex/install-sync/com/android/server/SyncAndroidService.smali",
+      "signature": "Resume(I)V"
+    },
+    "load_icon": {
+      "path": ".local/compat-lab/firmware-4.01/framework/android/content/pm/PackageItemInfo.smali",
+      "signature": "loadIcon(Landroid/content/pm/PackageManager;)Landroid/graphics/drawable/Drawable;"
+    },
+    "default_icon": {
+      "path": ".local/compat-lab/firmware-4.01/framework/android/content/pm/ComponentInfo.smali",
+      "signature": "loadDefaultIcon(Landroid/content/pm/PackageManager;)Landroid/graphics/drawable/Drawable;"
+    },
+    "xml_drawable": {
+      "path": ".local/compat-lab/firmware-4.01/framework/android/graphics/drawable/Drawable.smali",
+      "signature": "createFromXmlInner(Landroid/content/res/Resources;Lorg/xmlpull/v1/XmlPullParser;Landroid/util/AttributeSet;)Landroid/graphics/drawable/Drawable;"
+    }
+  },
+  "hierarchy_files": [
+    ".local/compat-lab/firmware-4.01/framework/android/graphics/drawable/Drawable.smali",
+    ".local/compat-lab/firmware-4.01/framework/android/graphics/drawable/LayerDrawable.smali",
+    ".local/compat-lab/firmware-4.01/framework/android/graphics/drawable/BitmapDrawable.smali"
+  ],
+  "files": {
+    ".local/compat-lab/firmware-4.01/framework/android/content/pm/ComponentInfo.smali": "40ba15c89c8efd5928d0321ff249b6c63b34c6cb51fe8a4de146a4f7d306aeb0",
+    ".local/compat-lab/firmware-4.01/framework/android/content/pm/PackageItemInfo.smali": "6f56b6419eb0b103d30a4b86e7227391689c8e1e2573c41d52cc55ff2a199f31",
+    ".local/compat-lab/firmware-4.01/framework/android/graphics/drawable/BitmapDrawable.smali": "746098ad49c86007103432dd556890adb3708f4f9e4e44fafa806cddc612fc1c",
+    ".local/compat-lab/firmware-4.01/framework/android/graphics/drawable/Drawable.smali": "4bda9925b2a0a7c7f5ce99761ddcc94707e6275e1be7ccc5631d0b095a23e0f3",
+    ".local/compat-lab/firmware-4.01/framework/android/graphics/drawable/LayerDrawable.smali": "6ee3e84a1751889daba697b9dde70fcc534f50d3fd84c5a60aa3b81e34e524d4",
+    ".local/connection/Sony-PMCA-RE/pmca/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".local/connection/Sony-PMCA-RE/pmca/apk/__init__.py": "05164483f30fae765e14fde3e6c9e416cd7e10d8e11aad59d1c59f819c585fde",
+    ".local/connection/Sony-PMCA-RE/pmca/appstore/__init__.py": "6406c31716489cbf9c710927904c58f378508494aa4642a33a9f9903493a2cc9",
+    ".local/connection/Sony-PMCA-RE/pmca/appstore/github.py": "94ce10dc07be9434d6872f90dbd3a1c7cae5bfab750853c25e91a0b7318e8f00",
+    ".local/connection/Sony-PMCA-RE/pmca/backup/__init__.py": "ea09b9650ecd306e5dd4a6c7f1b57dd4b5763c0aa2e5d8509a364bdf7deeba61",
+    ".local/connection/Sony-PMCA-RE/pmca/commands/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".local/connection/Sony-PMCA-RE/pmca/commands/backup.py": "778555e41b73a5d7b59f29671fad9f5ac044b8ce643dbab9119db269b9acdbbf",
+    ".local/connection/Sony-PMCA-RE/pmca/commands/market.py": "3739fcf2deded15c0f7e213cab97c75b52c421f778096338acf2859bb07be043",
+    ".local/connection/Sony-PMCA-RE/pmca/commands/usb.py": "44783d222548598dab97d4813abbd35c3f20540686a579949dbf54e5ab1a5673",
+    ".local/connection/Sony-PMCA-RE/pmca/firmware/__init__.py": "11e1852d10966b202be64486003b1b57bdc8c801a02bb873a47254d4c20d3fda",
+    ".local/connection/Sony-PMCA-RE/pmca/installer/__init__.py": "7406af791c028f3f98b7a6d9e7f3ce7d5fb29add190a310c5b17c8c2d4057667",
+    ".local/connection/Sony-PMCA-RE/pmca/io/__init__.py": "d694377d860d05544550965635ac440da70ad7b0d9ac8a43361896c58c631e93",
+    ".local/connection/Sony-PMCA-RE/pmca/marketclient/__init__.py": "748193e54ed11cf4a580752660cddaa930e4bdbf112dc12c1fd384919235b642",
+    ".local/connection/Sony-PMCA-RE/pmca/marketclient/constants.py": "e78ee5ed175f3e0baa74ba7a49ab9ecbb99c34808c8bec40f6e5f599f5b5a0f4",
+    ".local/connection/Sony-PMCA-RE/pmca/marketserver/__init__.py": "136ccce89bfff0fd914168ff63b63dbc8820360b39cd192a887f5ef1ff5b866a",
+    ".local/connection/Sony-PMCA-RE/pmca/marketserver/constants.py": "4b9c1be25b100bd18ac0f270ce7222e4f4e199b6b44ecc785f94328d0d8522b5",
+    ".local/connection/Sony-PMCA-RE/pmca/marketserver/server.py": "242b1d8043f61f71ee4b4b4075b235d6cc5a69aa43978e2d776f86ceb4ccfdc2",
+    ".local/connection/Sony-PMCA-RE/pmca/platform/__init__.py": "475680b361c21b54d7f41c4993657f4976177b1a2175ddcd43cde94793d59b6c",
+    ".local/connection/Sony-PMCA-RE/pmca/platform/android.py": "0ca1f6ce2b958a5000106623504a03b419d2410d71b74ac7506d73a90960a1b9",
+    ".local/connection/Sony-PMCA-RE/pmca/platform/backend/__init__.py": "fd169d1ef7c86ec19e8ec60e72c57f2e697ff80b4386e3b6025aaa956117d605",
+    ".local/connection/Sony-PMCA-RE/pmca/platform/backend/senser.py": "ec48232de062781fa05d7f0edd81626ab9c07fe2d3a1c3379e30fc24a776f0e1",
+    ".local/connection/Sony-PMCA-RE/pmca/platform/backend/usb/__init__.py": "9d3b2156bfd4ca628db4839baa7a96a0f1997e00c88322bc6d1a6f1146c4337f",
+    ".local/connection/Sony-PMCA-RE/pmca/platform/backend/usb/transfer.py": "69f6f9f76d5444b8450004686285fafaeecb6ae59976877687a4a64de340f8bb",
+    ".local/connection/Sony-PMCA-RE/pmca/platform/backup.py": "8614ee80f2fe15cd406bbefc06a56ca72427bebefedbef776a525bbe36d8696f",
+    ".local/connection/Sony-PMCA-RE/pmca/platform/properties.py": "34c519b5817780d355d96550f5b68c0ae88723d03a2378a32057df88b8542044",
+    ".local/connection/Sony-PMCA-RE/pmca/platform/tweaks.py": "12b214a1a713a58ab298bcdf9c992d8e6ee908c53f15a9406f26c485cfc0bba9",
+    ".local/connection/Sony-PMCA-RE/pmca/shell/__init__.py": "a740dd0089974a0e34a9258c01319be70920adebc0c4b9bee9f1becd749da788",
+    ".local/connection/Sony-PMCA-RE/pmca/shell/interactive.py": "fb1748cda16120e7bf036f8e7f963841d807ef18dc0a93a9425b2d60480c797d",
+    ".local/connection/Sony-PMCA-RE/pmca/shell/parser.py": "4a9605a52b273dc3428ce5cd59ecfa239dbc3d6fccd153818f88acb5d892caf1",
+    ".local/connection/Sony-PMCA-RE/pmca/spk/__init__.py": "93182960381de224f05de2dd47b90efc03aeba013b19d48d2f56acfdfccffc55",
+    ".local/connection/Sony-PMCA-RE/pmca/spk/constants.py": "a598f88a2b4a69e7925ba62c57287006725db107c0478f5820724f566fbe0a2b",
+    ".local/connection/Sony-PMCA-RE/pmca/spk/util.py": "de1dd0226eb24e310aab7ee4be5d705ceaee69b00368d0c5386e486c087c7bdf",
+    ".local/connection/Sony-PMCA-RE/pmca/ui/__init__.py": "0f67882d857b076ed4b0af7fb387e5b5be0ce27b9f03fb6d3c870d1207d0b6e4",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/__init__.py": "db2fd3d0dfa2e6f315a14291be8951a5092875e8e5858183cabf2cec46a0fcda",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/constants.py": "94bf081d3c1a51a60cf8fc214dce25a491413d4d786716460fde3fba832eb692",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/crypto.py": "74660a42235f7efac6f47f38e2151049647bd0bc61ed6eb0763538815b2b6886",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/__init__.py": "dd7d53720a5a12bf87954e687f939fc71d9b1f30428faea4ba7eb217a0e788a4",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/generic/__init__.py": "24cda5b97dcd7e5ff4c6af0e0a8d66900688ef2ba09dc0fb53c42ab6b8c69123",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/generic/libusb.py": "1c80cfaa0692cf308bd086edc9a9bad3691804b50182993c1dd960c932daa1df",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/generic/qemu.py": "5fc54074687e1d4cf036f23d622d139226bb2ddcdf2066be4ec19905091d72c4",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/osx.py": "796efcbb46ca6a8690f127e7fbfb243165dafd7a5658256ff1eb4a3ee9594b91",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/windows/__init__.py": "72203fbedbb4b858f47b1da976ed096775d372f1352ca7b5e8c21dfaaad81eea",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/windows/driverless.py": "f73806bac9bdce55e2c1aa76ba6d63926e409b50eced9b1d808ee200e56f5d62",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/windows/msc.py": "ab35dbe0f216116060ddadb8477f10fa6bf5b1b43eb67caaad6b2fa3b8860ed2",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/windows/setupapi.py": "044a682e1842c5876424b9dedaf882c1a633fa24acdc2b29640fd2fd51afe4f4",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/driver/windows/wpd.py": "16335ea608d43bb50bc27721e55d7c154fe4b5fbd80ffebcc001a55675195720",
+    ".local/connection/Sony-PMCA-RE/pmca/usb/sony.py": "53ffb4d9d49cb5146623fda2b66ecb137681a6fc9ab0c98d23a51e75128af97e",
+    ".local/connection/Sony-PMCA-RE/pmca/util/__init__.py": "1bf318b75faf450011123ce430becc87aec8a7a161765afe38c498cdd20cbacf",
+    ".local/connection/Sony-PMCA-RE/pmca/util/http.py": "61b66c4d0d3c8da6da30876e6b36af6a8a98dfbe1f8872b1ea1e32aaa7e4e5c2",
+    ".local/connection/Sony-PMCA-RE/pmca/xpd/__init__.py": "dd13b565717bdca8b7154bed1a9b5c7acd21619a4e98649cf357f45aaba713d6",
+    ".local/connection/Sony-PMCA-RE/pmca/xpd/constants.py": "44cccc8ca1654cb1ab827ab74784bc12551cade32b3ec10c58b40bbb2292ac31",
+    ".local/recovery-research/icon-cache-deodex/com/sony/scalar/dlsys/scalaralauncher/IconCache.smali": "b224546c7ee009891efc72dea5e8dff405e02fc8b6261dbc87a2fb557bdd7f5b",
+    ".local/recovery-research/install-review-deodex/ScalarAInstaller/com/sony/scalar/dlsys/scalarainstaller/InstallAppProgress.smali": "0949a7003a12b6b7abe881b01d8e182cc7e7a18ee985c8c87f6cde8c01fdcb23",
+    ".local/recovery-research/install-review-deodex/install-sync/com/android/server/SyncAndroidService.smali": "5086fc8418abc519a6a2a596f153de58b23c5f07ac3961107ac482cd14462674",
+    "build/android/20260919T160456Z-native-ui-apk3/CineVista-Probe-0.4-debug.apk": "bf6fdea4f0e449cc565bb3319375f87f3070298df1f104667f752cc4041ebd58",
+    "handoff/runs/20260920T034308Z-safe-mode-callchain/inline-table.txt": "6b4d6adacf23b27b5172f07227e85a0362406f47f275fceaa629e3a309637268",
+    "handoff/runs/20260920T034308Z-safe-mode-callchain/resolved-services/com/android/server/pm/PackageManagerService.smali": "f02e2e43b60b3cfb60a2a41ad1f96d41fc33982c5bbe4b012db9afca690c376d",
+    ".local/recovery-research/unpacked-4.01/firmware.tar_unpacked/0700_part_image/dev/nflasha16_unpacked_unpacked/framework/framework.odex": "c513ba15c957514b62a5d153a201e69c27d76bca3455f30729c1757f36013859",
+    ".local/recovery-research/unpacked-4.01/firmware.tar_unpacked/0700_part_image/dev/nflasha16_unpacked_unpacked/framework/services.odex": "5070e8b6339b1b570a321c61fb820c7682c91c578551975e4bbdba8a0aa118ee",
+    ".local/recovery-research/unpacked-4.01/firmware.tar_unpacked/0700_part_image/dev/nflasha16_unpacked_unpacked/app/ScalarALauncher.odex": "e16602edd31f7df7b374ee23269e6edf4fbec3f7c2a455f31978faee28d72bc2",
+    ".local/recovery-research/unpacked-4.01/firmware.tar_unpacked/0700_part_image/dev/nflasha16_unpacked_unpacked/app/ScalarAInstaller.odex": "38f3ad941fd4def65d2dafb0d9918aab856c1e0a69a6af2049f707d596c3d25a",
+    ".local/recovery-research/unpacked-4.01/firmware.tar_unpacked/0700_part_image/dev/nflasha16_unpacked_unpacked/lib/libdvm.so": "86b9ea6e806678fe07ffee0c76566e02a5dabc5814aa44e2c0affd78a10b4ed8"
+  },
+  "firmware_provenance": "Official ILCE-7RM2 4.01, locally extracted. Original ODEX unchanged; analysis container conversion is recorded in handoff/runs/20261022T075951Z-install-boot-lab/framework-deodex.json."
+}

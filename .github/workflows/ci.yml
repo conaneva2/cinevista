@@ -1,0 +1,31 @@
+name: Host and source checks
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: host-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  host-check:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['17', '21']
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2, reviewed pin
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1, reviewed pin
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0, reviewed pin
+        with:
+          node-version: '22'
+      - name: Read-only environment diagnosis
+        run: python3 tools/cv.py doctor
+      - name: Host, architecture and syntax checks (NOT APK/device tests)
+        run: python3 tools/cv.py check

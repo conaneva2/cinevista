@@ -1,0 +1,56 @@
+{
+  "schema": "cinevista.look/1",
+  "id": "PPDRAFT1",
+  "name": "幕野 PP工作草稿",
+  "revision": 1,
+  "target": {
+    "model": "ILCE-7RM2",
+    "firmware": null
+  },
+  "engine": "sony-picture-profile",
+  "parameters": {
+    "gamma": "Still",
+    "color_mode": "Still",
+    "black_level": 0,
+    "black_gamma_range": "Middle",
+    "black_gamma_level": 0,
+    "knee_mode": "Auto",
+    "knee_auto_max": 100,
+    "knee_auto_sensitivity": "Mid",
+    "knee_manual_point": 90,
+    "knee_manual_slope": 0,
+    "saturation": 0,
+    "color_phase": 0,
+    "depth_R": 0,
+    "depth_G": 0,
+    "depth_B": 0,
+    "depth_C": 0,
+    "depth_M": 0,
+    "depth_Y": 0,
+    "detail_level": 0,
+    "detail_mode": "Auto",
+    "detail_vh_balance": 0,
+    "detail_bw_balance": "Type3",
+    "detail_limit": 7,
+    "detail_crispning": 0,
+    "detail_highlight": 0,
+    "wb_mode": "auto",
+    "wb_kelvin": 5500,
+    "wb_amber_blue": 0,
+    "wb_green_magenta": 0
+  },
+  "exposure": {
+    "policy": "manual",
+    "suggested_ev_thirds": 0
+  },
+  "provenance": {
+    "kind": "user-created",
+    "author": "",
+    "license": "UNSPECIFIED",
+    "upstream": null
+  },
+  "validation": {
+    "status": "unverified"
+  },
+  "notes": "结构示例，未校准、未进行相机实测，不是胶片复刻预设。"
+}

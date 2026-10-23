@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "modules": {
+    "core": {
+      "src": "core/src",
+      "deps": [],
+      "kind": "portable"
+    },
+    "io": {
+      "src": "io/src",
+      "deps": [],
+      "kind": "portable"
+    },
+    "camera-api": {
+      "src": "camera-api/src",
+      "deps": [
+        "core"
+      ],
+      "kind": "android"
+    },
+    "sony": {
+      "src": "sony/src",
+      "deps": [
+        "core",
+        "io",
+        "camera-api"
+      ],
+      "kind": "android"
+    },
+    "app": {
+      "src": "app/src",
+      "deps": [
+        "core",
+        "io",
+        "camera-api",
+        "sony"
+      ],
+      "kind": "android"
+    },
+    "host": {
+      "src": "host/src",
+      "deps": [
+        "core",
+        "io"
+      ],
+      "kind": "desktop"
+    },
+    "tests": {
+      "src": "tests/src",
+      "deps": [
+        "core",
+        "io",
+        "host"
+      ],
+      "kind": "test"
+    }
+  },
+  "composition_roots": [
+    "app/src/org/cinevista/probe/ProbeServices.java"
+  ],
+  "android_order": [
+    "core",
+    "io",
+    "camera-api",
+    "sony",
+    "app"
+  ],
+  "host_order": [
+    "core",
+    "io",
+    "host",
+    "tests"
+  ]
+}

@@ -1,0 +1,24 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="__CSP__"><title>幕野 Studio · 实时调色</title><style>__CSS__</style></head><body>
+<header><div><h1>幕野 <span>Studio</span></h1><p>导入样张，看着颜色调整。预览与导出使用同一份 LUT。</p></div><div class="tag">0.2 ALPHA · 本地实时软件调色</div></header>
+<div class="notice"><b>软件颜色工作区。</b>本页保留实时软件调色，但导出的 LUT 不能让相机在退出幕野、重启后原生拍照时自动生效。原生直拍是项目主目标，其受限预览标定与发布器尚未完成；本页不是 Sony 原生 PP 模拟器。仅按 sRGB 全范围设计，不处理 RAW、Log 或 HDR。</div>
+<main><section class="panel controls"><h2>01 / 自制颜色</h2>
+<div class="two"><label>配方名称<input id="name" maxlength="64" value="我的胶片颜色"></label><label>文件代号<input id="id" maxlength="8" value="MYLOOK01" spellcheck="false"></label></div>
+<div class="actions sectiontitle"><button id="undo" class="secondary">撤销</button><button id="redo" class="secondary">重做</button><button id="reset" class="secondary">恢复中性</button></div>
+<div id="basic"></div><details><summary>明暗曲线 · 五点</summary><canvas id="curvePreview" width="280" height="105"></canvas><p class="sub">全局 RGB 明暗曲线。节点单调约束，使用分段线性映射；不是索尼 Gamma 菜单。</p><div id="curve"></div></details>
+<details><summary>阴影 / 高光偏色</summary><div id="splitTone"></div></details><details><summary>六色调整 · HSV 色相与饱和度</summary><div id="selective"></div></details>
+<p class="sub">本版不添加颗粒、晕光、模糊或空间蒙版，以确保所有可见调色都能写进同一份 3D LUT。</p></section>
+<section class="panel viewer"><h2>02 / 实时样张</h2><div class="tools"><label class="button">导入样张<input id="photos" type="file" accept="image/jpeg,image/png" multiple hidden></label>
+<select id="resolution" aria-label="预览分辨率"><option value="640">预览长边 640</option><option value="960" selected>预览长边 960</option><option value="1600">预览长边 1600</option></select>
+<select id="compare" aria-label="对照方式"><option value="after">当前调色</option><option value="split">左右对照</option><option value="before">原图</option></select><button id="hold" class="secondary">按住看原图</button></div>
+<div id="sampleTabs"></div><figure><div id="empty">导入一张你的照片<br><small>最多 6 张，可切换检查同一颜色；不上传照片。</small></div><canvas id="preview" hidden aria-label="调色预览"></canvas></figure>
+<div class="tools"><span id="compareLabel">当前调色</span><input id="split" type="range" min="0" max="100" value="50" aria-label="左右对照分界位置"></div><p id="photoMeta" class="sub">使用与相机软件出片相同基线的 sRGB JPEG；预览降采样不改变导出的 LUT。</p>
+<p id="status" role="status" aria-live="polite">初始化…</p><div id="error" role="alert"></div>
+<div class="export"><h2>03 / 保存与导出</h2><div class="two"><label>LUT 网格<select id="size"><option value="17">17³ · 更小</option><option value="33" selected>33³ · 更细</option></select></label><div><span class="sub">继续编辑</span><label class="button secondary">导入工程 .CVG<input id="openProject" type="file" accept=".CVG,.cvg,.json" hidden></label></div></div>
+<label class="sectiontitle">样张的相机输入基线<textarea id="baseline" rows="2" maxlength="600" placeholder="记录实际的 Creative Style 或 PP、DRO、白平衡策略等。不要把不同配方的 JPEG 当作同一输入。"></textarea></label>
+<label class="check"><input id="confirmInput" type="checkbox"><span>我确认此样张用于 sRGB 软件调色；将来相机应用时使用相同输入基线，不重复套用另一份外观。此确认不是机型兼容认证。</span></label>
+<div class="actions"><button id="saveProject" class="secondary">保存工程 .CVG</button><button id="exportCube">导出 LUT .CUBE</button><button id="exportPackage">导出 App 素材 .CVP</button><button id="exportImage" class="secondary">导出预览 PNG</button></div>
+<p class="sub">.CUBE 为当前可见颜色表；.CVG 保留可编辑参数；.CVP 是 App 内软件上色素材，不是机身原生持久预设；Camera 导入器待实现。相机不会自动识别这些自定义文件。预览 PNG 不是原尺寸成片。</p></div></section></main>
+<footer>MIT · CineVista / Camera v0.4 保持不变；v0.6 仅修订原生持久化要求与本页范围提示，未新增相机实现。浏览器负责图像解码、sRGB 画布与缩放；本工具未标定你的显示器，也未实测 macOS 27 / Safari 或 A7R II。没有联网请求或云端处理。</footer>
+<script type="text/plain" id="worker-core">__CORE__</script><script type="text/plain" id="worker-body">__WORKER__</script><script>__CORE__
+__UI__</script></body></html>

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "qualification_complete": false,
+  "status": "Mac development APK built and verified; device and reproducibility qualification pending",
+  "primary_host": "Apple M4 Pro arm64 / 24 GiB / macOS 27.0 26A428",
+  "jdk_primary_major": 17,
+  "jdk_host_regression_major": 21,
+  "jdk_exact_build": "Eclipse Temurin 17.0.20.1+1 macOS aarch64",
+  "jdk_artifact_sha256": "196d13ba5f10414bef7f6a05a9b3f00edacb18ebacef2b99485db9e2ee18f0e8",
+  "python_min": "3.10",
+  "python_preferred": "3.12",
+  "python_third_party_dependencies": [],
+  "android_api": 10,
+  "android_jar_sha256": "0160896aafd1da1d3fdd9cf3a3dd0d6c9ab7ac98fffeaba8ebf44ccdc2e37356",
+  "build_tools_version": "30.0.3",
+  "build_tools_artifact_sha256": "5741d5071ffd9c19a55c86cb6b6097b06cf3897b64f14b3886ab523f287067c6",
+  "java_source_target": "8 (API10 bootclasspath; no Java8 platform APIs)",
+  "dex_version": "035",
+  "apk_signature": "v1-only verified by official apksigner with min/max SDK10; local persistent debug identity",
+  "ndk": null,
+  "native_backend_status": "not selected until ABI and linker test",
+  "agp": null,
+  "gradle": null,
+  "build_frontend": "thin Python orchestration over official javac/aapt/D8/zipalign/apksigner",
+  "remaining": "No camera installation/runtime tests. No JDK21 or Node22 rerun on this Mac. No bit-reproducibility certification or production signing approval.",
+  "ci_host": "Linux x86_64 Ubuntu 22.04",
+  "studio_development_node_major": 22,
+  "observed_python": "3.12.10",
+  "observed_node": "26.8.2",
+  "sdk_archives": [
+    {
+      "archive": "android-2.3.3_r02.zip",
+      "sha1_official": "887e37783ec32f541ea33c2c649dda648e8e6fb3",
+      "sha256": "54bdb0f1ca06ba5747061ddeea20f431af72c448334fd4d3d7f84ea2ccd29fea",
+      "size": 85470907
+    },
+    {
+      "archive": "build-tools_r30.0.3-macosx.zip",
+      "sha1_official": "0807cd3f0dbc33c8be7f3d6faa263f6b14b502b7",
+      "sha256": "5741d5071ffd9c19a55c86cb6b6097b06cf3897b64f14b3886ab523f287067c6",
+      "size": 51698282
+    },
+    {
+      "archive": "OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.20.1_1.tar.gz",
+      "sha256": "196d13ba5f10414bef7f6a05a9b3f00edacb18ebacef2b99485db9e2ee18f0e8",
+      "size": 185851019,
+      "source": "adoptium/temurin17-binaries GitHub release and published checksum"
+    }
+  ],
+  "sdk_sources": {
+    "platform": "https://dl.google.com/android/repository/android-2.3.3_r02.zip",
+    "platform_index": "https://dl.google.com/android/repository/repository-12.xml",
+    "build_tools": "https://dl.google.com/android/repository/f6d24b187cc6bd534c6c37604205171784ac5621.build-tools_r30.0.3-macosx.zip",
+    "build_tools_index": "https://dl.google.com/android/repository/repository2-1.xml",
+    "jdk_release": "https://github.com/adoptium/temurin17-binaries/releases/tag/jdk-17.0.20.1%2B1"
+  }
+}
