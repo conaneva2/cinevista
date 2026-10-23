@@ -967,7 +967,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R29：四项NAND配置丢失已由原代码前后启动验证并修复；55项核查、六组控制器测试通过。严格ECC拒绝未建模传输；BOSS程序、原生挂载/GPU/Android/APK仍缺。"
+      "note": "R30：54项静态核查确认extra布局、独立ECC状态及DMA等待；状态0不能独立算成功。无模型变更或新启动；BOSS程序、物理ECC、原生挂载/GPU/Android/APK仍缺。"
     },
     {
       "id": "G09",
@@ -1071,7 +1071,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R29：四项NAND配置丢失已由原代码前后启动验证并修复；55项核查、六组控制器测试通过。严格ECC拒绝未建模传输；BOSS程序、原生挂载/GPU/Android/APK仍缺。"
+      "note": "R30：54项静态核查确认extra布局、独立ECC状态及DMA等待；状态0不能独立算成功。无模型变更或新启动；BOSS程序、物理ECC、原生挂载/GPU/Android/APK仍缺。"
     },
     {
       "id": "G12",

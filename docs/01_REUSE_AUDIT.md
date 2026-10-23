@@ -1,3 +1,9 @@
+# 2026-10-24：原extra/status合同与Cadence命令DMA对照
+
+R30复用R27解析器、R28恢复配置和R29固定Sony模块/Denali缓存。新查Linux v6.12 `drivers/mtd/nand/raw/cadence-nand-controller.c`，GPL-2.0，84,073字节；仅核查结构事实，不复制进应用或模拟器。相似状态位不能消除Sony计数bits9:4与新源码bits9:2、flags偏移+18与+20的差异，直接移植成本与风险不可接受。Altera官方ECC表仅支持旁证容量计算，未下载大PDF，不采纳为Sony硬件规格。
+
+原固件、反汇编与运行证据仍仅本地；公开内容是自写事实摘要。没有新增依赖、固件下载或机身访问。原生执行缺口不以静态核查计数代替。
+
 # 2026-10-24：Denali ECC分代规则与原Sony读写合同
 
 R29复用原4.01/A6000模块、R28参数、R27解析器和既有QEMU/qtest工具；新增核对Linux v6.12的drivers/mtd/nand/raw/denali.h及denali.c（GPL-2.0），共50,488字节，不引入依赖或复制驱动实现。适配成本在Sony定制DMA、BOSS和未确定ECC码字/元数据布局，通用驱动不能直接替代。新版bit0错误规则与原Sony消费路径对应，旧ECC_TRANSACTION_DONE含义不采纳为Sony完成规则。

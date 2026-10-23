@@ -37,6 +37,7 @@
 | R27 | `20261023T153511Z-boss-operation-contract` | `operation-inventory.json`、`contract-evidence.json`、`boot-evidence.json`、`boot-control-01` / `boot-profile-01`、`validation.json` | 18类操作归属、PBI布局、76项静态检查及两次隔离启动；初始坏块指针无效，GPU/BOSS仍未完成 |
 | R28 | `20261023T160247Z-boot-input-origin` | `snapshot-search.json`、`recovered-inputs.json`、`input-evidence.json`、`init-replay-01`、`validation.json` | 恢复20+200字节原参数副本，原驱动回放生成匹配52字节信息；53项检查、一次限定初始化启动，非完整存储/Android |
 | R29 | `20261023T162612Z-nand-ecc-contract` | `FINDINGS.md`、`evidence.json`、`config-before-03`、`config-after-01`、`validation.json` | 四配置读回修复；55项核查、六组控制器测试；ECC拒绝边界、BOSS页组布局；挂载仍未通过 |
+| R30 | `20261023T225319Z-ecc-raw-layout` | `FINDINGS.md`、`extract_and_audit.py`、`evidence.json`、`public-search.json` | 54项静态核查；extra布局、状态0边界、DMA等待及Cadence差异；无新启动，BOSS仍缺 |
 
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 
