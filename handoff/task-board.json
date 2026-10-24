@@ -967,7 +967,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R31：39项静态核查确认0x40类逻辑块/LTU/循环代次和逐项ECC处理；返回0不能独立算成功。无模型变更或新启动；BOSS程序、物理ECC、原生挂载/GPU/Android/APK仍缺。"
+      "note": "R32：53项静态核查、5项CPU暂停控制器用例；bit1/2恢复分支、DMA单位及旧Spectra差异已核对。ECC真实配置明确停止，非原生挂载；BOSS、物理ECC、GPU/Android/APK仍未通过。"
     },
     {
       "id": "G09",
@@ -1071,7 +1071,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R31：39项静态核查确认0x40类逻辑块/LTU/循环代次和逐项ECC处理；返回0不能独立算成功。无模型变更或新启动；BOSS程序、物理ECC、原生挂载/GPU/Android/APK仍缺。"
+      "note": "R32：53项静态核查、5项CPU暂停控制器用例；bit1/2恢复分支、DMA单位及旧Spectra差异已核对。ECC真实配置明确停止，非原生挂载；BOSS、物理ECC、GPU/Android/APK仍未通过。"
     },
     {
       "id": "G12",

@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 34080,
-      "sha256": "c216fca515de646cbc7171ee5e1caf1e5b5da6f016e79aa5fd3027d7353ca709"
+      "bytes": 34493,
+      "sha256": "ecd8cb68a24f6e88bbd1125b808a2b9c7b5b46bf8a5670d027bf113c6d185ec5"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 51522,
-      "sha256": "1c94185f2f479a2194b2986b37a33de465c83480aae893c5432aed0824db202c"
+      "bytes": 52410,
+      "sha256": "cd08f4864fa57a41d26682d9032f4dab0537f2c3ff390f2265edec0bfd002f41"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7709,
-      "sha256": "29e4d735d2cda569d286310cb8ffdf04d970d86cab458fa5f51edce80b4e77a5"
+      "bytes": 7727,
+      "sha256": "d0844218aa6cb9bc5b1f9fedadf84fafb9e22b4495f73d2cbe776d7ad1fa80e5"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 43006,
-      "sha256": "ca46355c25702f698fbadce48fec221a70d338b756aa8d1ba6b6ede3fdb3def0"
+      "bytes": 43812,
+      "sha256": "fa6dcaa640ebe0ed13de913f95b9f1502ff58da3c81a7116a67a08d2e2e0954c"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 11557,
-      "sha256": "4bc915058ee439506ea67e74c5fc50289574dd88ae987768252578ab53d4a531"
+      "bytes": 11654,
+      "sha256": "50c82a56fd37bb8e1df7c88c3fe49750c457881d9efc3394a1d088f0726a3007"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 16203,
-      "sha256": "57235732f6ca8ec6a8e98e2014b2321e19d5372baad86a9ccad4c6a1dc5ce382"
+      "bytes": 16460,
+      "sha256": "1da7e8d63b0986709c66054c0529086f6189ff06c4f689993f422a6905066440"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 14137,
-      "sha256": "af39bc2f2a9e6d9ad0cc408a8943d0eb629c5bd512e90729fd911604284520e9"
+      "bytes": 14577,
+      "sha256": "93504a4c8b354c6e2f1a215e4bb4e37b83b553161056d3d19f1679364da19880"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 34547,
-      "sha256": "1b0f933022c97f74121cbaeb20a28cf3b44a6e3dd3b552114c465634a6e82f07"
+      "bytes": 40666,
+      "sha256": "0e024c11604ce14672e7283253bdb61a34e1b4ec1df6ff055adddefe3ebfe29f"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -602,8 +602,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 49226,
-      "sha256": "90e538560c15de7baf9c6e16bb38eae7b9491804ae47fc0b7e5c6e88e816cdbf"
+      "bytes": 49244,
+      "sha256": "f740264fdc5250870b213fe4e35ed417ff8c678709318d471d615e80a9614b48"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -1075,7 +1075,8 @@
     "completion_proven": false,
     "public_raw_evidence": false
   },
-  "latest_research_round": "R31",
-  "latest_research_static_checks": 39,
-  "latest_research_new_boot_tests": 0
+  "latest_research_round": "R32",
+  "latest_research_static_checks": 53,
+  "latest_research_new_boot_tests": 0,
+  "latest_research_controller_test_cases": 5
 }

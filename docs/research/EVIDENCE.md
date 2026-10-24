@@ -39,6 +39,7 @@
 | R29 | `20261023T162612Z-nand-ecc-contract` | `FINDINGS.md`、`evidence.json`、`config-before-03`、`config-after-01`、`validation.json` | 四配置读回修复；55项核查、六组控制器测试；ECC拒绝边界、BOSS页组布局；挂载仍未通过 |
 | R30 | `20261023T225319Z-ecc-raw-layout` | `FINDINGS.md`、`extract_and_audit.py`、`evidence.json`、`public-search.json` | 54项静态核查；extra布局、状态0边界、DMA等待及Cadence差异；无新启动，BOSS仍缺 |
 | R31 | 20261024T021006Z-extra-consumers | FINDINGS.md、audit_consumers.py、evidence.json、public-search.json | 39项静态核查；逻辑块/LTU/循环代次、ECC归一化与逐项筛选；无新启动，BOSS仍缺 |
+| R32 | 20261024T022834Z-extra-flags-dma | FINDINGS.md、audit_flags_dma.py、evidence.json、dma-test-result.json、new-sources.json | 53项静态核查、5项CPU暂停控制器用例；bit1/2恢复分支、DMA参数、Spectra差异；无新固件启动 |
 
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 
