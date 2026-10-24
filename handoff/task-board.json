@@ -967,7 +967,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R30：54项静态核查确认extra布局、独立ECC状态及DMA等待；状态0不能独立算成功。无模型变更或新启动；BOSS程序、物理ECC、原生挂载/GPU/Android/APK仍缺。"
+      "note": "R31：39项静态核查确认0x40类逻辑块/LTU/循环代次和逐项ECC处理；返回0不能独立算成功。无模型变更或新启动；BOSS程序、物理ECC、原生挂载/GPU/Android/APK仍缺。"
     },
     {
       "id": "G09",
@@ -1071,7 +1071,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R30：54项静态核查确认extra布局、独立ECC状态及DMA等待；状态0不能独立算成功。无模型变更或新启动；BOSS程序、物理ECC、原生挂载/GPU/Android/APK仍缺。"
+      "note": "R31：39项静态核查确认0x40类逻辑块/LTU/循环代次和逐项ECC处理；返回0不能独立算成功。无模型变更或新启动；BOSS程序、物理ECC、原生挂载/GPU/Android/APK仍缺。"
     },
     {
       "id": "G12",

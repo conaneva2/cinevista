@@ -1,3 +1,9 @@
+# 2026-10-24：extra消费者与A6000增量资料复核
+
+R31复用固定4.01/A6000原模块、R27 ELF提取器及Linux v6.12 Denali缓存（GPL-2.0，仅作结构事实对照）。确认软件metadata与ECC状态，不据此生成物理spare。原模块/反汇编继续本地保留，未复制到公开副本。
+
+A6000资料项目对照f4dc706262de807f6a9502cd5abc37af469747e0至76d15b79d5a401334974bda5abc55a4a33e2b736，8提交/189文件。仅读取增量，未引入代码或新依赖；变化以拍摄链路、证据修订和测试为主，未出现匹配BOSS。已删除的镜头BL/bootloader猜解不能成为NAND程序证据。完整来源及拒绝直接移植理由见研究手册。
+
 # 2026-10-24：原extra/status合同与Cadence命令DMA对照
 
 R30复用R27解析器、R28恢复配置和R29固定Sony模块/Denali缓存。新查Linux v6.12 `drivers/mtd/nand/raw/cadence-nand-controller.c`，GPL-2.0，84,073字节；仅核查结构事实，不复制进应用或模拟器。相似状态位不能消除Sony计数bits9:4与新源码bits9:2、flags偏移+18与+20的差异，直接移植成本与风险不可接受。Altera官方ECC表仅支持旁证容量计算，未下载大PDF，不采纳为Sony硬件规格。
