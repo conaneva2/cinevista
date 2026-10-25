@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 35374,
-      "sha256": "913b8a03e28bd1da8749977517b0d10b7316d74be94d97b5b813f3d6c6644350"
+      "bytes": 35834,
+      "sha256": "7f904dd128240f6f248bf8df28d4d75430e93481f39408042607ffa9c406ceae"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 53935,
-      "sha256": "720629e5aab2ab7bb05531177ba8af1a318ea1255d900758624c018379c841ba"
+      "bytes": 54661,
+      "sha256": "dc45330dc717fc3ebb451d622f01d57be5500caf41b91bc69f808715467d5000"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7617,
-      "sha256": "b9c4ba31669db74bb9612d0910ddbe3075efcdaefc3da5ff2766726c30798283"
+      "bytes": 7663,
+      "sha256": "7ffdedfb94ff36748902e350e125edaa1b429170cddf3fa11c1c8a1bff24a67c"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 45322,
-      "sha256": "0010af652c26f435824d2d63e1543c67ee00fddbef03be3ddbd38c342c7d5186"
+      "bytes": 46170,
+      "sha256": "b1b4988b328f8e6f6ae62f2cac6abef20dcee575fc8fa405f5dc3c50b5e4831b"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 11495,
-      "sha256": "15014155bb776c134d0c02c0e4b465932a7c4a9c3502e6740bde92104d927947"
+      "bytes": 11688,
+      "sha256": "fa2c2b76bc57ba4484f2dc938cde12b6d80622c1fd21f14d6a3004b0bfe55538"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 16926,
-      "sha256": "a7948ec3f39d5e4d6c9281223f90b4d82f4dc88dbb9225e124b4f42a9665c5b8"
+      "bytes": 17190,
+      "sha256": "4473f05bd9eb89bb7dae5a91283eed7a0099162f417d0e93ab05732dea713dd1"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 15431,
-      "sha256": "83066123c29d7d0a500d07b740af5ae792074d023b1bf5d8f4109061b943929d"
+      "bytes": 15860,
+      "sha256": "02712e3c4d7b43eff133594b757f5104f0b76569c0257baba3e59611070fa527"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 51073,
-      "sha256": "a8c9edfaeb36e9794788a5d63d852340da40f41cc3eabe3cada35e78f66804d7"
+      "bytes": 56980,
+      "sha256": "9ac94f2b0ebbaf37d28fa096374f29969967735660f21d01b2eec94b2bf2b828"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -602,8 +602,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 49134,
-      "sha256": "5d65762564747240e1a6445d5ece3eae864ba9f7f97f8a835418e9422b2d2344"
+      "bytes": 49180,
+      "sha256": "e956495d18a9eddcea7d4b51510c97fa3a4b3445df051755823182f8ec614ddd"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -1066,16 +1066,17 @@
     "verified_source_files": 207
   },
   "latest_research": {
-    "evidence_id": "R34",
-    "scope": "Official command-DMA error-channel reference checked against A7R II 4.01 and A6000. Recovered 4.01 configuration does not enable reference stop-on-error bit. Physical ECC and writeback ordering remain unproven.",
-    "evidence_checks_passed": 14,
-    "guest_runs": 0,
+    "evidence_id": "R35",
+    "scope": "Eight new original IRQ-bookkeeping and wait-mask instruction cases with supplied RAM inputs. No hardware coexistence, bus-write completion, W1C, native mounting or firmware boot proven. Matching BOSS remains absent.",
+    "cross_and_integrity_checks_passed": 6,
+    "instruction_slice_cases_passed": 8,
+    "firmware_boots": 0,
     "completion_proven": false,
     "public_raw_evidence": false
   },
-  "latest_research_round": "R34",
-  "latest_research_static_checks": 14,
+  "latest_research_round": "R35",
+  "latest_research_static_checks": 6,
   "latest_research_new_boot_tests": 0,
   "latest_research_controller_test_cases": 0,
-  "latest_research_instruction_slice_cases": 0
+  "latest_research_instruction_slice_cases": 8
 }

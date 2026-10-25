@@ -42,6 +42,7 @@
 | R32 | 20261024T022834Z-extra-flags-dma | FINDINGS.md、audit_flags_dma.py、evidence.json、dma-test-result.json、new-sources.json | 53项静态核查、5项CPU暂停控制器用例；bit1/2恢复分支、DMA参数、Spectra差异；无新固件启动 |
 | R33 | 20261025T091114Z-nand-completion-contract | FINDINGS.md、audit_completion.py、evidence.json、status-slice-result.json、community-delta.json | 26项静态检查、38项原指令隔离用例；无控制器传输、新固件启动或原生挂载 |
 | R34 | 20261025T094248Z-nand-writeback-producer | FINDINGS.md、audit_producer.py、evidence.json、public-search.json | 14项静态核对；官方错误通道参照与4.01配置差异；无新客体测试 |
+| R35 | 20261025T095937Z-nand-error-completion-order | FINDINGS.md、execute_irq_slice.py、irq-slice-result.json、evidence.json、public-search.json | 8组新原指令状态输入实验；6项交叉/完整性检查；无新固件启动或硬件生产端验收 |
 
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 

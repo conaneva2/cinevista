@@ -426,6 +426,49 @@ Sony原流程仍先等待0x720 bit1，再失效描述符缓存、检查+0x20 bit
 下一步优先寻找与Sony紧凑CDMA对应的版本说明，核实0x7c0错误的产生条件、与0x720完成位的共存规则、描述符写回的总线完成点；有这类依据后，再做针对失败路径与写回顺序的实验。BOSS只接受能核对加载范围、邮箱和52字节设备信息的离线程序，不把其他机型资料直接作为可运行载荷。
 
 
+## 5j. 完成与失败不是一对反义位；错误通知与完成通知仍须分别取证（R35）
+
+本轮将“硬件产生什么”“中断处理保存什么”“读取结果时判断什么”分开。完成只表示一次操作走到了完成状态，不自动表示数据正确。没有新增固件启动或原生存储验收。
+
+### 描述符与中断寄存器必须分开
+
+| 位置 | 已核实 | 仍不能推出 |
+| --- | --- | --- |
+| 描述符+0x20的COMP bit15、FAIL bit14 | 4.01/A6000均先确认COMP，再判断FAIL及错误细分；两位同时为1有真实处理分支，R33已执行验证，本轮不重复 | Sony硬件在每一种ECC、总线或超时错误下必然设置哪一组位 |
+| 0x720 bit1与0x7c0 bit0 | 原中断处理保存0x720，再写0x720=2、关闭0x7d0 bit0、写0x7c0=1；本段没有读取0x7c0 | 两者必然同时产生、谁先产生，或清错误就等于操作成功 |
+| 等待函数内部返回0 | 已保存的0x720符合期望mask=2；无该位时内部返回9 | 数据正确、ECC通过、文件系统挂载成功 |
+
+Altera的[Agilex 3 CDMA官方手册](https://docs.altera.com/r/docs/848530/26.1.1/hard-processor-system-technical-reference-manual-agilex-3-socs/operation-in-cdma-mode?contentId=g5E0y1z_CX1ZXv5FZREFOw)明确要求失败操作也设置Complete。这补充了“完成不等于成功”的外部参照，但其64位状态、纠错数位置和命令值不同于Sony：它的计数在bits9:2，Sony消费者取bits9:4；它的读命令为0x2200系列，Sony构造0x2000系列。不能据此实现Sony硬件生产端。
+
+找到2013年版Cyclone V手册目录中的旧Command DMA章节（包含Command Descriptor Structure、Status Fields），但[镜像目录](https://manualzz.com/doc/o/2ttch/cyclone-v-device-handbook-volume-1--device-interfaces-and-bootsel-field-values-and-flash-device-selection)对应正文未能获取：工具返回Cache miss，直接请求返回403。只记录可追查的章节线索，不把目录当作已读规范；未下载整本PDF。
+
+### 原中断指令的新实验：8种输入组合，而非8次固件启动
+
+4.01 `boss_hw_nandc_process` 0x78dc–0x79e7与A6000 0x61f8–0x6303的268字节完全一致。固定原模块哈希，复用已有QEMU通信工具，只做标准ELF地址重定位，执行这段原指令到加锁调用之前；另执行原等待函数的6条mask判断指令。没有替换被调用函数、修改原ELF或修改QEMU实现。
+
+每机4组：无通知、仅错误通道位、仅完成位、两者都有。寄存器形状的输入存放在普通RAM，未仿真W1C和IRQ产生；外部缓存回调为空，通过原有空值分支。入口按合法非空寄存器基址准备，故本实验不包含函数入口断言、实际缓存回调、锁、调度或完整调用链。
+
+结果8/8通过：完成位原样保存到软件状态；与错误输入无关，写入意图按0x410、0x700、0x730、0x720、0x7d0、0x7c0顺序发生。所有输入都会设置软件唤醒标记；只有已保存的完成位存在时，随后mask检查内部返回0，否则返回9。描述符哨兵区未被这段中断代码改写。
+
+**这证明原软件怎样消费给定状态，不能证明硬件能产生任意给定组合。** 特别是0x7c0没有被本段读取：同样的输出不能当作“已验证真实错误+完成共存”。普通RAM保留写入值也不是验证了寄存器写1清零。
+
+### 数据、描述符与CPU缓存的顺序
+
+4.01读取路径0x9114/A6000 0x78f8先判断等待内部码是否为9；若为9，直接进入结果表路径，不读描述符。否则以长度64、方向2调用缓存维护，再读取描述符+0x20，未完成则继续轮询。中断处理本身不承担ECC纠正或描述符结果写回。
+
+本轮从已有Sony官方内核压缩包中仅提取4个相关源码文件，未重新下载。`include/linux/dma-mapping.h`确认方向2是DMA_FROM_DEVICE；`arch/arm/mm/dma-mapping.c`的`___dma_single_cpu_to_dev`调用`dmac_map_area`，该方向走外层缓存失效路径（受编译配置影响）；`cache-v7.S`的`v7_dma_map_area`转入`v7_dma_inv_range`，其中有缓存行失效和DSB。两机lld的缓存包装函数均引用此导出符号。
+
+因此当前可以明确软件端意图：**收到通知→核对已保存的完成位→维护CPU缓存→检查描述符COMP/FAIL→决定返回结果**。缓存维护用于让CPU读到内存中已有的结果；它不产生ECC结果，也不能证明外部DMA写响应已经完成。尚缺的生产端证据是：纠错数据写响应、描述符状态写响应、完成位、错误位和外部IRQ之间的硬件约束。
+
+现代[Agilex 5中断文档](https://docs.altera.com/r/docs/814346/26.1.1/hard-processor-system-technical-reference-manual-agilex-5-socs/interrupts-configuration?contentId=~T6qNGX9R5niYAvsoUU7xg)与[U-Boot维护者补丁](https://www.mail-archive.com/u-boot%40lists.denx.de/msg529813.html)也分别处理线程错误、线程完成和描述符可读性，但对应控制器不同，只作比对，未移植。
+
+### BOSS新增覆盖与下一步
+
+补读A6000资料固定提交6984ce85198ec22bedbf87d69f1c374b96473eb0中，R33没有patch的`docs/CORRECTIONS.md`、`docs/OPEN-QUESTIONS.md`、`analysis/s400_open_questions_triage/triage.json`全文；对BOSS、loader_mpt、pformat、mailbox、ESRAM的检索无命中。大体积目录清单未全文拉取，不能声称排除了整个仓库。新的定向公开搜索仍未获得可按加载边界、邮箱布局及52字节设备信息核对的BOSS载荷。
+
+未改默认模型，strict-ecc保持拒绝未建模ECC。新实验有明确的状态消费观察目标；完整启动仍缺新的硬件生产规则和匹配BOSS，不重复原启动失败路径。后续优先取得旧CDMA章节正文或对应IP规范，并核实Sony描述符ABI；BOSS只追有实际程序、版本或载荷位置的新来源。无需操作相机。
+
+
 ## 6. 录像前反挤压：结构存在，连续桥接尚缺
 
 R03 从原配置表确认的对象链：
