@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 34966,
-      "sha256": "e5af3cd234fa281a0732e7012d349d06047c7388adbf6d0b775df9c07fe6337c"
+      "bytes": 35374,
+      "sha256": "913b8a03e28bd1da8749977517b0d10b7316d74be94d97b5b813f3d6c6644350"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 53252,
-      "sha256": "b903c2cdae86e2f2c19131d123e6485b7304c194425c34a2812b42d1c963f2d6"
+      "bytes": 53935,
+      "sha256": "720629e5aab2ab7bb05531177ba8af1a318ea1255d900758624c018379c841ba"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7671,
-      "sha256": "a8389cedfb2329be55097c7c83524c45242580fe7966f3c6de720a58fa3de0a1"
+      "bytes": 7617,
+      "sha256": "b9c4ba31669db74bb9612d0910ddbe3075efcdaefc3da5ff2766726c30798283"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 44607,
-      "sha256": "f1bf48f0879c5c7a68d9798db2a3175338e1173b574393cf86f2482c3915054c"
+      "bytes": 45322,
+      "sha256": "0010af652c26f435824d2d63e1543c67ee00fddbef03be3ddbd38c342c7d5186"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 11595,
-      "sha256": "717ded4e46a385f263823b58c9af4e66b641ca407a7426d35e9345d2ee1c64e0"
+      "bytes": 11495,
+      "sha256": "15014155bb776c134d0c02c0e4b465932a7c4a9c3502e6740bde92104d927947"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 16717,
-      "sha256": "9cb9169a08c88b75c8c68610c3388dedce239e56ee1ee9dfce1ebf39ec4a57ea"
+      "bytes": 16926,
+      "sha256": "a7948ec3f39d5e4d6c9281223f90b4d82f4dc88dbb9225e124b4f42a9665c5b8"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 15011,
-      "sha256": "e5149efad053772add9dfa874010c9f76f197d84696b3c35befa95acd2d90eaf"
+      "bytes": 15431,
+      "sha256": "83066123c29d7d0a500d07b740af5ae792074d023b1bf5d8f4109061b943929d"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 45964,
-      "sha256": "12fdb21eccffcbd8de7253bf2d5ff34ea0027c201fc50f76cd9ef3b4653abfc8"
+      "bytes": 51073,
+      "sha256": "a8c9edfaeb36e9794788a5d63d852340da40f41cc3eabe3cada35e78f66804d7"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -602,8 +602,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 49188,
-      "sha256": "c728d0b054e8792698a54f6b37ee9e68e57f8a72693ea68e52b17c599a5ec951"
+      "bytes": 49134,
+      "sha256": "5d65762564747240e1a6445d5ece3eae864ba9f7f97f8a835418e9422b2d2344"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -1066,18 +1066,16 @@
     "verified_source_files": 207
   },
   "latest_research": {
-    "evidence_id": "R28",
-    "scope": "Recovered matching 4.01 NAND init parameter/config copies through original WBI page table and module verification. A bounded conditional boot lets original driver generate matching 52-byte device info. Synthetic bad-block/media and reset-profile limits remain; no BOSS/GPU/Android completion.",
-    "evidence_checks_passed": 53,
-    "guest_runs": 1,
-    "snapshot_parameter_bytes_recovered": 220,
-    "nonrelocation_code_bytes_compared": 88184,
+    "evidence_id": "R34",
+    "scope": "Official command-DMA error-channel reference checked against A7R II 4.01 and A6000. Recovered 4.01 configuration does not enable reference stop-on-error bit. Physical ECC and writeback ordering remain unproven.",
+    "evidence_checks_passed": 14,
+    "guest_runs": 0,
     "completion_proven": false,
     "public_raw_evidence": false
   },
-  "latest_research_round": "R33",
-  "latest_research_static_checks": 26,
+  "latest_research_round": "R34",
+  "latest_research_static_checks": 14,
   "latest_research_new_boot_tests": 0,
   "latest_research_controller_test_cases": 0,
-  "latest_research_instruction_slice_cases": 38
+  "latest_research_instruction_slice_cases": 0
 }

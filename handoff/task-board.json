@@ -967,7 +967,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R33：26项静态检查、38项原指令隔离执行；软件阈值/状态优先级已核验，非硬件ECC、NAND传输或启动测试。BOSS、物理ECC、GPU/Android/APK仍未通过。"
+      "note": "R34：14项静态核对；官方命令DMA错误通道参照与4.01配置差异已记录，无新客体测试。BOSS、物理ECC、GPU/Android/APK仍未通过。"
     },
     {
       "id": "G09",
@@ -1071,7 +1071,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R33：26项静态检查、38项原指令隔离执行；软件阈值/状态优先级已核验，非硬件ECC、NAND传输或启动测试。BOSS、物理ECC、GPU/Android/APK仍未通过。"
+      "note": "R34：14项静态核对；官方命令DMA错误通道参照与4.01配置差异已记录，无新客体测试。BOSS、物理ECC、GPU/Android/APK仍未通过。"
     },
     {
       "id": "G12",
