@@ -967,7 +967,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R36：旧CDMA正文、3个模型误报复现、候选7项验证及12项静态检查；0007拒绝访存失败后假完成。物理ECC/IRQ、BOSS和原生挂载仍阻塞，无新固件启动。"
+      "note": "R37：18项新原读调用分支输入、19项静态/范围检查；警告/硬错误和页尾记账已核实。无NAND传输/固件启动，ECC写回、错误IRQ、BOSS及原生挂载仍阻塞。"
     },
     {
       "id": "G09",
@@ -1071,7 +1071,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R36：旧CDMA正文、3个模型误报复现、候选7项验证及12项静态检查；0007拒绝访存失败后假完成。物理ECC/IRQ、BOSS和原生挂载仍阻塞，无新固件启动。"
+      "note": "R37：18项新原读调用分支输入、19项静态/范围检查；警告/硬错误和页尾记账已核实。无NAND传输/固件启动，ECC写回、错误IRQ、BOSS及原生挂载仍阻塞。"
     },
     {
       "id": "G12",

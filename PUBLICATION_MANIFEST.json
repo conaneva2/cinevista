@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 36350,
-      "sha256": "db1da0c10cc4e3ad4294437129760f7b1184495e91eb6ff89567ab25834852f4"
+      "bytes": 36807,
+      "sha256": "8f2e8372d0835d78f4681c15ad91d7a794d645ea69555831219f5b759952a2a9"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 55558,
-      "sha256": "653fdb31ba30ffbb33add5763c1bb5e62e1df528ad758aa6ae29b68683164c23"
+      "bytes": 56281,
+      "sha256": "75012eb784b9dc74068f7a618fde7a77757fa3b97ee44106bac9d9e72abff24c"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7679,
-      "sha256": "b28f6c1f6656bd21c76e32a30dff4db598765bae736035550899e389d1a6a223"
+      "bytes": 7687,
+      "sha256": "1a7b5469539c8093d8054db9cf36f822288d57331f03692785d132e2580e64b3"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 47094,
-      "sha256": "fa3ccc6ee123607bb4863eee2a4cedebf034bf3bfed11b920022f0e9dbd308ab"
+      "bytes": 47857,
+      "sha256": "116cfa9d2971bb0f2b7e945e6366ef719216263fa94c843331468e5db9e7ff8f"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 12084,
-      "sha256": "b563e47485f26086ddbf347a960a4c62a23c90ce673b64f86fb77b652687e7d6"
+      "bytes": 13357,
+      "sha256": "5450e4b5969bd725856232251a6cf6b6e7be730845ad550698ac135fae56e5aa"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 17539,
-      "sha256": "92314d4f9f1ee3a11c490a29a64917f068bd5fa53c63e6921f45deb7d955ec0c"
+      "bytes": 17890,
+      "sha256": "4e067d999c8c103c802e89b6106524f9d401db1e45ae21d98bf1d02c8a97dc63"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 16439,
-      "sha256": "47c50733474e7b937f6609fea0faf459e5828e6720a8ad79ee1975a71365f0cb"
+      "bytes": 17007,
+      "sha256": "e4d163e7533b6adc24b0069e08c556301d5e6d35fcaf674d5b338d90eeca88e0"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 64600,
-      "sha256": "545a3127b71c6e919323bd9bf54d00d279b035e0fb2e7bd79d7276cd49e9ae5e"
+      "bytes": 71008,
+      "sha256": "58e0c9926797b833526a95424ae9084f5a00f162bec43f3d27cb2acbf75949c8"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -607,8 +607,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 49196,
-      "sha256": "4da11ce304b4b8ca52c3dc3546fc1b397d247a3f3fb88fb0c009a0e075eb20a0"
+      "bytes": 49204,
+      "sha256": "c1695793e5404cc8b50fdbf8fe5c82a8dc662e8019407270403f974838f5ad24"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -1071,21 +1071,21 @@
     "verified_source_files": 207
   },
   "latest_research": {
-    "evidence_id": "R36",
-    "scope": "Old CDMA manufacturer logical contract compared with original Sony/A6000 descriptor construction. Three model false-completion reproductions; seven candidate memory-transaction checks. No physical ECC, native boot or matched BOSS program.",
-    "cross_and_integrity_checks_passed": 12,
-    "baseline_fault_cases": 3,
-    "candidate_cases_passed": 7,
-    "instruction_slice_cases_passed": 0,
+    "evidence_id": "R37",
+    "scope": "Original Sony/A6000 post-read caller instruction slices with supplied results and request state; mode-5 page-end boundary. No NAND controller transfer, ECC execution or firmware boot. No matched BOSS payload.",
+    "cross_and_integrity_checks_passed": 19,
+    "instruction_slice_cases_passed": 18,
+    "initial_debug_setup_failure_cases_completed": 0,
     "firmware_boots": 0,
+    "controller_transfers": 0,
     "completion_proven": false,
     "public_raw_evidence": false
   },
-  "latest_research_round": "R36",
-  "latest_research_static_checks": 12,
+  "latest_research_round": "R37",
+  "latest_research_static_checks": 19,
   "latest_research_new_boot_tests": 0,
-  "latest_research_controller_test_cases": 10,
-  "latest_research_instruction_slice_cases": 0,
+  "latest_research_controller_test_cases": 0,
+  "latest_research_instruction_slice_cases": 18,
   "patch_count": 7,
   "qemu_source_match_scope": {
     "matched_files": 5,

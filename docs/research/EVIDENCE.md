@@ -44,6 +44,7 @@
 | R34 | 20261025T094248Z-nand-writeback-producer | FINDINGS.md、audit_producer.py、evidence.json、public-search.json | 14项静态核对；官方错误通道参照与4.01配置差异；无新客体测试 |
 | R35 | 20261025T095937Z-nand-error-completion-order | FINDINGS.md、execute_irq_slice.py、irq-slice-result.json、evidence.json、public-search.json | 8组新原指令状态输入实验；6项交叉/完整性检查；无新固件启动或硬件生产端验收 |
 | R36 | 20261025T110714Z-old-cdma-producer | FINDINGS.md、test_bus_errors.py、baseline-bus-result.json、candidate-bus-result.json、evidence.json、patch-verification.json | 旧CDMA原厂正文；3个误报复现、候选7项验证、12项静态检查；7补丁可应用，NAND一致，既有串口差异另记；无固件启动或相机操作 |
+| R37 | 20261025T115755Z-sony-mode-ecc-writeback | FINDINGS.md、caller-result.json、caller-page-end-result.json、caller-setup-failure.json、evidence.json、cdma-reference/FINDINGS.md、boss-research/FINDINGS.md | 18项新原调用后分支输入、19项静态/范围检查；仅软件消费端，未做NAND传输或固件启动；新BOSS载荷0 |
 
 静态检查数只是该轮断言数量，不是功能覆盖率。每轮 validation 要与其检查对象一起读；主机检查退出码 0 不覆盖 Sony 窗口、Android 桌面或真实相机。
 
