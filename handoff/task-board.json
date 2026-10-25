@@ -1,6 +1,6 @@
 {
   "schema": "cinevista.handoff-task-board/1",
-  "date": "2026-10-24",
+  "date": "2026-10-25",
   "baseline": "engineering-v0.6; camera-0.4-probe; studio-software-0.2",
   "note": "Live local execution status; completed host tasks are not device certification. See latest session.",
   "tasks": [
@@ -967,7 +967,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R32：53项静态核查、5项CPU暂停控制器用例；bit1/2恢复分支、DMA单位及旧Spectra差异已核对。ECC真实配置明确停止，非原生挂载；BOSS、物理ECC、GPU/Android/APK仍未通过。"
+      "note": "R33：26项静态检查、38项原指令隔离执行；软件阈值/状态优先级已核验，非硬件ECC、NAND传输或启动测试。BOSS、物理ECC、GPU/Android/APK仍未通过。"
     },
     {
       "id": "G09",
@@ -1071,7 +1071,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R32：53项静态核查、5项CPU暂停控制器用例；bit1/2恢复分支、DMA单位及旧Spectra差异已核对。ECC真实配置明确停止，非原生挂载；BOSS、物理ECC、GPU/Android/APK仍未通过。"
+      "note": "R33：26项静态检查、38项原指令隔离执行；软件阈值/状态优先级已核验，非硬件ECC、NAND传输或启动测试。BOSS、物理ECC、GPU/Android/APK仍未通过。"
     },
     {
       "id": "G12",

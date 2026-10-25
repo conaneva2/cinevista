@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-24",
+  "date": "2026-10-25",
   "scope": "Source-only public snapshot; no proprietary inputs or old Git history",
   "host_check_exit_code": 0,
   "patches_apply_to_pinned_base": true,
@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 34493,
-      "sha256": "ecd8cb68a24f6e88bbd1125b808a2b9c7b5b46bf8a5670d027bf113c6d185ec5"
+      "bytes": 34966,
+      "sha256": "e5af3cd234fa281a0732e7012d349d06047c7388adbf6d0b775df9c07fe6337c"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 52410,
-      "sha256": "cd08f4864fa57a41d26682d9032f4dab0537f2c3ff390f2265edec0bfd002f41"
+      "bytes": 53252,
+      "sha256": "b903c2cdae86e2f2c19131d123e6485b7304c194425c34a2812b42d1c963f2d6"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7727,
-      "sha256": "d0844218aa6cb9bc5b1f9fedadf84fafb9e22b4495f73d2cbe776d7ad1fa80e5"
+      "bytes": 7671,
+      "sha256": "a8389cedfb2329be55097c7c83524c45242580fe7966f3c6de720a58fa3de0a1"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 43812,
-      "sha256": "fa6dcaa640ebe0ed13de913f95b9f1502ff58da3c81a7116a67a08d2e2e0954c"
+      "bytes": 44607,
+      "sha256": "f1bf48f0879c5c7a68d9798db2a3175338e1173b574393cf86f2482c3915054c"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 11654,
-      "sha256": "50c82a56fd37bb8e1df7c88c3fe49750c457881d9efc3394a1d088f0726a3007"
+      "bytes": 11595,
+      "sha256": "717ded4e46a385f263823b58c9af4e66b641ca407a7426d35e9345d2ee1c64e0"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 16460,
-      "sha256": "1da7e8d63b0986709c66054c0529086f6189ff06c4f689993f422a6905066440"
+      "bytes": 16717,
+      "sha256": "9cb9169a08c88b75c8c68610c3388dedce239e56ee1ee9dfce1ebf39ec4a57ea"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 14577,
-      "sha256": "93504a4c8b354c6e2f1a215e4bb4e37b83b553161056d3d19f1679364da19880"
+      "bytes": 15011,
+      "sha256": "e5149efad053772add9dfa874010c9f76f197d84696b3c35befa95acd2d90eaf"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 40666,
-      "sha256": "0e024c11604ce14672e7283253bdb61a34e1b4ec1df6ff055adddefe3ebfe29f"
+      "bytes": 45964,
+      "sha256": "12fdb21eccffcbd8de7253bf2d5ff34ea0027c201fc50f76cd9ef3b4653abfc8"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -602,8 +602,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 49244,
-      "sha256": "f740264fdc5250870b213fe4e35ed417ff8c678709318d471d615e80a9614b48"
+      "bytes": 49188,
+      "sha256": "c728d0b054e8792698a54f6b37ee9e68e57f8a72693ea68e52b17c599a5ec951"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -1075,8 +1075,9 @@
     "completion_proven": false,
     "public_raw_evidence": false
   },
-  "latest_research_round": "R32",
-  "latest_research_static_checks": 53,
+  "latest_research_round": "R33",
+  "latest_research_static_checks": 26,
   "latest_research_new_boot_tests": 0,
-  "latest_research_controller_test_cases": 5
+  "latest_research_controller_test_cases": 0,
+  "latest_research_instruction_slice_cases": 38
 }
