@@ -9,7 +9,7 @@
 1. 中国《计算机软件保护条例》第六条区分软件表达与思想、处理过程、操作方法；第十六、十七条涉及合法复制品和学习研究；第八条及第二十四条同时规定复制、传播等权利及责任。因此，研究原理不能直接推导出可以公开上传整包固件、专有库或反编译代码。[中国网信网法规全文](https://www.cac.gov.cn/2013-02/08/c_12648744.htm)
 2. 《著作权法》第二十四条的个人学习研究例外有适用条件，第四十九、五十条另有技术措施规则。反向工程研究例外并非任意向公众提供规避工具的许可。本次不公开固件解密密钥、规避授权/签名机制的补丁、Sony 程序片段、反汇编清单或原始转储。[国家自然科学基金委员会公布的 2020 年修订全文](https://www.nsfc.gov.cn/p1/2871/2872/69475.html)
 3. Sony 对 ILCE-7RM2 的 GPL/LGPL 告知针对受这些许可覆盖的软件；不能据此将全部固件或 DMP 专有实现重新许可。本次仅保留外部来源链接、事实描述和独立编写的宿主实现。[Sony ILCE-7RM2 官方许可说明](https://helpguide.sony.net/ilc/1520/v1/fr/contents/TP0001077616.html)
-4. 自有应用代码继续使用 MIT，保留已有 PMCADemo 等许可告知。QEMU 修改不并入 MIT：0001 为 LGPL-2.1-or-later，0002–0006 为 GPL-2.0-or-later，附完整许可和固定上游提交。没有随补丁分发 QEMU 二进制；未来分发二进制须另行履行对应源码等义务。[MIT 原文](https://opensource.org/license/mit)；[QEMU 固定版本许可](https://github.com/ma1co/qemu/blob/1909382c0d3533051cead7fde70ca8e84807ee14/LICENSE)
+4. 自有应用代码继续使用 MIT，保留已有 PMCADemo 等许可告知。QEMU 修改不并入 MIT：0001 为 LGPL-2.1-or-later，0002–0007 为 GPL-2.0-or-later，附完整许可和固定上游提交。没有随补丁分发 QEMU 二进制；未来分发二进制须另行履行对应源码等义务。[MIT 原文](https://opensource.org/license/mit)；[QEMU 固定版本许可](https://github.com/ma1co/qemu/blob/1909382c0d3533051cead7fde70ca8e84807ee14/LICENSE)
 5. Film Studio 的非商用新增内容、Sony 基础 APK、第三方照片、字体、LUT 和纹理不在本次公开集合中。研究候选不等于已采用或已授权。
 
 ## 发布边界

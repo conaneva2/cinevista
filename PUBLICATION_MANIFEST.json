@@ -3,7 +3,7 @@
   "scope": "Source-only public snapshot; no proprietary inputs or old Git history",
   "host_check_exit_code": 0,
   "patches_apply_to_pinned_base": true,
-  "all_six_modified_qemu_sources_match": true,
+  "all_six_modified_qemu_sources_match": false,
   "secret_pattern_findings": 0,
   "checks_are_not_legal_clearance_or_device_safety_proof": true,
   "excluded_categories": [
@@ -82,8 +82,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 35834,
-      "sha256": "7f904dd128240f6f248bf8df28d4d75430e93481f39408042607ffa9c406ceae"
+      "bytes": 36350,
+      "sha256": "db1da0c10cc4e3ad4294437129760f7b1184495e91eb6ff89567ab25834852f4"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -97,8 +97,8 @@
     },
     {
       "path": "PROJECT_STATUS.md",
-      "bytes": 54661,
-      "sha256": "dc45330dc717fc3ebb451d622f01d57be5500caf41b91bc69f808715467d5000"
+      "bytes": 55558,
+      "sha256": "653fdb31ba30ffbb33add5763c1bb5e62e1df528ad758aa6ae29b68683164c23"
     },
     {
       "path": "README.md",
@@ -117,8 +117,8 @@
     },
     {
       "path": "TODO.md",
-      "bytes": 7663,
-      "sha256": "7ffdedfb94ff36748902e350e125edaa1b429170cddf3fa11c1c8a1bff24a67c"
+      "bytes": 7679,
+      "sha256": "b28f6c1f6656bd21c76e32a30dff4db598765bae736035550899e389d1a6a223"
     },
     {
       "path": "VERSION",
@@ -287,8 +287,8 @@
     },
     {
       "path": "docs/01_REUSE_AUDIT.md",
-      "bytes": 46170,
-      "sha256": "b1b4988b328f8e6f6ae62f2cac6abef20dcee575fc8fa405f5dc3c50b5e4831b"
+      "bytes": 47094,
+      "sha256": "fa3ccc6ee123607bb4863eee2a4cedebf034bf3bfed11b920022f0e9dbd308ab"
     },
     {
       "path": "docs/02_ARCHITECTURE.md",
@@ -403,7 +403,7 @@
     {
       "path": "docs/PUBLICATION.md",
       "bytes": 5013,
-      "sha256": "ff0500335cd8a9d6bcf796e8d1ba2998f52f1c8257445714ce670cfbf9e82ee8"
+      "sha256": "9d20132bde5691e75dad1d7d055b4aa4d7a31185d6bdc2bb9b7ccbab40b27aab"
     },
     {
       "path": "docs/README.md",
@@ -502,18 +502,18 @@
     },
     {
       "path": "docs/research/CONTINUATION.md",
-      "bytes": 11688,
-      "sha256": "fa2c2b76bc57ba4484f2dc938cde12b6d80622c1fd21f14d6a3004b0bfe55538"
+      "bytes": 12084,
+      "sha256": "b563e47485f26086ddbf347a960a4c62a23c90ce673b64f86fb77b652687e7d6"
     },
     {
       "path": "docs/research/EVIDENCE.md",
-      "bytes": 17190,
-      "sha256": "4473f05bd9eb89bb7dae5a91283eed7a0099162f417d0e93ab05732dea713dd1"
+      "bytes": 17539,
+      "sha256": "92314d4f9f1ee3a11c490a29a64917f068bd5fa53c63e6921f45deb7d955ec0c"
     },
     {
       "path": "docs/research/HISTORY.md",
-      "bytes": 15860,
-      "sha256": "02712e3c4d7b43eff133594b757f5104f0b76569c0257baba3e59611070fa527"
+      "bytes": 16439,
+      "sha256": "47c50733474e7b937f6609fea0faf459e5828e6720a8ad79ee1975a71365f0cb"
     },
     {
       "path": "docs/research/README.md",
@@ -522,8 +522,8 @@
     },
     {
       "path": "docs/research/TECHNICAL.md",
-      "bytes": 56980,
-      "sha256": "9ac94f2b0ebbaf37d28fa096374f29969967735660f21d01b2eec94b2bf2b828"
+      "bytes": 64600,
+      "sha256": "545a3127b71c6e919323bd9bf54d00d279b035e0fb2e7bd79d7276cd49e9ae5e"
     },
     {
       "path": "emulator/qemu/0001-tci-nonexec-buffer.patch",
@@ -556,6 +556,11 @@
       "sha256": "80c5d86ee484ad5358bb8061dbe3f4890122117538266253417ad30032d7841c"
     },
     {
+      "path": "emulator/qemu/0007-nand-memory-transaction-guard.patch",
+      "bytes": 3279,
+      "sha256": "71eb0857d7a07d1baff2b5a2fb7a7afd0f6e897dfcab8d0d21e297b339b2e2bf"
+    },
+    {
       "path": "emulator/qemu/COPYING",
       "bytes": 17992,
       "sha256": "6f04ae8364d0079a192b14635f4b1da294ce18724c034c39a6a41d1b09df6100"
@@ -572,8 +577,8 @@
     },
     {
       "path": "emulator/qemu/README.md",
-      "bytes": 3581,
-      "sha256": "513302db4fb285437356b1e1c9e636a7d3cfecafddd70f618f992d18c5e729bd"
+      "bytes": 4710,
+      "sha256": "d56c143323f982e592b809396267560a73cce3090f38df371a861020e7e67a3d"
     },
     {
       "path": "emulator/qemu/test_nand_persistence.py",
@@ -602,8 +607,8 @@
     },
     {
       "path": "handoff/task-board.json",
-      "bytes": 49180,
-      "sha256": "e956495d18a9eddcea7d4b51510c97fa3a4b3445df051755823182f8ec614ddd"
+      "bytes": 49196,
+      "sha256": "4da11ce304b4b8ca52c3dc3546fc1b397d247a3f3fb88fb0c009a0e075eb20a0"
     },
     {
       "path": "host/src/org/cinevista/host/ImageExporter.java",
@@ -858,7 +863,7 @@
     {
       "path": "third_party/NOTICE.md",
       "bytes": 2066,
-      "sha256": "b74d737f987297d70d89eabdf373f252163972bb23f4c11f02a2a7a3c692f395"
+      "sha256": "b8786a9ef0a1e4f8d817506b361a87487d946e652da298b4d4c33c5dc0824b0d"
     },
     {
       "path": "third_party/OpenMemories-MIT.txt",
@@ -1066,17 +1071,26 @@
     "verified_source_files": 207
   },
   "latest_research": {
-    "evidence_id": "R35",
-    "scope": "Eight new original IRQ-bookkeeping and wait-mask instruction cases with supplied RAM inputs. No hardware coexistence, bus-write completion, W1C, native mounting or firmware boot proven. Matching BOSS remains absent.",
-    "cross_and_integrity_checks_passed": 6,
-    "instruction_slice_cases_passed": 8,
+    "evidence_id": "R36",
+    "scope": "Old CDMA manufacturer logical contract compared with original Sony/A6000 descriptor construction. Three model false-completion reproductions; seven candidate memory-transaction checks. No physical ECC, native boot or matched BOSS program.",
+    "cross_and_integrity_checks_passed": 12,
+    "baseline_fault_cases": 3,
+    "candidate_cases_passed": 7,
+    "instruction_slice_cases_passed": 0,
     "firmware_boots": 0,
     "completion_proven": false,
     "public_raw_evidence": false
   },
-  "latest_research_round": "R35",
-  "latest_research_static_checks": 6,
+  "latest_research_round": "R36",
+  "latest_research_static_checks": 12,
   "latest_research_new_boot_tests": 0,
-  "latest_research_controller_test_cases": 0,
-  "latest_research_instruction_slice_cases": 8
+  "latest_research_controller_test_cases": 10,
+  "latest_research_instruction_slice_cases": 0,
+  "patch_count": 7,
+  "qemu_source_match_scope": {
+    "matched_files": 5,
+    "checked_files": 6,
+    "nand_source_matches": true,
+    "difference": "Existing local bootcon serial routing differs from the published series; not part of R36."
+  }
 }

@@ -15,4 +15,4 @@ Before importing: preserve upstream notices; document exact copied paths and mod
 
 ## QEMU source patch exception
 
-The root MIT license does not cover emulator/qemu patches. Patch 0001 follows LGPL-2.1-or-later; 0002–0004 follow GPL-2.0-or-later. Full upstream license texts, original provenance and modification notices are in emulator/qemu/README.md. No QEMU binary or Sony firmware is distributed.
+The root MIT license does not cover emulator/qemu patches. Patch 0001 follows LGPL-2.1-or-later; 0002–0007 follow GPL-2.0-or-later. Full upstream license texts, original provenance and modification notices are in emulator/qemu/README.md. No QEMU binary or Sony firmware is distributed.

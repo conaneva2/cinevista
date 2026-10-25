@@ -1,0 +1,81 @@
+--- a/hw/block/bionz_nand.c
++++ b/hw/block/bionz_nand.c
+@@ -1,6 +1,7 @@
+ /* QEMU model of the Sony BIONZ nand controller (similar to denali flash controller, but with a custom dma interface) */
+ 
+ #include "qemu/osdep.h"
++#include "exec/address-spaces.h"
+ #include "hw/hw.h"
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+@@ -268,6 +269,22 @@
+     .valid.max_access_size = 4,
+ };
+ 
++/* A host-model transaction failure must not become a clean completion.
++ * Sony bus-fault status/IRQ semantics are unknown: fail closed instead of
++ * synthesizing them. Earlier transfers may already have taken effect.
++ */
++static void nand_dma_memory(hwaddr addr, void *buffer, hwaddr length,
++                            bool is_write, const char *phase)
++{
++    MemTxResult result = address_space_rw(&address_space_memory, addr,
++                                          MEMTXATTRS_UNSPECIFIED, buffer,
++                                          length, is_write);
++    if (result != MEMTX_OK) {
++        hw_error("bionz_nand: %s memory transaction failed (0x%x)\n",
++                 phase, result);
++    }
++}
++
+ /* Experimental persistent backend; completion follows successful flush. */
+ static void nand_program(NandState *s, uint64_t offset, uint32_t length,
+                          uint32_t guest_buffer)
+@@ -278,7 +295,7 @@
+         blk_pread(s->blk, offset, old, length) < 0) {
+         hw_error("nand_program: missing/read-only/unreadable backend\n");
+     }
+-    cpu_physical_memory_read(guest_buffer, data, length);
++    nand_dma_memory(guest_buffer, data, length, false, "program source read");
+     for (i = 0; i < length; i++) {
+         data[i] &= old[i]; /* NAND programming clears bits; erase restores ones. */
+     }
+@@ -334,7 +351,8 @@
+ 
+     nand_require_supported_ecc(s);
+ 
+-    cpu_physical_memory_read(s->dma_args[1], &args, sizeof(args));
++    nand_dma_memory(s->dma_args[1], &args, sizeof(args), false,
++                    "descriptor fetch");
+ 
+     if (((args.command >> 26) & 3) != 0b10) {// MAP10
+         hw_error("%s: Invalid command: 0x%x\n", __func__, args.command);
+@@ -379,14 +397,16 @@
+             if (s->blk && blk_pread(s->blk, main_offset, buffer, main_len) < 0) {
+                 hw_error("%s: Cannot read block device\n", __func__);
+             }
+-            cpu_physical_memory_write(args.main_buffer, buffer, main_len);
++            nand_dma_memory(args.main_buffer, buffer, main_len, true,
++                            "main data write");
+             g_free(buffer);
+ 
+             buffer = g_malloc(spare_len);
+             if (s->blk && blk_pread(s->blk, spare_offset, buffer, spare_len) < 0) {
+                 hw_error("%s: Cannot read block device\n", __func__);
+             }
+-            cpu_physical_memory_write(args.spare_buffer, buffer, spare_len);
++            nand_dma_memory(args.spare_buffer, buffer, spare_len, true,
++                            "extra data write");
+             g_free(buffer);
+             break;
+ 
+@@ -396,7 +416,8 @@
+     }
+ 
+     args.result = 0x8000;
+-    cpu_physical_memory_write(s->dma_args[1], &args, sizeof(args));
++    nand_dma_memory(s->dma_args[1], &args, sizeof(args), true,
++                    "descriptor writeback");
+ 
+     s->reg_dma_intr |= (1 << 1);
+     nand_update_irq(s);

@@ -967,7 +967,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R35：8组原指令错误/完成输入实验通过，6项交叉/完整性检查；硬件写回/IRQ产生、匹配BOSS及原生挂载仍未通过。未改模型，无新固件启动。"
+      "note": "R36：旧CDMA正文、3个模型误报复现、候选7项验证及12项静态检查；0007拒绝访存失败后假完成。物理ECC/IRQ、BOSS和原生挂载仍阻塞，无新固件启动。"
     },
     {
       "id": "G09",
@@ -1071,7 +1071,7 @@
         "docs/research/EVIDENCE.md",
         "docs/research/CONTINUATION.md"
       ],
-      "note": "R35：8组原指令错误/完成输入实验通过，6项交叉/完整性检查；硬件写回/IRQ产生、匹配BOSS及原生挂载仍未通过。未改模型，无新固件启动。"
+      "note": "R36：旧CDMA正文、3个模型误报复现、候选7项验证及12项静态检查；0007拒绝访存失败后假完成。物理ECC/IRQ、BOSS和原生挂载仍阻塞，无新固件启动。"
     },
     {
       "id": "G12",

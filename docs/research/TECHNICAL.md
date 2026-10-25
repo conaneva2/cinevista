@@ -401,11 +401,11 @@ Sony原流程仍先等待0x720 bit1，再失效描述符缓存、检查+0x20 bit
 
 这支持将0x7c0/0x7d0作为**命令DMA错误通道的对应线索**；尚不是Sony硅片规范，也没有证明所有错误如何映射、W1C完整规则或与正常完成是否同时置位。现有QEMU没有这两个寄存器的实现，其错误通知链不完整；不能仅补一个恒定返回值声称解决。
 
-### 4.01配置排除了直接照搬“出错自动停队列”
+### 4.01配置与后续命令接收限制（R36澄清措辞）
 
 同一官方头文件说明0x780 bit8控制遇错后是否停止接受后续MAP10命令，直到软件清除通道错误。该参照芯片的默认值含bit8，容易被误当成Sony行为。
 
-实际核对R28恢复的4.01参数：init_reg_param+0xb0为`0x10`，原函数将其原样写到0x780，**bit8没有设置**。因此，即使接受寄存器对应关系，也不能给4.01强行添加该停队列条件。这里确认的是该初始化路径写入的值，不代表所有运行阶段的寄存器快照；A6000核实了同一写法，其运行参数尚未恢复。
+实际核对R28恢复的4.01参数：init_reg_param+0xb0为`0x10`，原函数将其原样写到0x780，**bit8没有设置**。因此，即使接受寄存器对应关系，也不能给4.01强行添加“遇错后拒收新的MAP10提交”条件。R36取得旧版正文后进一步澄清：这不同于当前链出错时停止后续描述符，bit8为0不能推导当前链继续执行。这里确认的是该初始化路径写入的值，不代表所有运行阶段的寄存器快照；A6000核实了同一写法，其运行参数尚未恢复。
 
 ### 数据、描述符状态、IRQ必须分开核实
 
@@ -467,6 +467,65 @@ Altera的[Agilex 3 CDMA官方手册](https://docs.altera.com/r/docs/848530/26.1.
 补读A6000资料固定提交6984ce85198ec22bedbf87d69f1c374b96473eb0中，R33没有patch的`docs/CORRECTIONS.md`、`docs/OPEN-QUESTIONS.md`、`analysis/s400_open_questions_triage/triage.json`全文；对BOSS、loader_mpt、pformat、mailbox、ESRAM的检索无命中。大体积目录清单未全文拉取，不能声称排除了整个仓库。新的定向公开搜索仍未获得可按加载边界、邮箱布局及52字节设备信息核对的BOSS载荷。
 
 未改默认模型，strict-ecc保持拒绝未建模ECC。新实验有明确的状态消费观察目标；完整启动仍缺新的硬件生产规则和匹配BOSS，不重复原启动失败路径。后续优先取得旧CDMA章节正文或对应IP规范，并核实Sony描述符ABI；BOSS只追有实际程序、版本或载荷位置的新来源。无需操作相机。
+
+
+## 5k. 旧版CDMA正文与模拟器写回错误检查（R36）
+
+**找到了旧版控制器的完成顺序，并修复了一处模拟器误报完成的问题；Sony原生存储仍未通过。** 本轮新增3个故障复现、候选版7项针对性验证及12项源码/完整性核对。没有重跑R33状态矩阵、R35中断片段或完整固件启动；没有操作相机、改写固件、绕过断言或下载大文件。
+
+### 旧手册补上了哪些依据
+
+来源为Altera原厂《Cyclone V Device Handbook》`cv_54010`，2013.12.30版的公开镜像。它是相关控制器的制造商资料，不是Sony所用IP修订的规格书。只读取相关网页，没有转载手册或下载整本PDF。
+
+| 问题 | 新正文的规则 | 对Sony的核实范围 |
+|---|---|---|
+| 描述符状态与完成通知的先后 | 命令结束后将状态写回系统内存；Int置位才产生desc_comp；Cont置位才继续下一项 | 两机提交标志包含Int且随后等待0x720 bit1；尚缺Sony总线写应答、异常写回规则 |
+| 完成是否等于成功 | 即使操作失败也设置Complete；Fail另行表示失败 | 两机均先判COMP再判FAIL，与既有原指令结果一致；本轮没有重复执行该矩阵 |
+| 出错后停止什么 | 当前通道停止后续描述符，记录channel_error，不更新失败项的同步缓冲 | error_enable另外控制是否拒收新的MAP10提交，不能把这两个条件混为一谈 |
+
+依据：[10-17页的执行顺序](https://www.manualslib.com/manual/1546140/Altera-Cyclone-V.html?page=655)、[10-21页的Complete/Fail](https://www.manualslib.com/manual/1546140/Altera-Cyclone-V.html?page=659)、[10-19页的错误路径](https://www.manualslib.com/manual/1546140/Altera-Cyclone-V.html?page=657)。这些内容规定的是逻辑顺序，没有给出最后一个数据写响应、描述符写响应与IRQ之间的周期或屏障定义，也未覆盖描述符状态自身写入失败。
+
+**修正R34/R35的措辞：** 4.01恢复值0x780=0x10、bit8未置位这一事实不变。它不能证明“当前链出错仍继续”；旧规范将当前链停止与后续MAP10接收分别规定。仍不能把参照芯片的默认值或错误策略直接灌入Sony模型。
+
+### 与4.01和A6000逐项核对，保留ABI差异
+
+本轮重新校验两份原始lld模块哈希。A7R II 4.01的0x8f88–0x901b、A6000 3.21的0x7770–0x7803，共148字节描述符构建指令完全一致。它们写入cmd +0x10、flags +0x12、main +0x18、16位status +0x20、extra +0x38；缓存维护长度64。该核对直接针对原模块，不依赖第三方反编译稿。
+
+- Sony常用flags为0x3140/0x5140：低位0x40、Int bit8=1、Cont bit9=0；传输模式是3/5。旧手册只定义模式0/1/2，其他值保留，不能照搬其main/spare模式含义。[旧版字段定义](https://www.manualslib.com/manual/1546140/Altera-Cyclone-V.html?page=659)
+- 旧手册status bit1是Unsupported Command。Sony已知行为是FAIL置位后，bit1分支返回-131073；其硬件名称仍未确定。不能从现代Cadence资料把它命名为Sony的“不可纠错ECC位”。[旧版状态定义](https://www.manualslib.com/manual/1546140/Altera-Cyclone-V.html?page=660)
+- 旧手册字段列表未包含Sony的extra pointer。网页图表尚未做坐标核验，本轮不把推测的32字节布局发布为已核实ABI。[旧版描述符字段](https://www.manualslib.com/manual/1546140/Altera-Cyclone-V.html?page=658)
+- 普通数据DMA的`intr_status0`顺序与命令DMA的0x720/0x7c0必须区分。[10-31页](https://www.manualslib.com/manual/1546140/Altera-Cyclone-V.html?page=669)不能独自证明Sony错误通知和描述符完成通知必然同时出现。
+
+### 新故障实验：没有写入内存，却出现完成通知
+
+旧模型使用`cpu_physical_memory_read/write`，它们丢弃下层内存事务结果。固定上游的[`exec.c`](https://github.com/ma1co/qemu/blob/1909382c0d3533051cead7fde70ca8e84807ee14/exec.c)和[`memory.h`](https://github.com/ma1co/qemu/blob/1909382c0d3533051cead7fde70ca8e84807ee14/include/exec/memory.h)提供了可检查结果的address_space_rw接口。
+
+本轮用合成逻辑介质、暂停的客体CPU和独立快照，做了此前未覆盖的内存故障实验：
+
+| 新输入 | 修改前实际结果 | 候选版实际结果 |
+|---|---|---|
+| main目标为未映射地址 | 数据未写入，status仍为0x8000、0x720仍为2 | main写事务错误，明确停止 |
+| extra目标为未映射地址 | extra未写入，status仍为0x8000、0x720仍为2 | extra写事务错误，明确停止 |
+| 描述符在只读区域 | status保持0，0x720仍为2 | 描述符写回事务错误，明确停止 |
+
+新增补丁0007在描述符读取、main/extra写入、编程源读取及描述符写回处检查MemTxResult。失败使用宿主模型错误停止，**不猜测Sony的FAIL细分位、错误寄存器或错误IRQ**。完成状态只在写回接口报告成功后进入原有设置路径。此前已完成的写入不会回滚；这不是原子事务，也不是物理ECC实现。
+
+候选版7项验证：上述3项、未映射描述符读取、未映射编程源读取、正常逻辑读取对照、严格ECC拒绝对照，全部符合预期。6项预期错误均明确终止，正常对照的数据与状态一致。两个对照用于验证本次模型修改，没有重跑此前完整测试集。没有测量外部IRQ边沿、总线时延或真实ECC完成；故障后停止的依据是诊断和控制流，不是原生驱动验收。
+
+编译成功；旧代码的未初始化value警告和重复链接库提示仍存在，未借此修改未知硬件行为。候选二进制独立保存，默认启动器二进制恢复原样。合成介质未改变，测试临时介质和套接字已清理。后续研究使用新候选时仍必须启用strict-ecc。
+
+### BOSS新来源的排除结果
+
+没有获得可按4.01的0x4000加载边界、+0x3f00的52字节设备信息、+0x3f40邮箱核对的新程序。
+
+- [CliffVale A6000资料树](https://github.com/CliffVale/sony-a6000-firmware-research/tree/d400f91c32fee673b85968cb56231073fe6d80e3)与dhihacker镜像当前21个文件相同；README明确不发布dump，所查release为空。没有重复拉取相同文档或审计全部历史。
+- [PMCA新工具的构建代码](https://github.com/masterflai/pmca-re-reloaded/tree/d4bcaef29191a44b290ff23c3290f8551c8303fa/updatershell)将CXD90014文件包装成Linux updater body，firmware字段为空。12,800字节的文件名和体积不能当作BOSS证据；本轮没有下载该二进制，亦未宣称验证了它与构建产物的字节一致性。
+- [A1公开审计](https://github.com/yeyuaaaaaa/Sony-A1-RE/blob/03493dffc4d8669bfaedf00a39bb3471cd26779e/docs/analysis/a1-bootstrap-hardware-backdoor-audit-20261024-en.md)讨论不同架构的NOR loader/CP，没有提供本案协议匹配的程序。A6000社区“已dump”的自述也未提供所需载荷位置。
+- nicolvus资料HEAD没有变化；未重复下载。上述检索没有命中，不等于证明BOSS程序不存在。
+
+### 下一步的明确门槛
+
+先追Sony扩展模式3/5与extra的控制器修订说明，尤其是数据写应答、描述符写回失败、channel_error与desc_comp的关系；物理ECC码字仍缺证据。BOSS只有取得实际程序或可定位的程序区域后才进行协议匹配。新补丁防止一种模拟器假完成，不能解除原生挂载、GPU、Android或APK安装验收的阻塞。
 
 
 ## 6. 录像前反挤压：结构存在，连续桥接尚缺
